@@ -1,0 +1,18 @@
+import React, { Component } from 'react'
+import { BrowserRouter } from 'react-router-dom'
+
+// App Routes
+import Routes from './Routes'
+import './App.scss'
+
+class App extends Component {
+  render() {
+    return (
+      <BrowserRouter>
+        <Routes />
+      </BrowserRouter>
+    );  
+  }
+}
+
+export default App;

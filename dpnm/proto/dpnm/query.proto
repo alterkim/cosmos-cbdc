@@ -1,0 +1,39 @@
+syntax = "proto3";
+package simsim.dpnm.dpnm;
+
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+// this line is used by starport scaffolding # 1
+import "dpnm/cbdc.proto";
+
+option go_package = "github.com/simsim/dpnm/x/dpnm/types";
+
+// Query defines the gRPC querier service.
+service Query {
+    // this line is used by starport scaffolding # 2
+	rpc Cbdc(QueryGetCbdcRequest) returns (QueryGetCbdcResponse) {
+		option (google.api.http).get = "/simsim/dpnm/dpnm/cbdc/{id}";
+	}
+	rpc CbdcAll(QueryAllCbdcRequest) returns (QueryAllCbdcResponse) {
+		option (google.api.http).get = "/simsim/dpnm/dpnm/cbdc";
+	}
+
+}
+
+// this line is used by starport scaffolding # 3
+message QueryGetCbdcRequest {
+	string id = 1;
+}
+
+message QueryGetCbdcResponse {
+	Cbdc Cbdc = 1;
+}
+
+message QueryAllCbdcRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllCbdcResponse {
+	repeated Cbdc Cbdc = 1;
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}

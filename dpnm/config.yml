@@ -1,0 +1,12 @@
+version: 1
+accounts:
+  - name: user1
+    coins: ["1000000000token", "100000000stake"]
+  - name: user2
+    coins: ["2000000000token", "100000000stake"]
+validator:
+  name: user1
+  staked: "100000000stake"
+  name: user2
+  staked: "100000000stake"
+  

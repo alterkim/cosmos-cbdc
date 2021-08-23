@@ -1,0 +1,25 @@
+syntax = "proto3";
+package simsim.dpnm.dpnm;
+
+option go_package = "github.com/simsim/dpnm/x/dpnm/types";
+
+import "gogoproto/gogo.proto";
+
+message Cbdc {
+  string creator = 1;
+  string id = 2;
+}
+
+message MsgCreateCbdc {
+  string creator = 1;
+}
+
+message MsgUpdateCbdc {
+  string creator = 1;
+  string id = 2;
+}
+
+message MsgDeleteCbdc {
+  string creator = 1;
+  string id = 2;
+}

@@ -1,0 +1,56 @@
+
+> react-kit@0.1.0 start /home/block/React/CBDC/CBDC_admin
+> export PORT=3001 && react-scripts start
+
+[34mℹ[39m [90m｢wds｣[39m: Project is running at http://0.0.0.0:3001/
+[34mℹ[39m [90m｢wds｣[39m: webpack output is served from 
+[34mℹ[39m [90m｢wds｣[39m: Content not from webpack is served from /home/block/React/CBDC/CBDC_admin/public
+[34mℹ[39m [90m｢wds｣[39m: 404s will fallback to /
+Starting the development server...
+
+Browserslist: caniuse-lite is outdated. Please run the following command: `yarn upgrade`
+Compiled with warnings.
+
+./src/components/Layout/Header.js
+  Line 1:17:  'Component' is defined but never used  no-unused-vars
+
+./src/pages/Distribution.js
+  Line 374:8:   React Hook useEffect has a missing dependency: 'DummyData'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  Line 376:11:  'getIssueData' is assigned a value but never used                                                             no-unused-vars
+  Line 401:37:  Function declared in a loop contains unsafe references to variable(s) 'key'                                   no-loop-func
+  Line 403:37:  Function declared in a loop contains unsafe references to variable(s) 'key'                                   no-loop-func
+  Line 405:37:  Function declared in a loop contains unsafe references to variable(s) 'key', 'key'                            no-loop-func
+
+./src/pages/Home.js
+  Line 39:25:   Unnecessarily computed property ["account_setting"] found                           no-useless-computed-key
+  Line 45:25:   Unnecessarily computed property ["account_setting"] found                           no-useless-computed-key
+  Line 72:21:   Unnecessarily computed property ["validity"] found                                  no-useless-computed-key
+  Line 98:17:   Unnecessarily computed property ["issue_number"] found                              no-useless-computed-key
+  Line 99:17:   Unnecessarily computed property ['processing_status'] found                         no-useless-computed-key
+  Line 100:17:  Unnecessarily computed property ['issued_amount'] found                             no-useless-computed-key
+  Line 104:15:  'req' is assigned a value but never used                                            no-unused-vars
+  Line 228:19:  'setState' is assigned a value but never used                                       no-unused-vars
+  Line 252:37:  Function declared in a loop contains unsafe references to variable(s) 'key'         no-loop-func
+  Line 254:37:  Function declared in a loop contains unsafe references to variable(s) 'key'         no-loop-func
+  Line 256:37:  Function declared in a loop contains unsafe references to variable(s) 'key', 'key'  no-loop-func
+
+./src/components/Layout/Base.js
+  Line 4:8:  'Sidebar' is defined but never used  no-unused-vars
+
+./src/Routes.js
+  Line 8:8:  'Base' is defined but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+Terminated
+npm ERR! code ELIFECYCLE
+npm ERR! errno 143
+npm ERR! react-kit@0.1.0 start: `export PORT=3001 && react-scripts start`
+npm ERR! Exit status 143
+npm ERR! 
+npm ERR! Failed at the react-kit@0.1.0 start script.
+npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     /home/block/.npm/_logs/2021-04-30T02_21_17_606Z-debug.log
