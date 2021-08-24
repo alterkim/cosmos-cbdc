@@ -1,7 +1,6 @@
 # cosmos-cbdc
 CBDC demo project made by cosmos-sdk
 
----
 ## TODO
 1. CBDC 발행
    - [ ] 시중은행에서 CBDC 발행 요청하는 page 추가
