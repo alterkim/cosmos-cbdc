@@ -524,6 +524,14 @@ const TabTwo=()=>{
     )
 }
 
+const TabThree=()=>{
+
+}
+
+const TabFour=()=>{
+
+}
+
 const tabs = [
     {
       label: 'CBDC 배정관리', // Tab title
@@ -534,6 +542,16 @@ const tabs = [
       label: 'CBDC 거래내역',
       index: 2,
       Component: TabTwo
+    },
+    {
+      label: 'CBDC 발행요청',
+      index: 3,
+      Component: TabThree
+    },
+    {
+      label: 'CBDC 환수요청',
+      index: 4,
+      Component: TabFour
     },
 ]
 
