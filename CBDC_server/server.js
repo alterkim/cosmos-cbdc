@@ -37,5 +37,5 @@ app.post('/v1/transfer', (req, res) => {
   })
 
   app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
+    console.log(`CBDC server listening at http://localhost:${port}`)
   })
