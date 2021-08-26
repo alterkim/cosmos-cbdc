@@ -612,7 +612,89 @@ const TabThree=()=>{
 }
 
 const TabFour=()=>{
+    const [data, setData] = useState([]);
+    const [showData, setShowData] = useState([]) 
 
+    const onChangeShowData=(e)=>{
+        setShowData({
+            ...showData,
+            [e.target.name] : e.target.value 
+        })
+    }
+    const onClickShow = () =>{
+
+        for (var key in showData){
+            if(key ==="request_date"){
+                setData(data.filter(e=>e["transaction_date"] >= showData[key]))
+            }else{
+                setData(data.filter(e=>e[key] === showData[key]))
+            }
+        }
+    }
+
+    return(
+        <Fragment>
+            <div className="topbar">
+                <nav className="navbar-custom">
+                    <ul className="list-inline menu-left mb-0">
+                        <li className="list-inline-item">
+                            <button type="button" className="button-menu-mobile open-left waves-effect">
+                                <i className="ion-navicon"></i>
+                            </button>
+                        </li>
+                        <li className="hide-phone list-inline-item app-search">
+                            <h3 className="page-title">CBDC 환수요청</h3>
+                        </li>
+                    </ul>
+                    <div className="clearfix"></div>
+                </nav>
+            </div>
+            <div className="card m-b-20" style={{backgroundColor:'#99CCFF'}}>
+                <div className="card-block">
+                    <div className="d-flex justify-content-between">
+                        <div>
+                            <div className="form-group">
+                                <div className="d-flex align-items-center mr-3">
+                                    <label className="mr-3">요청은행</label>
+                                    <div className="form-check-inline mr-5">
+                                        <input style={{width:100}} className="form-control" type="text" defaultValue="하나은행" readOnly={true}></input>
+                                    </div>
+                                    <label className="mx-3">자금목적</label>
+                                    <div className="form-check-inline mr-5">
+                                        <select name='currency_type' onChange={onChangeShowData} className="form-control">
+                                            <option>전체</option>
+                                            <option value='일반자금'>일반자금</option>
+                                            <option value='재난지원'>재난지원-소멸형</option>
+                                            <option value='재난지원'>재난지원-감소형</option>
+                                        </select>
+                                    </div>
+                                    <label className="mx-3">금액</label>
+                                    <div className="form-check-inline">
+                                        <input name='amout' onChange={onChangeShowData} style={{width:100}} className="form-control" type="text"></input>
+                                    </div>
+                                    <span className="mx-3">D-KRW</span>
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="mr-3">요청일자</label>
+                                <div className="form-check-inline">
+                                    <input name='request_date' onChange={onChangeShowData} className="form-control" type="date" defaultValue="" id="example-date-input"></input>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <div className="d-flex flex-column justify-content-end">
+                                <div>
+                                    <Button2 onClick={onClickShow}>요청</Button2>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </Fragment>
+    )
 }
 
 const tabs = [
