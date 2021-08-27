@@ -527,8 +527,12 @@ const TabTwo=()=>{
 const TabThree=()=>{
 
     const [data, setData] = useState([]);
-    const [showData, setShowData] = useState([]) 
+    const [showData, setShowData] = useState([])
     const IssueManagingColumn = ["발행요청일","요청금액","자금목적","신청현황"]
+
+    useEffect(() => {
+        getIssueRequestData();
+    }, []);
 
     const onChangeShowData=(e)=>{
         setShowData({
@@ -539,12 +543,28 @@ const TabThree=()=>{
     const onClickShow = () =>{
 
         for (var key in showData){
-            if(key ==="request_date"){
-                setData(data.filter(e=>e["transaction_date"] >= showData[key]))
+            if(key ==="issue_request_day"){
+                setData(data.filter(e=>e["issue_request_day"] >= showData[key]))
             }else{
                 setData(data.filter(e=>e[key] === showData[key]))
             }
         }
+    }
+
+    const getIssueRequestData = async()=>{
+        try {
+            const issueQuerySnapshot = await dbService
+                .collection(`IssueRequestInfo`)
+                .orderBy('issue_request_day', 'asc')
+                .get()
+            const dataArray = issueQuerySnapshot.docs.map((doc)=>({
+                ...doc.data(),
+            }))
+            setData(dataArray)
+        } catch(error){
+            console.log(error)
+        }
+
     }
 
     return(
