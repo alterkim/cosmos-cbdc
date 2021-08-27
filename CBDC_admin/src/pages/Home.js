@@ -540,8 +540,29 @@ const TabTwo = () =>{
 }
 
 const TabThree=()=>{
-    const [state, setState] = useState({});
+    const [data, setData] = useState([]);
     const TableColumnHeader = ["요청은행","요청일자","요청금액","자금목적","승인여부"]
+
+    useEffect(()=> {
+        getIssueRequestData();
+    }, []);
+
+    const getIssueRequestData = async()=>{
+        try {
+            const issueQuerySnapshot = await dbService
+                .collection(`IssueRequestInfo`)
+                // .where('issue_request_progress', '==', '요청')
+                .orderBy('issue_request_day','asc')
+                .get()
+            
+            const dataArray = issueQuerySnapshot.docs.map((doc)=>({
+                ...doc.data(),
+            }))
+            setData(dataArray)
+        } catch(error) {
+            console.log(error)
+        }
+    }
 
     return (
         <Fragment>
@@ -573,11 +594,12 @@ const TabThree=()=>{
                         }
                     </tr>
                 </thead>
-                {/* <tbody>
+                <tbody>
                     {
                         data.map((el,i) =>(
                             <Item key={i}>
                                 <td> {i+1} </td>
+                                <td> {el.issue_request_bank}</td>
                                 <td> {el.issue_request_day}</td>
                                 <td> {el.issue_request_amount&&el.issue_request_amount.toLocaleString()}</td>
                                 <td> {el.issue_request_purpose}</td>
@@ -585,7 +607,7 @@ const TabThree=()=>{
                             </Item>
                         ))
                     }
-                </tbody> */}
+                </tbody>
             </table>
         </Fragment>
     )
@@ -655,6 +677,9 @@ const Home = ({history}) => {
 
 export default Home;
 
+const Item = styled.tr`
+    cursor: pointer;
+`
 
 const Modal = styled.div`   
     z-index: 1000;
