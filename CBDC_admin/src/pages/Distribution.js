@@ -528,7 +528,7 @@ const TabThree=()=>{
 
     const [data, setData] = useState([]);
     const [showData, setShowData] = useState([])
-    const IssueManagingColumn = ["발행요청일","요청금액","자금목적","신청현황"]
+    const IssueManagingColumn = ["요청일자","요청금액","자금목적","신청현황"]
 
     useEffect(() => {
         getIssueRequestData();
