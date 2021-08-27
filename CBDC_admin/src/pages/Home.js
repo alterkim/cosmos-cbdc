@@ -541,6 +541,7 @@ const TabTwo = () =>{
 
 const TabThree=()=>{
     const [state, setState] = useState({});
+    const TableColumnHeader = ["요청은행","요청일자","요청금액","자금목적","승인여부"]
 
     return (
         <Fragment>
@@ -560,6 +561,32 @@ const TabThree=()=>{
                     <div className="clearfix"></div>
                 </nav>
             </div>
+
+            <table id="datatable" className="table table-bordered">
+                <thead>
+                    <tr>
+                        <th></th>
+                        {
+                            TableColumnHeader.map((e,i)=>(
+                                <th style={{textAlign:'center'}} key={i}>{e}</th>
+                            ))
+                        }
+                    </tr>
+                </thead>
+                {/* <tbody>
+                    {
+                        data.map((el,i) =>(
+                            <Item key={i}>
+                                <td> {i+1} </td>
+                                <td> {el.issue_request_day}</td>
+                                <td> {el.issue_request_amount&&el.issue_request_amount.toLocaleString()}</td>
+                                <td> {el.issue_request_purpose}</td>
+                                <td> {el.issue_request_progress}</td>
+                            </Item>
+                        ))
+                    }
+                </tbody> */}
+            </table>
         </Fragment>
     )
 }
