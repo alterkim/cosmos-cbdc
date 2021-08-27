@@ -539,6 +539,56 @@ const TabTwo = () =>{
     )
 }
 
+const TabThree=()=>{
+    const [state, setState] = useState({});
+
+    return (
+        <Fragment>
+            <div className="topbar">
+                <nav className="navbar-custom">
+                    <ul className="list-inline menu-left mb-0">
+                        <li className="list-inline-item">
+                            <button type="button" className="button-menu-mobile open-left waves-effect">
+                                <i className="ion-navicon"></i>
+                            </button>
+                        </li>
+                        <li className="hide-phone list-inline-item app-search">
+                            <h3 className="page-title">CBDC 발행요청 관리</h3>
+                        </li>
+                    </ul>
+
+                    <div className="clearfix"></div>
+                </nav>
+            </div>
+        </Fragment>
+    )
+}
+
+const TabFour=()=>{
+    const [state, setState] = useState({});
+
+    return (
+        <Fragment>
+            <div className="topbar">
+                <nav className="navbar-custom">
+                    <ul className="list-inline menu-left mb-0">
+                        <li className="list-inline-item">
+                            <button type="button" className="button-menu-mobile open-left waves-effect">
+                                <i className="ion-navicon"></i>
+                            </button>
+                        </li>
+                        <li className="hide-phone list-inline-item app-search">
+                            <h3 className="page-title">CBDC 환수요청 관리</h3>
+                        </li>
+                    </ul>
+
+                    <div className="clearfix"></div>
+                </nav>
+            </div>
+        </Fragment>
+    )
+}
+
 const tabs = [
     {
       label: 'CBDC 발행', // Tab title
@@ -550,6 +600,16 @@ const tabs = [
       index: 2,
       Component: TabTwo
     },
+    {
+      label: 'CBDC 발행요청 관리',
+      index:3,
+      Component: TabThree
+    },
+    {
+      label: 'CBDC 환수요청 관리',
+      index:4,
+      Component: TabFour
+    }
 ]
   
 const Home = ({history}) => {
