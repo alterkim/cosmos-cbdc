@@ -528,6 +528,7 @@ const TabThree=()=>{
 
     const [data, setData] = useState([]);
     const [showData, setShowData] = useState([]) 
+    const IssueManagingColumn = ["발행요청일","요청금액","자금목적","신청현황"]
 
     const onChangeShowData=(e)=>{
         setShowData({
@@ -599,14 +600,44 @@ const TabThree=()=>{
                         </div>
 
                         <div className="d-flex flex-column justify-content-end">
-                                <div>
-                                    <Button2 onClick={onClickShow}>요청</Button2>
-                                </div>
+                            <div>
+                                <Button2 onClick={onClickShow}>요청</Button2>
+                            </div>
                         </div>
                     </div>
                 </div>
-
             </div>
+
+            <div className="d-flex justify-content-between mb-2">
+                <div>총 {data.length}건</div>
+                <div>(단위: D-KRW)</div>
+            </div>
+            
+            <table id="datatable" className="table table-bordered">
+                <thead>
+                    <tr>
+                        <th></th>
+                        {
+                            IssueManagingColumn.map((e,i)=>(
+                                <th style={{textAlign:'center'}} key={i}>{e}</th>
+                            ))
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        data.map((el,i) =>(
+                            <Item key={i}>
+                                <td> {i+1} </td>
+                                <td> {el.issue_request_day}</td>
+                                <td> {el.issue_request_amount&&el.issue_request_amount.toLocaleString()}</td>
+                                <td> {el.issue_request_purpose}</td>
+                                <td> {el.issue_request_progress}</td>
+                            </Item>
+                        ))
+                    }
+                </tbody>
+            </table>
         </Fragment>
     )
 }
