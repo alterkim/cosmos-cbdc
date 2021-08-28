@@ -603,7 +603,14 @@ const TabThree=()=>{
                                 <td> {el.issue_request_day}</td>
                                 <td> {el.issue_request_amount&&el.issue_request_amount.toLocaleString()}</td>
                                 <td> {el.issue_request_purpose}</td>
-                                <td> {el.issue_request_progress}</td>
+                                <td>
+                                    <div className="d-flex justify-content-center">
+                                        <>
+                                            <Button2 style={{width:'100%'}} >승인</Button2>
+                                            <Button2 style={{width:'100%'}} >거절</Button2>
+                                        </>
+                                    </div>
+                                </td>
                             </Item>
                         ))
                     }
