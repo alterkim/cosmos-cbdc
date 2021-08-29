@@ -540,15 +540,49 @@ const TabThree=()=>{
             [e.target.name] : e.target.value 
         })
     }
-    const onClickShow = () =>{
 
-        for (var key in showData){
-            if(key ==="issue_request_day"){
-                setData(data.filter(e=>e["issue_request_day"] >= showData[key]))
-            }else{
-                setData(data.filter(e=>e[key] === showData[key]))
-            }
-        }
+    const handleAmount = (event) => {
+        var val = Number(event.target.value.replace(/\D/g,''))
+        setData({
+            ...data,
+            [event.target.name]: val.toLocaleString()
+        });
+        console.log(val)
+    }
+
+    const handleDate = (event) => {
+        var theDate = new Date(data["issue_request_day"])
+        var newDate = new Date(theDate.setMonth(theDate.getMonth()+(100/parseInt(event.target.value))))
+                var dateString = newDate.getUTCFullYear().toString()+'-'
+                    + ((newDate.getMonth()+1)<10? "0"+(newDate.getMonth()+1).toString() : (newDate.getMonth()+1).toString()) +'-'
+                    + (newDate.getDate()<10? "0"+newDate.getDate().toString():newDate.getDate().toString())
+                
+        setData({
+            ...data,
+            [event.target.name] : dateString
+        });
+    }
+
+    const handlePurpose = (event) => {
+        setData({
+            ...data,
+            [event.target.name] : event.target.value
+        });
+    }
+
+    const onClickRequest = async() => {
+        var val = Number(showData['issue_request_amount'].replace(/\D/g,''))
+
+        await dbService
+            .collection(`IssueRequestInfo`)
+            .add({
+                ...showData,
+                ["issue_request_amount"] : val,
+                ["issue_request_bank"] : "하나은행",
+                ["issue_request_progress"] : "요청"
+            })
+        
+        window.location.reload()
     }
 
     const getIssueRequestData = async()=>{
@@ -596,16 +630,24 @@ const TabThree=()=>{
                                     </div>
                                     <label className="mx-3">자금목적</label>
                                     <div className="form-check-inline mr-5">
-                                        <select name='currency_type' onChange={onChangeShowData} className="form-control">
+                                        <select name='issue_request_purpose' 
+                                            onChange={onChangeShowData} 
+                                            value = {data.issue_request_purpose}
+                                            className="form-control">
                                             <option>전체</option>
                                             <option value='일반자금'>일반자금</option>
                                             <option value='재난지원'>재난지원-소멸형</option>
                                             <option value='재난지원'>재난지원-감소형</option>
                                         </select>
                                     </div>
-                                    <label className="mx-3">금액</label>
+                                    <label className="mx-3">요청금액</label>
                                     <div className="form-check-inline">
-                                        <input name='amout' onChange={onChangeShowData} style={{width:100}} className="form-control" type="text"></input>
+                                        <input type="text" 
+                                            name='issue_request_amount' 
+                                            onChange={onChangeShowData}
+                                            value={data.issue_request_amount}
+                                            style={{width:100, textAlign:'right'}} 
+                                            className="form-control"></input>
                                     </div>
                                     <span className="mx-3">D-KRW</span>
                                 </div>
@@ -613,7 +655,12 @@ const TabThree=()=>{
                             <div className="form-group">
                                 <label className="mr-3">요청일자</label>
                                 <div className="form-check-inline">
-                                    <input name='request_date' onChange={onChangeShowData} className="form-control" type="date" defaultValue="" id="example-date-input"></input>
+                                    <input type="date" 
+                                        name='issue_request_day' 
+                                        onChange={onChangeShowData}
+                                        value={data.issue_request_day}
+                                        style={{width:200}}
+                                        className="form-control"></input>
                                 </div>
                             </div>
                             
@@ -621,7 +668,7 @@ const TabThree=()=>{
 
                         <div className="d-flex flex-column justify-content-end">
                             <div>
-                                <Button2 onClick={onClickShow}>요청</Button2>
+                                <Button2 onClick={onClickRequest}>요청</Button2>
                             </div>
                         </div>
                     </div>
