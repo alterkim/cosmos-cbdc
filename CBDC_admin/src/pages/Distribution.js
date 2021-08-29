@@ -528,7 +528,7 @@ const TabThree=()=>{
 
     const [data, setData] = useState([]);
     const [showData, setShowData] = useState([])
-    const IssueManagingColumn = ["요청일자","요청금액","자금목적","신청현황"]
+    const IssueManagingColumn = ["요청일자","요청번호","요청금액","자금목적","신청현황"]
 
     useEffect(() => {
         getIssueRequestData();
@@ -572,12 +572,16 @@ const TabThree=()=>{
 
     const onClickRequest = async() => {
         var val = Number(showData['issue_request_amount'].replace(/\D/g,''))
-
+        var randomNum = (Math.floor(Math.random()*(10000-1)) + 1)+'';
+        while(randomNum.length < 5){
+            randomNum = '0'+randomNum
+        }
         await dbService
             .collection(`IssueRequestInfo`)
             .add({
                 ...showData,
                 ["issue_request_amount"] : val,
+                ["issue_request_id"] : "DC2021-" + randomNum,
                 ["issue_request_bank"] : "하나은행",
                 ["issue_request_progress"] : "요청"
             })
@@ -697,6 +701,7 @@ const TabThree=()=>{
                             <Item key={i}>
                                 <td> {i+1} </td>
                                 <td> {el.issue_request_day}</td>
+                                <td> {el.issue_request_id}</td>
                                 <td> {el.issue_request_amount&&el.issue_request_amount.toLocaleString()}</td>
                                 <td> {el.issue_request_purpose}</td>
                                 <td> {el.issue_request_progress}</td>
