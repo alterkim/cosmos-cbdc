@@ -565,6 +565,7 @@ const TabThree=()=>{
     }
 
     const onClickApprove = async(e) => {
+        var amount = Number(data['issue_request_amount'].replace(/\D/g,''))
         try {
             const approveSnapshot = await dbService
                 .collection(`IssueRequestInfo`)
@@ -578,7 +579,7 @@ const TabThree=()=>{
             console.log(error)
         }
         // TODO: Connect blockchain and server for token transfer
-
+        TokenTransfer(amount)
         window.location.reload();
     }
 
