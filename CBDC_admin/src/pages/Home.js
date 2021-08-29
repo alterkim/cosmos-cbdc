@@ -551,7 +551,7 @@ const TabThree=()=>{
         try {
             const issueQuerySnapshot = await dbService
                 .collection(`IssueRequestInfo`)
-                // .where('issue_request_progress', '==', '요청')
+                .where('issue_request_progress', '==', '요청')
                 .orderBy('issue_request_day','asc')
                 .get()
             
@@ -606,8 +606,8 @@ const TabThree=()=>{
                                 <td>
                                     <div className="d-flex justify-content-center">
                                         <>
-                                            <Button2 style={{width:'100%'}} >승인</Button2>
-                                            <Button2 style={{width:'100%'}} >거절</Button2>
+                                            <Button2 style={{width:'60%'}} >승인</Button2>
+                                            <Button2 style={{width:'60%'}} >거절</Button2>
                                         </>
                                     </div>
                                 </td>
