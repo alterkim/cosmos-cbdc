@@ -1,12 +1,12 @@
 const TokenTransfer = async(amount) =>{
     const tokenName = "token";
-    const req = await fetch('http://141.223.82.142:3030/v1/transfer',{
+    const req = await fetch('http://localhost:3030/v1/transfer',{
         headers: {
             'Content-Type':'application/json',
             'Accept':'application/json',
         },
         method : 'POST',
-        body :JSON.stringify({sender : "cosmos1qwf9gvqh538rnjmtnq4xmaxmm74yjv9wd8htjt", receiver:"cosmos1qz49l8dc3ay5aun2hkndld962scnhg8adj3qa7", amount:amount, token:tokenName})
+        body :JSON.stringify({sender : "cosmos18k8lqe0dgv3ruq7ymqg8v0j0yeqe306es8m4el", receiver:"cosmos1jzr0u0dlzh5skcev9jrf4089850q7jxfazyp3z", amount:amount, token:tokenName})
     }) 
 }
 
