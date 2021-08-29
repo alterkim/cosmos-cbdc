@@ -541,7 +541,7 @@ const TabTwo = () =>{
 
 const TabThree=()=>{
     const [data, setData] = useState([]);
-    const TableColumnHeader = ["요청은행","요청일자","요청금액","자금목적","승인여부"]
+    const TableColumnHeader = ["요청은행","요청일자","요청번호","요청금액","자금목적","승인여부"]
 
     useEffect(()=> {
         getIssueRequestData();
@@ -562,6 +562,42 @@ const TabThree=()=>{
         } catch(error) {
             console.log(error)
         }
+    }
+
+    const onClickApprove = async(e) => {
+        try {
+            const approveSnapshot = await dbService
+                .collection(`IssueRequestInfo`)
+                .where('issue_request_id', '==', e.target.value)
+                .get()
+            
+            await dbService.collection(`IssueRequestInfo`)
+                .doc(approveSnapshot.docs[0].id)
+                .update({issue_request_progress : "승인"});
+        } catch (error) {
+            console.log(error)
+        }
+        // TODO: Connect blockchain and server for token transfer
+
+        window.location.reload();
+    }
+
+    const onClickRefuse = async(e) => {
+        try {
+            const approveSnapshot = await dbService
+                .collection(`IssueRequestInfo`)
+                .where('issue_request_id', '==', e.target.value)
+                .get()
+            
+            await dbService.collection(`IssueRequestInfo`)
+                .doc(approveSnapshot.docs[0].id)
+                .update({issue_request_progress : "거절"});
+        } catch (error) {
+            console.log(error)
+        }
+        // TODO: Connect blockchain and server for token transfer
+
+        window.location.reload();
     }
 
     return (
@@ -601,13 +637,14 @@ const TabThree=()=>{
                                 <td> {i+1} </td>
                                 <td> {el.issue_request_bank}</td>
                                 <td> {el.issue_request_day}</td>
+                                <td> {el.issue_request_id}</td>
                                 <td> {el.issue_request_amount&&el.issue_request_amount.toLocaleString()}</td>
                                 <td> {el.issue_request_purpose}</td>
                                 <td>
                                     <div className="d-flex justify-content-center">
                                         <>
-                                            <Button2 style={{width:'60%'}} >승인</Button2>
-                                            <Button2 style={{width:'60%'}} >거절</Button2>
+                                            <Button2 style={{width:'60%'}} value={el.issue_request_id} onClick={onClickApprove}>승인</Button2>
+                                            <Button2 style={{width:'60%'}} value={el.issue_request_id} onClick={onClickRefuse} >거절</Button2>
                                         </>
                                     </div>
                                 </td>
