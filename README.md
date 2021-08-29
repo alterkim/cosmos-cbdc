@@ -20,7 +20,8 @@ CBDC demo project made by cosmos-sdk
    - [ ] Klaytn과 LINE 블록체인과 Cosmos 블록체인 간의 정보 교환 기능 추가
 
 ## Build Environment
-node: 14.17.5
-npm: 6.14.14
-go: 1.16.5
-python2: 2.7.18
+- node: 14.17.5
+- npm: 6.14.14
+- go: 1.16.5
+- python2: 2.7.18
+- starport: 0.14.0
