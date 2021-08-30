@@ -615,13 +615,13 @@ const TabThree=()=>{
 
     const onClickRefuse = async(e) => {
         try {
-            const approveSnapshot = await dbService
+            const refuseSnapshot = await dbService
                 .collection(`IssueRequestInfo`)
                 .where('issue_request_id', '==', e.target.value)
                 .get()
             
             await dbService.collection(`IssueRequestInfo`)
-                .doc(approveSnapshot.docs[0].id)
+                .doc(refuseSnapshot.docs[0].id)
                 .update({issue_request_progress : "거절"});
         } catch (error) {
             console.log(error)
