@@ -621,7 +621,7 @@ const TabThree=()=>{
                                             name='issue_request_amount' 
                                             onChange={onChangeShowData}
                                             value={data.issue_request_amount}
-                                            style={{width:100, textAlign:'right'}} 
+                                            style={{width:150, textAlign:'right'}} 
                                             className="form-control"></input>
                                     </div>
                                     <span className="mx-3">D-KRW</span>
@@ -687,7 +687,12 @@ const TabThree=()=>{
 
 const TabFour=()=>{
     const [data, setData] = useState([]);
-    const [showData, setShowData] = useState([]) 
+    const [showData, setShowData] = useState([])
+    const RedemptionManagingColumn = ["요청일자","요청번호","요청금액","자금목적","신청현황"]
+
+    useEffect(()=> {
+        getRedemptionRequestData();
+    }, []);
 
     const onChangeShowData=(e)=>{
         setShowData({
@@ -695,14 +700,36 @@ const TabFour=()=>{
             [e.target.name] : e.target.value 
         })
     }
-    const onClickShow = () =>{
+    const onClickRequest = async() =>{
+        var amount = Number(showData['redemption_request_amount'].replace(/\D/g,''))
+        var randomNum = (Math.floor(Math.random()*(10000-1)) + 1)+'';
+        while(randomNum.length < 5){
+            randomNum = '0'+randomNum
+        }
+        await dbService
+            .collection(`RedemptionRequestInfo`)
+            .add({
+                ...showData,
+                ["redemption_request_amount"] : amount,
+                ["redemption_request_id"] : "RD2021-" + randomNum,
+                ["redemption_request_bank"]: "하나은행",
+                ["redemption_request_progress"]: "요청"
+            })
+        window.location.reload()
+    }
 
-        for (var key in showData){
-            if(key ==="request_date"){
-                setData(data.filter(e=>e["transaction_date"] >= showData[key]))
-            }else{
-                setData(data.filter(e=>e[key] === showData[key]))
-            }
+    const getRedemptionRequestData = async() => {
+        try {
+            const redemptionQuerySnapshot = await dbService
+                .collection(`RedemptionRequestInfo`)
+                .orderBy('redemption_request_day', 'asc')
+                .get()
+            const dataArray = redemptionQuerySnapshot.docs.map((doc)=>({
+                ...doc.data(),
+            }))
+            setData(dataArray)
+        } catch(error){
+            console.log(error)
         }
     }
 
@@ -735,7 +762,10 @@ const TabFour=()=>{
                                     </div>
                                     <label className="mx-3">자금목적</label>
                                     <div className="form-check-inline mr-5">
-                                        <select name='currency_type' onChange={onChangeShowData} className="form-control">
+                                        <select name='redemption_request_purpose' 
+                                        onChange={onChangeShowData} 
+                                        value={data.redemption_request_purpose} 
+                                        className="form-control">
                                             <option>전체</option>
                                             <option value='일반자금'>일반자금</option>
                                             <option value='재난지원'>재난지원-소멸형</option>
@@ -744,7 +774,12 @@ const TabFour=()=>{
                                     </div>
                                     <label className="mx-3">요청금액</label>
                                     <div className="form-check-inline">
-                                        <input name='amout' onChange={onChangeShowData} style={{width:100}} className="form-control" type="text"></input>
+                                        <input type="text"
+                                            name='redemption_request_amount' 
+                                            onChange={onChangeShowData}
+                                            value={data.redemption_request_amount} 
+                                            style={{width:150, textAlign: 'right'}} 
+                                            className="form-control"></input>
                                     </div>
                                     <span className="mx-3">D-KRW</span>
                                 </div>
@@ -752,21 +787,57 @@ const TabFour=()=>{
                             <div className="form-group">
                                 <label className="mr-3">요청일자</label>
                                 <div className="form-check-inline">
-                                    <input name='request_date' onChange={onChangeShowData} className="form-control" type="date" defaultValue="" id="example-date-input"></input>
+                                    <input type="date" 
+                                        name='redemption_request_day' 
+                                        onChange={onChangeShowData}
+                                        value={data.redemption_request_day}
+                                        style={{width:200}} 
+                                        className="form-control"></input>
                                 </div>
                             </div>
                             
                         </div>
 
                         <div className="d-flex flex-column justify-content-end">
-                                <div>
-                                    <Button2 onClick={onClickShow}>요청</Button2>
-                                </div>
+                            <div>
+                                <Button2 onClick={onClickRequest}>요청</Button2>
+                            </div>
                         </div>
                     </div>
                 </div>
-
             </div>
+
+            <div className="d-flex justify-content-between mb-2">
+                <div>총 {data.length}건</div>
+                <div>(단위: D-KRW)</div>
+            </div>
+
+            <table id="datatable" className="table table-bordered">
+                <thead>
+                    <tr>
+                        <th></th>
+                        {
+                            RedemptionManagingColumn.map((e,i)=>(
+                                <th style={{textAlign:'center'}} key={i}>{e}</th>
+                            ))
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        data.map((el,i)=>(
+                            <Item key={i}>
+                                <td> {i+1} </td>
+                                <td> {el.redemption_request_day}</td>
+                                <td> {el.redemption_request_id}</td>
+                                <td> {el.redemption_request_amount&&el.redemption_request_amount.toLocaleString()}</td>
+                                <td> {el.redemption_request_purpose}</td>
+                                <td> {el.redemption_request_progress}</td>
+                            </Item>
+                        ))
+                    }
+                </tbody>
+            </table>
         </Fragment>
     )
 }
