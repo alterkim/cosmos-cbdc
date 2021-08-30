@@ -564,10 +564,27 @@ const TabThree=()=>{
     }
 
     const onClickApprove = async(e) => {
-        var amount;
+        var amount, date, number, purpose, status, setting;
         data.map((el,i) =>{
             amount = el.issue_request_amount
+            date = el.issue_request_day
+            number = el.issue_request_id
+            purpose = el.issue_request_purpose
+            status = el.issue_request_progress
         })
+        if(purpose == "일반자금") {
+            setting = "일반형"
+        } else if(purpose == "재난지원-소멸형") {
+            setting = "소멸형"
+        } else {
+            setting = "감소형"
+        }
+
+        var randomNum = (Math.floor(Math.random()*(10000-1)) + 1)+'';
+        while(randomNum.length < 5){
+            randomNum = '0'+randomNum
+        }
+
         try {
             const approveSnapshot = await dbService
                 .collection(`IssueRequestInfo`)
@@ -577,6 +594,18 @@ const TabThree=()=>{
             await dbService.collection(`IssueRequestInfo`)
                 .doc(approveSnapshot.docs[0].id)
                 .update({issue_request_progress : "승인"});
+            
+            await dbService.collection(`IssueInfo`)
+                .add({
+                    ["account_setting"] : setting,
+                    ["assign_bank"] : "하나은행",
+                    ["assign_number"] : "HN2021-" + randomNum,
+                    ["issue_day"]: date,
+                    ["issue_number"] : number,
+                    ["issue_purpose"] : purpose,
+                    ["issued_amount"]: amount,
+                    ["processing_status"]: "배정완료"
+                })
         } catch (error) {
             console.log(error)
         }
