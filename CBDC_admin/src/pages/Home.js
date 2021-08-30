@@ -10,6 +10,7 @@ import {Tabs} from 'react-simple-tabs-component'
 import 'react-simple-tabs-component/dist/index.css'
 import TokenTransfer from '../_helpers/TokenTransfer';
 import {USER_ID,AFFILIATE_ID} from '../constants/Constants'
+import {ADDRESS_CENTRAL_BANK, ADDRESS_HANA_BANK} from '../constants/Accounts';
 
 const TabOne = () =>{
     const [state, setState] = useState({});
@@ -113,7 +114,7 @@ const TabOne = () =>{
                 })
         }
 
-        TokenTransfer(val)
+        TokenTransfer(val, ADDRESS_CENTRAL_BANK, ADDRESS_HANA_BANK)
         window.location.reload();
     }
     return (
@@ -609,7 +610,7 @@ const TabThree=()=>{
         } catch (error) {
             console.log(error)
         }
-        TokenTransfer(amount)
+        TokenTransfer(amount, ADDRESS_CENTRAL_BANK, ADDRESS_HANA_BANK)
         window.location.reload();
     }
 
