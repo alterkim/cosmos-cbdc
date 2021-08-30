@@ -688,7 +688,7 @@ const TabThree=()=>{
 }
 
 const TabFour=()=>{
-    const [data, setData] = useState({});
+    const [data, setData] = useState([]);
     const TableColumnHeader = ["요청은행","요청일자","요청번호","요청금액","자금목적","승인여부"]
 
     useEffect(()=>{
@@ -751,7 +751,7 @@ const TabFour=()=>{
                 </thead>
                 <tbody>
                     {
-                        data.map((el,i => (
+                        data.map((el,i) => (
                             <Item key={i}>
                                 <td> {i+1} </td>
                                 <td> {el.redemption_request_bank} </td>
@@ -768,7 +768,7 @@ const TabFour=()=>{
                                     </div>
                                 </td>
                             </Item>
-                        )))
+                        ))
                     }
                 </tbody>
             </table>
