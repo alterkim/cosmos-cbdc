@@ -84,7 +84,6 @@ const TabOne = () =>{
     //발행 값 state에 저장완료
     const onClickIssue = async() => {
         var val = Number(state['issued_amount'].replace(/\D/g, ''))
-
         var randomNum = (Math.floor(Math.random()*(10000-1)) + 1)+'';
         while(randomNum.length < 5){
             randomNum = '0'+randomNum
@@ -565,7 +564,10 @@ const TabThree=()=>{
     }
 
     const onClickApprove = async(e) => {
-        var amount = Number(data['issue_request_amount'].replace(/\D/g,''))
+        var amount;
+        data.map((el,i) =>{
+            amount = el.issue_request_amount
+        })
         try {
             const approveSnapshot = await dbService
                 .collection(`IssueRequestInfo`)
@@ -578,7 +580,6 @@ const TabThree=()=>{
         } catch (error) {
             console.log(error)
         }
-        // TODO: Connect blockchain and server for token transfer
         TokenTransfer(amount)
         window.location.reload();
     }
