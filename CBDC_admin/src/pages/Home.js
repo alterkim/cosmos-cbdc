@@ -688,7 +688,36 @@ const TabThree=()=>{
 }
 
 const TabFour=()=>{
-    const [state, setState] = useState({});
+    const [data, setData] = useState({});
+    const TableColumnHeader = ["요청은행","요청일자","요청번호","요청금액","자금목적","승인여부"]
+
+    useEffect(()=>{
+        getRedemptionRequestData();
+    }, []);
+
+    const getRedemptionRequestData = async()=> {
+        try {
+            const redemptionQuerySnapshot = await dbService
+                .collection(`RedemptionRequestInfo`)
+                .where('redemption_request_progress', '==', '요청')
+                .get()
+            
+            const dataArray = redemptionQuerySnapshot.docs.map((doc) => ({
+                ...doc.data(),
+            }))
+            setData(dataArray)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const onClickApprove = async(e) => {
+        // TODO
+    }
+
+    const onClickRefuse = async(e) => {
+        // TODO
+    }
 
     return (
         <Fragment>
@@ -708,6 +737,41 @@ const TabFour=()=>{
                     <div className="clearfix"></div>
                 </nav>
             </div>
+
+            <table id="datatable" className="table table-bordered">
+                <thead>
+                    <tr>
+                        <th></th>
+                        {
+                            TableColumnHeader.map((e,i)=>(
+                                <th style={{textAlign:"center"}} key={i}>{e}</th>
+                            ))
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        data.map((el,i => (
+                            <Item key={i}>
+                                <td> {i+1} </td>
+                                <td> {el.redemption_request_bank} </td>
+                                <td> {el.redemption_request_day} </td>
+                                <td> {el.redemption_request_id} </td>
+                                <td> {el.redemption_request_amount&&el.redemption_request_amount.toLocaleString()} </td>
+                                <td> {el.redemption_request_purpose}</td>
+                                <td>
+                                    <div className="d-flex justify-content-center">
+                                        <>
+                                            <Button2 style={{width:'60%'}} value={el.redemption_request_id} onClick={onClickApprove}>승인</Button2>
+                                            <Button2 style={{width:'60%'}} value={el.redemption_request_id} onClick={onClickRefuse}>거절</Button2>
+                                        </>
+                                    </div>
+                                </td>
+                            </Item>
+                        )))
+                    }
+                </tbody>
+            </table>
         </Fragment>
     )
 }
