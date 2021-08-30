@@ -5,10 +5,9 @@ CBDC demo project made by cosmos-sdk
 1. CBDC 발행
    - [x] 시중은행에서 CBDC 발행 요청하는 page 추가
    - [x] 중앙은행에서 CBDC 발행 요청 처리하는 page 추가
-   - [ ] 시중은행 KRW-C Wallet 추가
-   - [ ] 중앙은행 KRW-C Wallet 추가
+   - [x] CBDC Blockchain 연결
 2. CBDC 환수
-   - [x] 시중은행에서 CBDC 환수 요청하는 page 추가
+   - [] 시중은행에서 CBDC 환수 요청하는 page 추가
    - [ ] 중앙은행에서 CBDC 환수 요청 처리하는 page 추가
 3. CBDC 송금 및 대금결제 취소
    - [ ] 시중은행 Escrow account 추가
