@@ -1,12 +1,11 @@
 version: 1
 accounts:
-  - name: user1
-    coins: ["1000000000token", "100000000stake"]
-  - name: user2
-    coins: ["2000000000token", "100000000stake"]
+  - name: central-bank
+    coins: ["1000000000000token", "100000000stake"]
+  - name: hana-bank
+    coins: ["200000000000token", "100000000stake"]
 validator:
-  name: user1
+  name: central-bank
   staked: "100000000stake"
-  name: user2
+  name: hana-bank
   staked: "100000000stake"
-  
