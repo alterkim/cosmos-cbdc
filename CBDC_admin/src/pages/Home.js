@@ -597,8 +597,6 @@ const TabThree=()=>{
         } catch (error) {
             console.log(error)
         }
-        // TODO: Connect blockchain and server for token transfer
-
         window.location.reload();
     }
 
