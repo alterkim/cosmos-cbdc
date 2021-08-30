@@ -6,7 +6,7 @@ const TokenTransfer = async(amount) =>{
             'Accept':'application/json',
         },
         method : 'POST',
-        body :JSON.stringify({sender : "cosmos18k8lqe0dgv3ruq7ymqg8v0j0yeqe306es8m4el", receiver:"cosmos1jzr0u0dlzh5skcev9jrf4089850q7jxfazyp3z", amount:amount, token:tokenName})
+        body :JSON.stringify({sender : "cosmos1yqch4dkeaxmrk4pf75h8444q8ly0qd5a65xv7c", receiver:"cosmos17tnatqa2fhy3edywvd2fpw2lh6js0ue4u7wv93", amount:amount, token:tokenName})
     }) 
 }
 
