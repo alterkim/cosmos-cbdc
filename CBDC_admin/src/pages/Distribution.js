@@ -541,35 +541,6 @@ const TabThree=()=>{
         })
     }
 
-    const handleAmount = (event) => {
-        var val = Number(event.target.value.replace(/\D/g,''))
-        setData({
-            ...data,
-            [event.target.name]: val.toLocaleString()
-        });
-        console.log(val)
-    }
-
-    const handleDate = (event) => {
-        var theDate = new Date(data["issue_request_day"])
-        var newDate = new Date(theDate.setMonth(theDate.getMonth()+(100/parseInt(event.target.value))))
-                var dateString = newDate.getUTCFullYear().toString()+'-'
-                    + ((newDate.getMonth()+1)<10? "0"+(newDate.getMonth()+1).toString() : (newDate.getMonth()+1).toString()) +'-'
-                    + (newDate.getDate()<10? "0"+newDate.getDate().toString():newDate.getDate().toString())
-                
-        setData({
-            ...data,
-            [event.target.name] : dateString
-        });
-    }
-
-    const handlePurpose = (event) => {
-        setData({
-            ...data,
-            [event.target.name] : event.target.value
-        });
-    }
-
     const onClickRequest = async() => {
         var val = Number(showData['issue_request_amount'].replace(/\D/g,''))
         var randomNum = (Math.floor(Math.random()*(10000-1)) + 1)+'';
@@ -771,7 +742,7 @@ const TabFour=()=>{
                                             <option value='재난지원'>재난지원-감소형</option>
                                         </select>
                                     </div>
-                                    <label className="mx-3">금액</label>
+                                    <label className="mx-3">요청금액</label>
                                     <div className="form-check-inline">
                                         <input name='amout' onChange={onChangeShowData} style={{width:100}} className="form-control" type="text"></input>
                                     </div>
