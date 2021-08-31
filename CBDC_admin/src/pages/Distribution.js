@@ -9,6 +9,8 @@ import ContentWrapper from '../components/Layout/ContentWrapper'
 import { dbService } from '../fbase';
 import {Tabs} from 'react-simple-tabs-component'
 import 'react-simple-tabs-component/dist/index.css'
+import TokenTransfer from '../_helpers/TokenTransfer';
+import { ADDRESS_CENTRAL_BANK, ADDRESS_HANA_BANK } from '../constants/Accounts';
 
 
 const TabOne=()=>{
@@ -688,7 +690,7 @@ const TabThree=()=>{
 const TabFour=()=>{
     const [data, setData] = useState([]);
     const [showData, setShowData] = useState([])
-    const RedemptionManagingColumn = ["요청일자","요청번호","요청금액","자금목적","신청현황"]
+    const RedemptionManagingColumn = ["요청일자","요청번호","요청금액","자금목적","신청현황","전송"]
 
     useEffect(()=> {
         getRedemptionRequestData();
@@ -716,6 +718,43 @@ const TabFour=()=>{
                 ["redemption_request_progress"]: "요청"
             })
         window.location.reload()
+    }
+
+    const onClickTransfer = async(e) => {
+        var amount;
+        data.map((el,i)=>{
+            amount = el.redemption_request_amount
+        })
+        try {
+            const cancelSnapshot = await dbService
+                .collection(`RedemptionRequestInfo`)
+                .where('redemption_request_id', '==', e.target.value)
+                .get()
+            
+            await dbService.collection(`RedemptionRequestInfo`)
+                .doc(cancelSnapshot.docs[0].id)
+                .update({redemption_request_progress : "전송완료"});
+        } catch (error) {
+            console.log(error)
+        }
+        TokenTransfer(amount,ADDRESS_HANA_BANK, ADDRESS_CENTRAL_BANK)
+        window.location.reload();
+    }
+
+    const onClickCancel = async(e) => {
+        try {
+            const cancelSnapshot = await dbService
+                .collection(`RedemptionRequestInfo`)
+                .where('redemption_request_id', '==', e.target.value)
+                .get()
+            
+            await dbService.collection(`RedemptionRequestInfo`)
+                .doc(cancelSnapshot.docs[0].id)
+                .update({redemption_request_progress : "환수거절"});
+        } catch (error) {
+            console.log(error)
+        }
+        window.location.reload();
     }
 
     const getRedemptionRequestData = async() => {
@@ -833,6 +872,21 @@ const TabFour=()=>{
                                 <td> {el.redemption_request_amount&&el.redemption_request_amount.toLocaleString()}</td>
                                 <td> {el.redemption_request_purpose}</td>
                                 <td> {el.redemption_request_progress}</td>
+                                <td>
+                                    <div className="d-flex justify-content-center">
+                                        {el.redemption_request_progress == "환수승인"?(
+                                        <>
+                                            <Button2 style={{width:'60%'}} value={el.redemption_request_id} onClick={onClickTransfer}>전송</Button2>
+                                            <Button2 style={{width:'60%'}} value={el.redemption_request_id} onClick={onClickCancel}>취소</Button2>
+                                        </>
+                                        ):(
+                                        <>
+                                            <Button1 style={{width:"60%"}}>전송</Button1>
+                                            <Button1 style={{width:"60%"}}>취소</Button1>
+                                        </>
+                                        )}
+                                    </div>
+                                </td>
                             </Item>
                         ))
                     }
@@ -895,6 +949,16 @@ const Button2 = styled.button`
     outline: none;
     padding: 0.5vw 1.5vh;
     cursor : pointer;
+    margin-right : 5px;
+    margin-left : 5px;
+`
+const Button1 = styled.button`
+    color: #adacac;
+    border-radius: 0.5vh;
+    background-color: #ffffff;
+    border: 1px solid #adacac;
+    outline: none;
+    padding: 0.5vw 1.5vh;
     margin-right : 5px;
     margin-left : 5px;
 `

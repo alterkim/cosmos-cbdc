@@ -735,7 +735,7 @@ const TabFour=()=>{
             
             await dbService.collection(`RedemptionRequestInfo`)
             .doc(approveSnapshot.docs[0].id)
-            .update({redemption_request_progress : "승인"})
+            .update({redemption_request_progress : "환수승인"})
             
             await dbService.collection(`RedemptionInfo`)
                 .add({
@@ -744,7 +744,7 @@ const TabFour=()=>{
                     ["redemption_number"] : number,
                     ["redemption_day"]: date,
                     ["redemption-amount"] : amount,
-                    ["redemption_progress"] : "환수승인"
+                    ["redemption_progress"] : "승인"
                 })
         } catch(error){
             console.log(error)
