@@ -712,11 +712,61 @@ const TabFour=()=>{
     }
 
     const onClickApprove = async(e) => {
-        // TODO
+        var amount, date, number, purpose, setting;
+        data.map((el,i) => {
+            amount = el.redemption_request_amount
+            date = el.redemption_request_day
+            number = el.redemption_request_id
+            purpose = el.redemption_request_purpose
+        })
+        if(purpose == "일반자금") {
+            setting = "일반형"
+        } else if(purpose == "재난지원-소멸형") {
+            setting = "소멸형"
+        } else {
+            setting = "감소형"
+        }
+
+        try {
+            const approveSnapshot = await dbService
+                .collection(`RedemptionRequestInfo`)
+                .where('redemption_request_id', '==', e.target.value)
+                .get()
+            
+            await dbService.collection(`RedemptionRequestInfo`)
+            .doc(approveSnapshot.docs[0].id)
+            .update({redemption_request_progress : "승인"})
+            
+            await dbService.collection(`RedemptionInfo`)
+                .add({
+                    ["account_setting"] : setting,
+                    ["redemption_bank"] : "하나은행",
+                    ["redemption_number"] : number,
+                    ["redemption_day"]: date,
+                    ["redemption-amount"] : amount,
+                    ["redemption_progress"] : "환수승인"
+                })
+        } catch(error){
+            console.log(error)
+        }
+        window.location.reload();
     }
 
     const onClickRefuse = async(e) => {
-        // TODO
+        try {
+            const approveSnapshot = await dbService
+                .collection(`RedemptionRequestInfo`)
+                .where('redemption_request_id', '==', e.target.value)
+                .get()
+            
+            await dbService.collection(`RedemptionRequestInfo`)
+            .doc(approveSnapshot.docs[0].id)
+            .update({redemption_request_progress : "거절"})
+
+        } catch(error) {
+            console.log(error)
+        }
+        window.location.reload();
     }
 
     return (
