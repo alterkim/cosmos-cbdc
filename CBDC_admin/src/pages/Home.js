@@ -541,6 +541,77 @@ const TabTwo = () =>{
 
 const TabThree=()=>{
     const [data, setData] = useState([]);
+    const TableColumnHeader = ["은행", "계좌번호", "잔액"]
+
+    useEffect(()=> {
+        getCommercialBankAccountData();
+    }, []);
+
+    const getCommercialBankAccountData = async() => {
+        try {
+            const accountQuerySnapshot = await dbService
+                .collection(`CommercialBankAccountInfo`)
+                .orderBy('bank','asc')
+                .get()
+
+            const dataArray = accountQuerySnapshot.docs.map((doc)=> ({
+                ...doc.data(),
+            }))
+            setData(dataArray)
+        } catch(error) {
+            console.log(error)
+        }
+    }
+
+    return (
+        <Fragment>
+            <div className="topbar">
+                <nav className="navbar-custom">
+                    <ul className="list-inline menu-left mb-0">
+                        <li className="list-inline-item">
+                            <button type="button" className="button-menu-mobile open-left waves-effect">
+                                <i className="ion-navicon"></i>
+                            </button>
+                        </li>
+                        <li className="hide-phone list-inline-item app-search">
+                            <h3 className="page-title">당좌예금 관리</h3>
+                        </li>
+                    </ul>
+
+                    <div className="clearfix"></div>
+                </nav>
+            </div>
+
+            <table id="datatable" className="table table-bordered">
+            <thead>
+                    <tr>
+                        <th></th>
+                        {
+                            TableColumnHeader.map((e,i)=>(
+                                <th style={{textAlign:'center'}} key={i}>{e}</th>
+                            ))
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        data.map((el,i) => (
+                            <Item key={i}>
+                                <td> {i+1} </td>
+                                <td> {el.bank} </td>
+                                <td> {el.account_number} </td>
+                                <td> {el.amount&&el.amount.toLocaleString()} </td>
+                            </Item>
+                        ))
+                    }
+                </tbody>
+            </table>
+        </Fragment>
+    )
+}
+
+const TabFour=()=>{
+    const [data, setData] = useState([]);
     const TableColumnHeader = ["요청은행","요청일자","요청번호","요청금액","자금목적","승인여부"]
 
     useEffect(()=> {
@@ -687,7 +758,7 @@ const TabThree=()=>{
     )
 }
 
-const TabFour=()=>{
+const TabFive=()=>{
     const [data, setData] = useState([]);
     const TableColumnHeader = ["요청은행","요청일자","요청번호","요청금액","자금목적","승인여부"]
 
@@ -838,14 +909,19 @@ const tabs = [
       Component: TabTwo
     },
     {
-      label: 'CBDC 발행요청 관리',
-      index:3,
+      label: '당좌예금 관리',
+      index: 3,
       Component: TabThree
     },
     {
-      label: 'CBDC 환수요청 관리',
+      label: 'CBDC 발행요청 관리',
       index:4,
       Component: TabFour
+    },
+    {
+      label: 'CBDC 환수요청 관리',
+      index:5,
+      Component: TabFive
     }
 ]
   
