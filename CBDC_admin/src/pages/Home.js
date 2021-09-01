@@ -795,10 +795,12 @@ const TabFour=()=>{
 
 const TabFive=()=>{
     const [data, setData] = useState([]);
+    const [account, setAccountData] = useState([]);
     const TableColumnHeader = ["요청은행","요청일자","요청번호","요청금액","자금목적","승인여부"]
 
     useEffect(()=>{
         getRedemptionRequestData();
+        getBankAccountData();
     }, []);
 
     const getRedemptionRequestData = async()=> {
@@ -812,7 +814,34 @@ const TabFive=()=>{
                 ...doc.data(),
             }))
             setData(dataArray)
+
+            const decisionQuerySnapshot = await dbService
+                .collection(`RedemptionRequestInfo`)
+                .where('redemption_request_progress', '==', '전송완료')
+                .get()
+            
+            const dataArray2 = decisionQuerySnapshot.docs.map((doc) => ({
+                ...doc.data(),
+            }))
+            setData(dataArray2)
+
         } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const getBankAccountData = async()=> {
+        try {
+            const bankQuerySnapshot = await dbService
+                .collection(`CommercialBankAccountInfo`)
+                .orderBy('bank','asc')
+                .get()
+            
+            const dataArray = bankQuerySnapshot.docs.map((doc)=>({
+                ...doc.data()
+            }))
+            setAccountData(dataArray)
+        } catch(error){
             console.log(error)
         }
     }
@@ -875,6 +904,42 @@ const TabFive=()=>{
         window.location.reload();
     }
 
+    const onClickRedemption = async(e) => {
+        var bank, bank_amount;
+        account.map((el,i)=>{
+            bank = el.bank
+            bank_amount = el.amount
+        })
+
+        var amount;
+        data.map((el,i) => {
+            amount = el.redemption_request_amount
+        })
+
+        try {
+            const redemptionSnapshot = await dbService
+                .collection(`RedemptionRequestInfo`)
+                .where('redemption_request_id', '==', e.target.value)
+                .get()
+            const bankSnapshot = await dbService
+                .collection(`CommercialBankAccountInfo`)
+                .where('bank', '==', bank)
+                .get()
+            
+            await dbService.collection(`RedemptionRequestInfo`)
+                .doc(redemptionSnapshot.docs[0].id)
+                .update({redemption_request_progress : "환수완료"})
+            
+            await dbService.collection(`CommercialBankAccountInfo`)
+                .doc(bankSnapshot.docs[0].id)
+                .update({amount: bank_amount + amount})
+        } catch(error) {
+            console.log(error)
+        }
+
+        window.location.reload();
+    }
+
     return (
         <Fragment>
             <div className="topbar">
@@ -917,10 +982,17 @@ const TabFive=()=>{
                                 <td> {el.redemption_request_purpose}</td>
                                 <td>
                                     <div className="d-flex justify-content-center">
+                                        {el.redemption_request_progress == "요청"?(
                                         <>
                                             <Button2 style={{width:'60%'}} value={el.redemption_request_id} onClick={onClickApprove}>승인</Button2>
                                             <Button2 style={{width:'60%'}} value={el.redemption_request_id} onClick={onClickRefuse}>거절</Button2>
                                         </>
+                                        ):(
+                                        <>
+                                            <Button2 sytle={{width:'100%'}} value={el.redemption_request_id} onClick={onClickRedemption}>환수</Button2>
+                                        </>
+                                        )}
+                                        
                                     </div>
                                 </td>
                             </Item>
