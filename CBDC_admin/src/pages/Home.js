@@ -612,10 +612,12 @@ const TabThree=()=>{
 
 const TabFour=()=>{
     const [data, setData] = useState([]);
+    const [account, setAccountData] = useState([]);
     const TableColumnHeader = ["요청은행","요청일자","요청번호","요청금액","자금목적","승인여부"]
 
     useEffect(()=> {
         getIssueRequestData();
+        getBankAccountData();
     }, []);
 
     const getIssueRequestData = async()=>{
@@ -635,6 +637,22 @@ const TabFour=()=>{
         }
     }
 
+    const getBankAccountData = async()=> {
+        try {
+            const bankQuerySnapshot = await dbService
+                .collection(`CommercialBankAccountInfo`)
+                .orderBy('bank','asc')
+                .get()
+            
+            const dataArray = bankQuerySnapshot.docs.map((doc)=>({
+                ...doc.data()
+            }))
+            setAccountData(dataArray)
+        } catch(error){
+            console.log(error)
+        }
+    }
+
     const onClickApprove = async(e) => {
         var amount, date, number, purpose, status, setting;
         data.map((el,i) =>{
@@ -644,6 +662,13 @@ const TabFour=()=>{
             purpose = el.issue_request_purpose
             status = el.issue_request_progress
         })
+
+        var bank, bank_amount;
+        account.map((el,i)=> {
+            bank = el.bank
+            bank_amount = el.amount
+        })
+
         if(purpose == "일반자금") {
             setting = "일반형"
         } else if(purpose == "재난지원-소멸형") {
@@ -663,9 +688,19 @@ const TabFour=()=>{
                 .where('issue_request_id', '==', e.target.value)
                 .get()
             
+            const bankSnapshot = await dbService
+                .collection(`CommercialBankAccountInfo`)
+                .where('bank', '==', bank)
+                .get()
+            
             await dbService.collection(`IssueRequestInfo`)
                 .doc(approveSnapshot.docs[0].id)
                 .update({issue_request_progress : "승인"});
+
+            await dbService.collection(`CommercialBankAccountInfo`)
+                .doc(bankSnapshot.docs[0].id)
+                .update({amount : bank_amount - amount})
+                
             
             await dbService.collection(`IssueInfo`)
                 .add({
