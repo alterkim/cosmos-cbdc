@@ -795,6 +795,7 @@ const TabFour=()=>{
 
 const TabFive=()=>{
     const [data, setData] = useState([]);
+    const [data2, setData2] = useState([]);
     const [account, setAccountData] = useState([]);
     const TableColumnHeader = ["요청은행","요청일자","요청번호","요청금액","자금목적","승인여부"]
 
@@ -823,7 +824,7 @@ const TabFive=()=>{
             const dataArray2 = decisionQuerySnapshot.docs.map((doc) => ({
                 ...doc.data(),
             }))
-            setData(dataArray2)
+            setData2(dataArray2)
 
         } catch (error) {
             console.log(error)
@@ -912,7 +913,7 @@ const TabFive=()=>{
         })
 
         var amount;
-        data.map((el,i) => {
+        data2.map((el,i) => {
             amount = el.redemption_request_amount
         })
 
@@ -982,17 +983,29 @@ const TabFive=()=>{
                                 <td> {el.redemption_request_purpose}</td>
                                 <td>
                                     <div className="d-flex justify-content-center">
-                                        {el.redemption_request_progress == "요청"?(
                                         <>
                                             <Button2 style={{width:'60%'}} value={el.redemption_request_id} onClick={onClickApprove}>승인</Button2>
                                             <Button2 style={{width:'60%'}} value={el.redemption_request_id} onClick={onClickRefuse}>거절</Button2>
                                         </>
-                                        ):(
-                                        <>
+                                    </div>
+                                </td>
+                            </Item>
+                        ))
+                    }
+                    {
+                        data2.map((el,i) => (
+                            <Item key={i}>
+                                <td> {i+1} </td>
+                                <td> {el.redemption_request_bank} </td>
+                                <td> {el.redemption_request_day} </td>
+                                <td> {el.redemption_request_id} </td>
+                                <td> {el.redemption_request_amount&&el.redemption_request_amount.toLocaleString()}</td> 
+                                <td> {el.redemption_request_purpose} </td>
+                                <td>
+                                    <div className="d-flex justify-content-center">
+                                    <>
                                             <Button2 sytle={{width:'100%'}} value={el.redemption_request_id} onClick={onClickRedemption}>환수</Button2>
-                                        </>
-                                        )}
-                                        
+                                    </>
                                     </div>
                                 </td>
                             </Item>
