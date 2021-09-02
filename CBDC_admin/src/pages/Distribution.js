@@ -537,10 +537,18 @@ const TabThree=()=>{
     }, []);
 
     const onChangeShowData=(e)=>{
-        setShowData({
-            ...showData,
-            [e.target.name] : e.target.value 
-        })
+        if(e.target.name === "issue_request_amount"){
+            var amount = Number(e.target.value.replace(/\D/g,''))
+            setShowData({
+                ...showData,
+                [e.target.name] : amount.toLocaleString()
+            });
+        } else {
+            setShowData({
+                ...showData,
+                [e.target.name] : e.target.value 
+            });
+        }
     }
 
     const onClickRequest = async() => {
@@ -609,7 +617,7 @@ const TabThree=()=>{
                                     <div className="form-check-inline mr-5">
                                         <select name='issue_request_purpose' 
                                             onChange={onChangeShowData} 
-                                            value = {data.issue_request_purpose}
+                                            value = {showData.issue_request_purpose}
                                             className="form-control">
                                             <option>전체</option>
                                             <option value='일반자금'>일반자금</option>
@@ -618,11 +626,11 @@ const TabThree=()=>{
                                         </select>
                                     </div>
                                     <label className="mx-3">요청금액</label>
-                                    <div className="form-check-inline">
+                                    <div className="mx-2">
                                         <input type="text" 
                                             name='issue_request_amount' 
                                             onChange={onChangeShowData}
-                                            value={data.issue_request_amount}
+                                            value={showData.issue_request_amount}
                                             style={{width:150, textAlign:'right'}} 
                                             className="form-control"></input>
                                     </div>
@@ -635,7 +643,7 @@ const TabThree=()=>{
                                     <input type="date" 
                                         name='issue_request_day' 
                                         onChange={onChangeShowData}
-                                        value={data.issue_request_day}
+                                        value={showData.issue_request_day}
                                         style={{width:200}}
                                         className="form-control"></input>
                                 </div>
@@ -697,10 +705,18 @@ const TabFour=()=>{
     }, []);
 
     const onChangeShowData=(e)=>{
-        setShowData({
-            ...showData,
-            [e.target.name] : e.target.value 
-        })
+        if(e.target.name === "redemption_request_amount"){
+            var amount = Number(e.target.value.replace(/\D/g,''))
+            setShowData({
+                ...showData,
+                [e.target.name] : amount.toLocaleString()
+            });
+        } else {
+            setShowData({
+                ...showData,
+                [e.target.name] : e.target.value 
+            });
+        }
     }
     const onClickRequest = async() =>{
         var amount = Number(showData['redemption_request_amount'].replace(/\D/g,''))
@@ -803,7 +819,7 @@ const TabFour=()=>{
                                     <div className="form-check-inline mr-5">
                                         <select name='redemption_request_purpose' 
                                         onChange={onChangeShowData} 
-                                        value={data.redemption_request_purpose} 
+                                        value={showData.redemption_request_purpose} 
                                         className="form-control">
                                             <option>전체</option>
                                             <option value='일반자금'>일반자금</option>
@@ -816,7 +832,7 @@ const TabFour=()=>{
                                         <input type="text"
                                             name='redemption_request_amount' 
                                             onChange={onChangeShowData}
-                                            value={data.redemption_request_amount} 
+                                            value={showData.redemption_request_amount} 
                                             style={{width:150, textAlign: 'right'}} 
                                             className="form-control"></input>
                                     </div>
@@ -829,7 +845,7 @@ const TabFour=()=>{
                                     <input type="date" 
                                         name='redemption_request_day' 
                                         onChange={onChangeShowData}
-                                        value={data.redemption_request_day}
+                                        value={showData.redemption_request_day}
                                         style={{width:200}} 
                                         className="form-control"></input>
                                 </div>
