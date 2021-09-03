@@ -1,0 +1,3 @@
+export const ADDRESS_USER_1 = "cosmos19dwh7sul9w50ygt9708dt9ahv8k58669gcapru"
+export const ADDRESS_USER_2 = "cosmos1gg2nk4r482rfvusldvr3wfs468u9w7pvq00pgz"
+export const ADDRESS_AFILIATE = "cosmos1pyfl330xa88lfu3anndqmw9ja7yg3dnpuyaprc"
