@@ -4,6 +4,12 @@ accounts:
     coins: ["1000000000000token", "100000000stake"]
   - name: hana-bank
     coins: ["200000000000token", "100000000stake"]
+  - name: user1
+    coins: ["1000000token"]
+  - name: user2
+    coins: ["2000000token"]
+  - name: affiliate
+    coins: ["30000000token"]
 validator:
   name: central-bank
   staked: "100000000stake"
