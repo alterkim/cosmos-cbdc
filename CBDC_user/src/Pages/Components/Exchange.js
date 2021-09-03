@@ -6,6 +6,7 @@ import { history } from '../../_helpers';
 import { dbService, firebaseInstance } from "../../fbase";
 import GetDatetime from "../../_helpers/GetDatetime";
 import TokenTransfer from "../../_helpers/TokenTransfer";
+import { ADDRESS_USER_1, ADDRESS_USER_2 } from "../../constants/Accounts";
 
 const AccountComponent = ({userInfo,state}) =>{
     return(
@@ -116,7 +117,7 @@ const Exchange = ({userInfo,returnPage}) => {
                             cbdc_type : "common"
                         })
 
-            TokenTransfer(val)
+            // TokenTransfer(val,)
 
             history.push(returnPage)
             window.location.reload();
