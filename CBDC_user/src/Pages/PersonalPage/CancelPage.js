@@ -1,13 +1,13 @@
-import { faChevronLeft, faHome, faChevronDown, faChevronUp, faSearch, faCog } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft, faHome } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import React, {userEffect, useState} from "react"
+import React, {useEffect, useState} from "react"
 import styled from "styled-components"
 import { history } from '../../_helpers'
 import { dbService } from "../../fbase"
 
 const CancelPage = ({userInfo}) => {
     const [txs, setTxs] = useState([])
-    const getUserTxHistory = async(e) => {
+    const getUserTxHistory = async() => {
         try {
             var userQuerySnapshot = await dbService
                 .collection(`TxInfo`)
@@ -23,9 +23,9 @@ const CancelPage = ({userInfo}) => {
         }
     }
 
-    userEffect(()=> {
+    useEffect(() =>{
         getUserTxHistory()
-    },[userInfo, setTxs])
+    },[userInfo,setTxs])
 
     return(
         <div>
@@ -33,7 +33,7 @@ const CancelPage = ({userInfo}) => {
                 <FontAwesomeIcon
                     icon={faChevronLeft}
                     style={{color: "#000", fontSize: '4vw', marginLeft: '5vw', cursor:'pointer'}}
-                    onClick={()=> history.pushState('/personal/deal/cbdc')}
+                    onClick={()=> history.push('/personal/deal/cbdc/common')}
                 />
                 <HeaderText>결제취소</HeaderText>
                 <div style={{display: 'flex', alignItems: 'center'}}>
