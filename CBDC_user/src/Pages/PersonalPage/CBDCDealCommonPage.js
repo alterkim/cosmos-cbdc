@@ -36,9 +36,6 @@ const CBDCDealCommonPage = ({userInfo}) => {
     },[userInfo,setTxs])
     const [state, setState] = useState(false)
 
-    const onClickShow=async()=> {
-    }
-
     return (
         <div>
             <Header>
@@ -105,17 +102,24 @@ const CBDCDealCommonPage = ({userInfo}) => {
                     {!state && <ListBody>
                         {
                         txs.map((tx,index)=>(
-                        <ListItem key={index} onClick={onClickShow}>
+                        <ListItem key={index}>
                             <ListItemLeft>
                                 <Time>{tx.transaction_date}</Time>
                                 <Content>{tx.receiver_name} {' '} {tx.transaction_type}</Content>
                             </ListItemLeft>
-                            <CancelButton style={{
-                                marginRight:'4vw'
-                            }}
-                            onClick={() => history.push('/personal/deal/cbdc/common/cancel')}>
-                                결제취소
-                            </CancelButton>
+                            {tx.transaction_type == "결제"?(
+                            <>
+                                <CancelButton style={{
+                                    marginRight:'4vw'
+                                }}
+                                onClick={() => history.push('/personal/deal/cbdc/cancel')}>
+                                    결제취소
+                                </CancelButton>
+                            </>
+                            ):(
+                                <>
+                                </>
+                            )}
                             <ListItemRight style={{textAlign: 'right'}}>    
                                 {
                                     tx.receiver_name === userInfo.name
@@ -280,7 +284,7 @@ const CancelButton = styled.button`
     font-size: 3.73vw;
     font-weight: 600;
     width: 25vw;
-    height: 6vw;
+    height: 8vw;
     border-radius: 2vw;
     border: none;
     text-align: center;
