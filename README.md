@@ -11,7 +11,7 @@ CBDC demo project made by cosmos-sdk
    - [x] 시중은행에서 CBDC 환수 요청하는 page 추가
    - [x] 중앙은행에서 CBDC 환수 요청 처리하는 page 추가
 3. CBDC 송금 및 대금결제 취소
-   - [ ] 시중은행 Escrow account 추가
+   - [x] 시중은행 Escrow account 추가
    - [ ] User 화면에서 결제 취소 요청하는 기능 추가
    - [ ] 3일 지났을 시 재입금하는 스마트 컨트랙트 작성
 4. CBDC 해외송금
