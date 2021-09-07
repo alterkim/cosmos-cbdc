@@ -1,3 +1,4 @@
-export const ADDRESS_USER_1 = "cosmos19dwh7sul9w50ygt9708dt9ahv8k58669gcapru"
-export const ADDRESS_USER_2 = "cosmos1gg2nk4r482rfvusldvr3wfs468u9w7pvq00pgz"
-export const ADDRESS_AFILIATE = "cosmos1pyfl330xa88lfu3anndqmw9ja7yg3dnpuyaprc"
+export const ADDRESS_USER_1 = "cosmos1zmv9jfurynurgpemwsr52pqmynr30g5sxjn58n"
+export const ADDRESS_USER_2 = "cosmos1m4h8jdh83wkvz7mu5zjjxw0k9afasz3wjh2rv8"
+export const ADDRESS_AFILIATE = "cosmos1nwmsy78u6nfl8rtn3ju3nfdsthjfyxjfsxy5ed"
+export const ADDRESS_ESCROW = "cosmos1nxtm5lm4lnwr0dkrkdd3a2a9m0men8tjphyk9v"
