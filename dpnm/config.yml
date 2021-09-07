@@ -4,6 +4,8 @@ accounts:
     coins: ["1000000000000token", "100000000stake"]
   - name: hana-bank
     coins: ["200000000000token", "100000000stake"]
+  - name: escrow
+    coins: ["100000000token"]
   - name: user1
     coins: ["1000000token"]
   - name: user2
