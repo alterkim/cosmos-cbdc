@@ -32,6 +32,7 @@ const CancelPage = ({userInfo}) => {
 
     const onClickPaymentCancel = async(e) => {
         console.log("결제취소")
+        // TODO: Send request to affiliate
     }
 
     return(
