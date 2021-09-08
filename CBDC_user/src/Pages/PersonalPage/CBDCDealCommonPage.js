@@ -112,7 +112,10 @@ const CBDCDealCommonPage = ({userInfo}) => {
                                 <CancelButton style={{
                                     marginRight:'4vw'
                                 }}
-                                onClick={() => history.push('/personal/deal/cbdc/cancel')}>
+                                onClick={() => history.push({
+                                    pathname: '/personal/deal/cbdc/cancel',
+                                    state: {txId : tx.tx_id}
+                                })}>
                                     결제취소
                                 </CancelButton>
                             </>
