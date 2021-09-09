@@ -122,6 +122,21 @@ const ACBDCDealPage = ({affiliateInfo}) => {
                                 )}
                                 
                             </ListItemLeft>
+                            {tx.payment_cancel_progress == "결제취소요청"?(
+                                <>
+                                    <CancelButton style={{
+                                    marginRight:'4vw'
+                                    }}
+                                    onClick={() => history.push({
+                                        pathname: '/affiliate/deal/cancel',
+                                        state: {txId : tx.tx_id}
+                                    })}>
+                                        결제취소
+                                    </CancelButton>
+                                </>
+                            ):(
+                                <></>
+                            )}
                             <ListItemRight style={{textAlign: 'right'}}>    
                                 {
                                     tx.receiver_name === userInfo.name
@@ -274,6 +289,17 @@ const Dbutton = styled.button`
     font-weight: 600;
     width: 4.5vw;
     height: 4.5vw;
+    border-radius: 2vw;
+    border: none;
+    text-align: center;
+`
+const CancelButton = styled.button`
+    color: #ffffff;
+    background-color: #00b2a7;
+    font-size: 3.73vw;
+    font-weight: 600;
+    width: 25vw;
+    height: 8vw;
     border-radius: 2vw;
     border: none;
     text-align: center;

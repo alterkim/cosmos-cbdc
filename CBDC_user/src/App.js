@@ -25,7 +25,8 @@ import {
         ASaveDealPage,
         ACBDCDealPage,
         AExchangePage,
-        ATransferPage
+        ATransferPage,
+        ACancelPage
     } from './Pages/AffiliatePage'
 import { dbService } from './fbase'
 import { Exchange } from './Pages/Components/Exchange'
@@ -101,6 +102,7 @@ function App() {
                             
                             <Route path="/affiliate/deal/save" render ={()=><ASaveDealPage affiliateInfo={affiliateInfo}/>} />
                             <Route path="/affiliate/deal/cbdc" render ={()=><ACBDCDealPage affiliateInfo={affiliateInfo}/>}  />
+                            <Route path="/affiliate/deal/cancel" render ={()=><ACancelPage userInfo={userInfo}/>} />
                             <Route path="/affiliate/save" render ={()=><ASaveAccountPage affiliateInfo={affiliateInfo}/>}  />
                             <Route path="/affiliate/cbdc" render ={()=><ACBDCPage affiliateInfo={affiliateInfo}/>}/>
                             <Route path="/affiliate/exchange" render ={()=><AExchangePage affiliateInfo={affiliateInfo}/>} />
