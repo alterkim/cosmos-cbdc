@@ -5,6 +5,9 @@ import styled from "styled-components"
 import { history } from '../../_helpers'
 import { dbService } from "../../fbase"
 import { useLocation } from 'react-router'
+import GetDatetime from '../../_helpers/GetDatetime'
+import TokenTransfer from '../../_helpers/TokenTransfer'
+import { ADDRESS_AFILIATE, ADDRESS_ESCROW, ADDRESS_USER_1 } from '../../constants/Accounts'
 
 const ACancelPage = ({userInfo}) => {
     const [txs, setTxs] = useState([])
@@ -31,13 +34,53 @@ const ACancelPage = ({userInfo}) => {
     },[userInfo,setTxs])
 
     const onClickRefuse = async(e) => {
-        // TODO: Link previous page and update the db
-        console.log("거절")
+        try {
+            const refuseSnapshot = await dbService
+                .collection(`TxInfo`)
+                .where('tx_id', '==', txId)
+                .get()
+            
+            await dbService.collection(`TxInfo`)
+                .doc(refuseSnapshot.docs[0].id)
+                .update({payment_cancel_progress : "결제취소거부"})
+        } catch(error) {
+            console.log(error)
+        }
+        history.push('/affiliate/deal/cbdc')
     }
 
     const onClickApprove = async(e) => {
-        // TODO: Check the time interval and do payment cancel
-        console.log("승인")
+        try {
+            const refuseSnapshot = await dbService
+                .collection(`TxInfo`)
+                .where('tx_id', '==', txId)
+                .get()
+
+            var amount;
+            txs.map((tx,index) => {
+                amount = tx.amount
+            })
+            
+            // Check time interval
+            const timeInterval = Date.parse(GetDatetime()) - Date.parse(e.target.value)
+            if (timeInterval < 259200000) {
+                // Before 3 days
+                TokenTransfer(amount, ADDRESS_ESCROW, ADDRESS_USER_1)
+
+                await dbService.collection(`TxInfo`)
+                    .doc(refuseSnapshot.docs[0].id)
+                    .update({payment_cancel_progress : "결제취소승인"})
+            } else {
+                // After 3 days
+                TokenTransfer(amount, ADDRESS_AFILIATE, ADDRESS_USER_1)
+
+                await dbService.collection(`TxInfo`)
+                    .doc(refuseSnapshot.docs[0].id)
+                    .update({payment_cancel_progress : "결제취소승인"})
+            }
+        } catch(error) {
+            console.log(error)
+        }
     }
 
     return(
@@ -63,7 +106,7 @@ const ACancelPage = ({userInfo}) => {
             </Header>
             <Body>
                 <CardChild>
-                <div style={{display: 'flex', flexDirection: 'column', padding: '0 4vw'}}>
+                    <div style={{display: 'flex', flexDirection: 'column', padding: '0 4vw'}}>
                         <div style={{marginTop: '2vw', color: '#000', fontSize:'3.73vw'}}>
                         <img 
                             src={"/images/hana_logo.png"} 
@@ -86,10 +129,12 @@ const ACancelPage = ({userInfo}) => {
                     </div>
                 </CardChild>
                 <div className="d-flex justify-content-center">
-                    <RefuseButton 
-                        style={{marginRight:20, marginTop:20, marginBottom: 20}}
-                        onClick={onClickRefuse}>거절</RefuseButton>
-                    <ApproveButton onClick={onClickApprove}>승인</ApproveButton>
+                    {txs.map((tx,index)=>(
+                        <>
+                            <RefuseButton style={{marginRight:20, marginTop:20, marginBottom: 20}} onClick={onClickRefuse}>거절</RefuseButton>
+                            <ApproveButton  value={tx.transaction_date} onClick={onClickApprove}>승인</ApproveButton>
+                        </>
+                    ))}
                 </div>
             </Body>
         </div>
