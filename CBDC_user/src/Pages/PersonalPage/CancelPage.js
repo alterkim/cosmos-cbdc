@@ -31,8 +31,20 @@ const CancelPage = ({userInfo}) => {
     },[userInfo,setTxs])
 
     const onClickPaymentCancel = async(e) => {
-        console.log("결제취소")
-        // TODO: Send request to affiliate
+        try {
+            const cancelSnapshot = await dbService
+                .collection(`TxInfo`)
+                .where('tx_id', '==', txId)
+                .get()
+        
+            await dbService.collection(`TxInfo`)
+                .doc(cancelSnapshot.docs[0].id)
+                .update({payment_cancel_progress : "결제취소요청"})
+        } catch(error) {
+            console.log(error)
+        }
+
+        history.push('/personal/deal/cbdc/common')
     }
 
     return(
