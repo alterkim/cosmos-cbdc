@@ -107,22 +107,24 @@ const CBDCDealCommonPage = ({userInfo}) => {
                                 <Time>{tx.transaction_date}</Time>
                                 <Content>{tx.receiver_name} {' '} {tx.transaction_type}</Content>
                             </ListItemLeft>
-                            {tx.transaction_type == "결제"?(
-                            <>
-                                <CancelButton style={{
-                                    marginRight:'4vw'
-                                }}
-                                onClick={() => history.push({
-                                    pathname: '/personal/deal/cbdc/cancel',
-                                    state: {txId : tx.tx_id}
+                            {tx.payment_cancel_progress != undefined?(
+                                <>
+                                    <CancelButton2 style={{marginRight:'4vw'}}>결제취소</CancelButton2>
+                                </>
+                            ):(tx.transaction_type == "결제"?(
+                                <>
+                                    <CancelButton style={{marginRight:'4vw'}} 
+                                        onClick={() => history.push({
+                                            pathname: '/personal/deal/cbdc/cancel',
+                                            state: {txId : tx.tx_id}
                                 })}>
                                     결제취소
                                 </CancelButton>
-                            </>
+                                </>
                             ):(
                                 <>
                                 </>
-                            )}
+                            ))}
                             <ListItemRight style={{textAlign: 'right'}}>    
                                 {
                                     tx.receiver_name === userInfo.name
@@ -130,9 +132,11 @@ const CBDCDealCommonPage = ({userInfo}) => {
                                         <>{tx.amount.toLocaleString()}</>
                                     )
                                     :
-                                    (
+                                    ( tx.transaction_type == "결제취소"?(
+                                        <>{(tx.amount).toLocaleString()}</>
+                                        ):(
                                         <>{(-tx.amount).toLocaleString()}</>
-                                    )
+                                    ))
                                 }
                                 <br/>
                                 D-KRW
@@ -284,6 +288,17 @@ const Dbutton = styled.button`
 const CancelButton = styled.button`
     color: #ffffff;
     background-color: #00b2a7;
+    font-size: 3.73vw;
+    font-weight: 600;
+    width: 25vw;
+    height: 8vw;
+    border-radius: 2vw;
+    border: none;
+    text-align: center;
+`
+const CancelButton2 = styled.button`
+    color: #202020;
+    background-color: #e0e0e0;
     font-size: 3.73vw;
     font-weight: 600;
     width: 25vw;
