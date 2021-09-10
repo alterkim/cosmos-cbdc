@@ -51,36 +51,61 @@ const ACancelPage = ({userInfo}) => {
 
     const onClickApprove = async(e) => {
         try {
+            // Check time interval
+            const timeInterval = Date.parse(GetDatetime()) - Date.parse(e.target.value)
             const refuseSnapshot = await dbService
                 .collection(`TxInfo`)
                 .where('tx_id', '==', txId)
                 .get()
 
-            var amount;
+            var amount, cbdc_type, receiver_account, receiver_name, receiver_wallet, sender_account, sender_name, sender_wallet;
             txs.map((tx,index) => {
                 amount = tx.amount
+                cbdc_type = tx.cbdc_type
+                receiver_account = tx.receiver_account
+                receiver_name = tx.receiver_name
+                receiver_wallet = tx.receiver_wallet
+                sender_account = tx.sender_account
+                sender_name = tx.sender_name
+                sender_wallet = tx.sender_wallet
             })
+            var randomNum = (Math.floor(Math.random()*(10000-1)) + 1)+'';
+            while(randomNum.length < 5){
+                randomNum = '0'+randomNum
+            }
             
-            // Check time interval
-            const timeInterval = Date.parse(GetDatetime()) - Date.parse(e.target.value)
+
             if (timeInterval < 259200000) {
                 // Before 3 days
                 TokenTransfer(amount, ADDRESS_ESCROW, ADDRESS_USER_1)
-
-                await dbService.collection(`TxInfo`)
-                    .doc(refuseSnapshot.docs[0].id)
-                    .update({payment_cancel_progress : "결제취소승인"})
             } else {
                 // After 3 days
                 TokenTransfer(amount, ADDRESS_AFILIATE, ADDRESS_USER_1)
-
-                await dbService.collection(`TxInfo`)
-                    .doc(refuseSnapshot.docs[0].id)
-                    .update({payment_cancel_progress : "결제취소승인"})
             }
+            await dbService.collection(`TxInfo`)
+                .add({
+                    ["amount"] : amount,
+                    ["cbdc_type"] : cbdc_type,
+                    ["receiver_account"] : receiver_account,
+                    ["receiver_name"] : receiver_name,
+                    ["receiver_wallet"] :receiver_wallet,
+                    ["sender_account"] : sender_account,
+                    ["sender_name"] : sender_name,
+                    ["sender_wallet"] : sender_wallet,
+                    ["transaction_date"] : GetDatetime(),
+                    ["transaction_type"] : "결제취소",
+                    ["tx_id"] : "TX2021-" + randomNum
+                })
+
+            await dbService.collection(`TxInfo`)
+                .doc(refuseSnapshot.docs[0].id)
+                .update({payment_cancel_progress : "결제취소승인"})
+            
+
         } catch(error) {
             console.log(error)
         }
+        history.push('/affiliate/deal/cbdc')
     }
 
     return(
