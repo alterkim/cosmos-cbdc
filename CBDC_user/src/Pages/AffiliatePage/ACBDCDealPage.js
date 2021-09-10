@@ -117,7 +117,7 @@ const ACBDCDealPage = ({affiliateInfo}) => {
                                     </>
                                 ):(
                                     <>
-                                        <Content>{tx.receiver_name} {' '} {tx.transaction_type}</Content>
+                                        <Content>결제취소 ({tx.sender_name})</Content>
                                     </>
                                 )}
                                 
@@ -139,13 +139,14 @@ const ACBDCDealPage = ({affiliateInfo}) => {
                             )}
                             <ListItemRight style={{textAlign: 'right'}}>    
                                 {
-                                    tx.receiver_name === userInfo.name
-                                    ?(
-                                        <>{(tx.amount).toLocaleString()}</>
-                                    )
-                                    :
-                                    (
+                                    tx.transaction_type == "결제취소"?(
                                         <>{(-tx.amount).toLocaleString()}</>
+                                    ):(
+                                        tx.receiver_name === userInfo.name ?(
+                                            <>{(tx.amount).toLocaleString()}</>
+                                        ):(
+                                            <>{(-tx.amount).toLocaleString()}</>
+                                        )
                                     )
                                 }
                                 <br/>
