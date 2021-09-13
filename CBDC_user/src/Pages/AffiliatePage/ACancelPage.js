@@ -3,13 +3,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import React, {useEffect, useState} from "react"
 import styled from "styled-components"
 import { history } from '../../_helpers'
-import { dbService } from "../../fbase"
+import { dbService, firebaseInstance } from "../../fbase"
 import { useLocation } from 'react-router'
 import GetDatetime from '../../_helpers/GetDatetime'
 import TokenTransfer from '../../_helpers/TokenTransfer'
 import { ADDRESS_AFILIATE, ADDRESS_ESCROW, ADDRESS_USER_1 } from '../../constants/Accounts'
 
-const ACancelPage = ({userInfo}) => {
+const ACancelPage = ({userInfo, affiliateInfo}) => {
     const [txs, setTxs] = useState([])
     const txId = useLocation().state.txId
     const getUserTxHistory = async() => {
@@ -101,7 +101,17 @@ const ACancelPage = ({userInfo}) => {
                 .doc(refuseSnapshot.docs[0].id)
                 .update({payment_cancel_progress : "결제취소승인"})
             
-
+            var user_cbdc_balance = {}
+            user_cbdc_balance["common_cbdc_balance"] = firebaseInstance.firestore.FieldValue.increment(amount)
+            await dbService
+                .doc(`UserInfo/${userInfo.uid}`)
+                .update(user_cbdc_balance)
+                
+            var affiliate_cbdc_balance ={}
+            affiliate_cbdc_balance["common_cbdc_balance"] = firebaseInstance.firestore.FieldValue.increment(-amount)
+            await dbService
+                .doc(`UserInfo/${affiliateInfo.uid}`)
+                .update(affiliate_cbdc_balance)
         } catch(error) {
             console.log(error)
         }
