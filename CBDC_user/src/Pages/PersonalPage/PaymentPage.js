@@ -41,7 +41,10 @@ const PaymentPage = ({userInfo,affiliateInfo}) => {
                 .get()
             const receiverData = receiverSnapshot.docs[0].data()
             
-
+            var randomNum = (Math.floor(Math.random()*(10000-1)) + 1)+'';
+            while(randomNum.length < 5){
+                randomNum = '0'+randomNum
+            }
             
             await dbService
                 .collection(`TxInfo`)
@@ -55,7 +58,8 @@ const PaymentPage = ({userInfo,affiliateInfo}) => {
                     amount : val,
                     transaction_type : "결제",
                     transaction_date : GetDatetime(),
-                    cbdc_type : clickBtn
+                    cbdc_type : clickBtn,
+                    tx_id: "TX2021-" + randomNum
                 })
             var user_cbdc_balance = {}
             user_cbdc_balance[clickBtn + "_cbdc_balance"] = firebaseInstance.firestore.FieldValue.increment(-val)
