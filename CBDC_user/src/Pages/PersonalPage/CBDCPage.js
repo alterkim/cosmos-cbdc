@@ -8,6 +8,8 @@ import { dbService } from "../../fbase";
 
 const CBDCPage = ({userInfo}) => {
     const [modalshow, setModalshow] = useState(false)
+    const [modalselection1, setModalselection1] = useState(false)
+    const [modalselection2, setModalselection2] = useState(false)
     const totalCBDC = userInfo.common_cbdc_balance + userInfo.reduce_cbdc_balance + userInfo.extinct_cbdc_balance
     const [extinctValidity,setExtinctValidity] = useState("")
     const [reduceValidity,setReduceValidity] = useState("")
@@ -66,7 +68,7 @@ const CBDCPage = ({userInfo}) => {
                             {userInfo.common_cbdc_balance&&userInfo.common_cbdc_balance.toLocaleString()} <span style={{fontSize: '4vw'}}>D-KRW</span>
                             </div>
                         </div>
-                        <div style={{display: 'flex', alignItems: 'center', marginTop: 10}}>
+                        {/* <div style={{display: 'flex', alignItems: 'center', marginTop: 10}}>
                             <Button1 
                                 style={{marginLeft: 'auto'}}
                                 onClick={() => history.push('/personal/Exchange')}
@@ -95,6 +97,18 @@ const CBDCPage = ({userInfo}) => {
                             >
                                 거래내역
                             </Button1>
+                        </div> */}
+                        <div style={{display: 'flex', alignItems: 'center', marginTop:10}}>
+                            <Button1
+                                style={{marginLeft:'auto'}}
+                                onClick={() => setModalselection1(true)}
+                            >거래선택
+                            </Button1>
+                            <Button1
+                                style={{marginLeft: 45, marginRight: 27}}
+                                onClick={() => history.push('/personal/deal/cbdc/common')}
+                            >거래내역
+                            </Button1>
                         </div>
                     </CardChild>
                     {(userInfo.extinct_cbdc_balance>0)&&
@@ -108,7 +122,7 @@ const CBDCPage = ({userInfo}) => {
                             {userInfo.extinct_cbdc_balance&&userInfo.extinct_cbdc_balance.toLocaleString()}  <span style={{fontSize: '4vw'}}>D-KRW</span>
                             </div>
                         </div>
-                        <div style={{display: 'flex', alignItems: 'center', marginTop: 10}}>
+                        {/* <div style={{display: 'flex', alignItems: 'center', marginTop: 10}}>
                             <Button1 
                                 style={{marginLeft: 'auto'}}
                                 onClick={() => history.push({
@@ -127,6 +141,18 @@ const CBDCPage = ({userInfo}) => {
                             >
                                 거래내역
                             </Button1>
+                        </div> */}
+                        <div style={{display:'flex', alignItems: 'center', marginTop:10}}>
+                            <Button1
+                                style={{marginLeft:'auto'}}
+                                onClick={() => setModalselection2(true)}
+                            >거래선택
+                            </Button1>
+                            <Button1
+                                style={{marginLeft:45, marginRight: 27}}
+                                onClick={() => history.push('/personal/deal/cbdc/disaster/Extinct')}
+                            >거래내역
+                            </Button1>
                         </div>
                     </CardChild>}
                     
@@ -142,17 +168,18 @@ const CBDCPage = ({userInfo}) => {
                             </div>
                         </div>
                         <div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginTop: 10}}>
-                            <Button1 
+                            <Button2 
                                 style={{
-                                    marginLeft: 5, 
+                                    marginLeft: 'auto', 
                                     fontSize: '3vw'
                                 }}
                                 onClick={() => setModalshow(true)}
                             >
-                                기간별 잔액 확인하기
-                            </Button1>
+                                기간별
+                                <br/> 잔액 확인
+                            </Button2>
                             
-                            <Button1 
+                            {/* <Button2 
                                 style={{marginLeft: 5}}
                                 onClick={() => history.push({
                                     pathname :'/personal/payment'
@@ -160,8 +187,14 @@ const CBDCPage = ({userInfo}) => {
                                     })}
                             >
                                 결제
-                            </Button1>
-                            <Button1 
+                            </Button2> */}
+                            <Button2 
+                                style={{marginLeft: 5}}
+                                onClick={() => setModalselection2(true)}
+                            >
+                                거래선택
+                            </Button2>
+                            <Button2 
                                 style={{
                                     marginLeft: 5, 
                                     marginRight: 20
@@ -169,7 +202,7 @@ const CBDCPage = ({userInfo}) => {
                                 onClick={() => history.push('/personal/deal/cbdc/disaster/Reduction')}
                             >
                                 거래내역
-                            </Button1>
+                            </Button2>
                         </div>
                     </CardChild>}
                 </CardBody>
@@ -313,6 +346,21 @@ const CBDCPage = ({userInfo}) => {
                     </div>                    
                 </ModalContent>
             </Modal>}
+            {modalselection1 && <Modal>
+                <ModalBackground onClick={() => setModalselection1(false)}></ModalBackground>
+                <ModalContent>
+
+                </ModalContent>
+            </Modal>}
+            {modalselection2 && <Modal>
+                <ModalBackground onClick={() => setModalselection2(false)}></ModalBackground>
+                <ModalContent>
+                    <ModalHeader>
+                        <div>거래 선택</div>
+                        <FontAwesomeIcon icon={faTimes} style={{color: "#000", fontSize: '4vw'}} onClick={() => setModalselection2(false)}/>
+                    </ModalHeader>
+                </ModalContent>    
+            </Modal>}
         </div>
     )
 }
@@ -391,23 +439,23 @@ const CardChildName = styled.div`
 const Button1 = styled.button`
     color: #ffffff;
     height: 4vh;
-    border-radius: 2vh;
+    border-radius: 2.5vh;
     border: none;
     background-color: #00b2a7;
     font-size: 3.6vw;
     outline: none;
-    padding: 0.5vw 1.5vh;
+    padding: 0.5vw 4.0vh;
     cursor : pointer;
 `
 const Button2 = styled.button`
-    color: #adacac;
-    min-height: 4.19vh;
-    border-radius: 2vh;
-    background-color: #ffffff;
-    border: 1px solid #adacac;
-    outline: none;
+    color: #ffffff;
+    height: 4vh;
+    border-radius: 2.5vh;
+    border: none;
+    background-color: #00b2a7;
     font-size: 3.6vw;
-    padding: 0.5vw 1.5vh;
+    outline: none;
+    padding: 0.5vw 2.5vh;
     cursor : pointer;
 `
 const Modal = styled.div`
