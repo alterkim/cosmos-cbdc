@@ -352,15 +352,18 @@ const CBDCPage = ({userInfo}) => {
 
                 </ModalContent>
             </Modal>}
-            {modalselection2 && <Modal>
+            {modalselection2 && <Modal2>
                 <ModalBackground onClick={() => setModalselection2(false)}></ModalBackground>
-                <ModalContent>
+                <ModalContent2 >
                     <ModalHeader>
-                        <div>거래 선택</div>
-                        <FontAwesomeIcon icon={faTimes} style={{color: "#000", fontSize: '4vw'}} onClick={() => setModalselection2(false)}/>
+                        <div style={{marginLeft: 180, fontSize: '4.5vw'}}>거래 선택</div>
+                        <FontAwesomeIcon icon={faTimes} style={{color: "#000", fontSize: '4vw', marginRight:20}} onClick={() => setModalselection2(false)}/>
                     </ModalHeader>
-                </ModalContent>    
-            </Modal>}
+                    <div style={{color: '#000', fontSize: '2.93vw'}}>
+                        결제
+                    </div>
+                </ModalContent2>
+            </Modal2>}
         </div>
     )
 }
@@ -466,6 +469,25 @@ const Modal = styled.div`
     left: 0;
     bottom: 0;
 `
+const Modal2 = styled.div`
+    width: 100%;
+    height: 50%;
+    position: fixed;
+    z-index: 1000;
+`
+const ModalContent2 = styled.div`
+    height: 80%;
+    width: 95%;
+    padding: 0.7vh 2.2vw;
+    border-radius:5px;
+    position: fixed;
+    z-index: 1000;
+    font-size: 13px;
+    background-color: #ffffff;
+    transfrom: translate(-50%,-50%);
+    overflow-y: auto;
+`
+
 const ModalBackground = styled.div`
     position: fixed;
     z-index: 1000;
