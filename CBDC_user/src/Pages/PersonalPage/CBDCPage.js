@@ -155,7 +155,7 @@ const CBDCPage = ({userInfo}) => {
                 <ModalContent>
                     <ModalHeader>
                         <div>기간별 잔액 확인하기</div>
-                        <FontAwesomeIcon icon={faTimes} style={{color: "#000", fontSize: '4vw'}} onClick={()=>setModalshow(false)}/>
+                        <FontAwesomeIcon icon={faTimes} style={{color: "#000", fontSize: '4vw', cursor: 'pointer'}} onClick={()=>setModalshow(false)}/>
                     </ModalHeader>
                     <div style={{color: '#000', fontSize: '2.93vw'}}>
                         재난지원금(감소형)의 사용가능잔액은
@@ -292,7 +292,7 @@ const CBDCPage = ({userInfo}) => {
                 <ModalContent2>
                 <ModalHeader>
                         <div style={{marginLeft: 180, fontSize: '4.5vw'}}>거래 선택</div>
-                        <FontAwesomeIcon icon={faTimes} style={{color: "#000", fontSize: '4vw', marginRight:20}} onClick={() => setModalextinct(false)}/>
+                        <FontAwesomeIcon icon={faTimes} style={{color: "#000", fontSize: '4vw', marginRight:20, cursor: 'pointer'}} onClick={() => setModalcommon(false)}/>
                     </ModalHeader>
                     <Mline/>
                     <MButton onClick={() => history.push('/personal/Exchange')}>교환</MButton>
@@ -314,7 +314,7 @@ const CBDCPage = ({userInfo}) => {
                 <ModalContent2>
                     <ModalHeader>
                         <div style={{marginLeft: 180, fontSize: '4.5vw'}}>거래 선택</div>
-                        <FontAwesomeIcon icon={faTimes} style={{color: "#000", fontSize: '4vw', marginRight:20}} onClick={() => setModalextinct(false)}/>
+                        <FontAwesomeIcon icon={faTimes} style={{color: "#000", fontSize: '4vw', marginRight:20, cursor: 'pointer'}} onClick={() => setModalextinct(false)}/>
                     </ModalHeader>
                     <Mline/>
                     <MButton
@@ -332,7 +332,7 @@ const CBDCPage = ({userInfo}) => {
                 <ModalContent2>
                     <ModalHeader>
                         <div style={{marginLeft: 180, fontSize: '4.5vw'}}>거래 선택</div>
-                        <FontAwesomeIcon icon={faTimes} style={{color: "#000", fontSize: '4vw', marginRight:20}} onClick={() => setModalextinct(false)}/>
+                        <FontAwesomeIcon icon={faTimes} style={{color: "#000", fontSize: '4vw', marginRight:20, cursor: 'pointer'}} onClick={() => setModalreduce(false)}/>
                     </ModalHeader>
                     <Mline/>
                     <MButton
