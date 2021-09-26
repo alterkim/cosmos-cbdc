@@ -122,7 +122,7 @@ const ACBDCDealPage = ({affiliateInfo}) => {
                                 )}
                                 
                             </ListItemLeft>
-                            {tx.payment_cancel_progress == "결제취소요청"?(
+                            {/* {tx.payment_cancel_progress == "결제취소요청"?(
                                 <>
                                     <CancelButton style={{
                                     marginRight:'4vw'
@@ -136,7 +136,7 @@ const ACBDCDealPage = ({affiliateInfo}) => {
                                 </>
                             ):(
                                 <></>
-                            )}
+                            )} */}
                             <ListItemRight style={{textAlign: 'right'}}>    
                                 {
                                     tx.transaction_type == "결제취소"?(
