@@ -69,36 +69,6 @@ const CBDCPage = ({userInfo}) => {
                             {userInfo.common_cbdc_balance&&userInfo.common_cbdc_balance.toLocaleString()} <span style={{fontSize: '4vw'}}>D-KRW</span>
                             </div>
                         </div>
-                        {/* <div style={{display: 'flex', alignItems: 'center', marginTop: 10}}>
-                            <Button1 
-                                style={{marginLeft: 'auto'}}
-                                onClick={() => history.push('/personal/Exchange')}
-                            >교환</Button1>
-                            <Button1 
-                                style={{marginLeft: 5}}
-                                onClick={() => history.push('/personal/transfer')}
-                            >
-                                이체
-                            </Button1>
-                            <Button1 
-                                style={{marginLeft: 5}}
-                                onClick={() => history.push({
-                                    pathname :'/personal/payment'
-                                    ,state : {cbdcType : "common"}
-                                    })}
-                            >
-                                결제
-                            </Button1>
-                            <Button1 
-                                style={{
-                                    marginLeft: 5, 
-                                    marginRight: 20
-                                }}
-                                onClick={() => history.push('/personal/deal/cbdc/common')}
-                            >
-                                거래내역
-                            </Button1>
-                        </div> */}
                         <div style={{display: 'flex', alignItems: 'center', marginTop:10}}>
                             <Button1
                                 style={{marginLeft:'auto'}}
@@ -123,26 +93,6 @@ const CBDCPage = ({userInfo}) => {
                             {userInfo.extinct_cbdc_balance&&userInfo.extinct_cbdc_balance.toLocaleString()}  <span style={{fontSize: '4vw'}}>D-KRW</span>
                             </div>
                         </div>
-                        {/* <div style={{display: 'flex', alignItems: 'center', marginTop: 10}}>
-                            <Button1 
-                                style={{marginLeft: 'auto'}}
-                                onClick={() => history.push({
-                                    pathname :'/personal/payment'
-                                    ,state : {cbdcType : "extinct"}
-                                    })}
-                            >
-                                결제
-                            </Button1>
-                            <Button1 
-                                style={{
-                                    marginLeft: 5, 
-                                    marginRight: 20
-                                }}
-                                onClick={() => history.push('/personal/deal/cbdc/disaster/Extinct')}
-                            >
-                                거래내역
-                            </Button1>
-                        </div> */}
                         <div style={{display:'flex', alignItems: 'center', marginTop:10}}>
                             <Button1
                                 style={{marginLeft:'auto'}}
@@ -179,16 +129,6 @@ const CBDCPage = ({userInfo}) => {
                                 기간별
                                 <br/> 잔액 확인
                             </Button2>
-                            
-                            {/* <Button2 
-                                style={{marginLeft: 5}}
-                                onClick={() => history.push({
-                                    pathname :'/personal/payment'
-                                    ,state : {cbdcType : "reduce"}
-                                    })}
-                            >
-                                결제
-                            </Button2> */}
                             <Button2 
                                 style={{marginLeft: 5}}
                                 onClick={() => setModalreduce(true)}
