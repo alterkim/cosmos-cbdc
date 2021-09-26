@@ -102,7 +102,7 @@ function App() {
                             
                             <Route path="/affiliate/deal/save" render ={()=><ASaveDealPage affiliateInfo={affiliateInfo}/>} />
                             <Route path="/affiliate/deal/cbdc" render ={()=><ACBDCDealPage affiliateInfo={affiliateInfo}/>}  />
-                            <Route path="/affiliate/deal/cancel" render ={()=><ACancelPage userInfo={userInfo} affiliateInfo={affiliateInfo}/>} />
+                            <Route path="/affiliate/cancel" render ={()=><ACancelPage userInfo={userInfo} affiliateInfo={affiliateInfo}/>} />
                             <Route path="/affiliate/save" render ={()=><ASaveAccountPage affiliateInfo={affiliateInfo}/>}  />
                             <Route path="/affiliate/cbdc" render ={()=><ACBDCPage affiliateInfo={affiliateInfo}/>}/>
                             <Route path="/affiliate/exchange" render ={()=><AExchangePage affiliateInfo={affiliateInfo}/>} />
