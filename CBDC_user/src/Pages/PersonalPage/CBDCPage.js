@@ -8,8 +8,9 @@ import { dbService } from "../../fbase";
 
 const CBDCPage = ({userInfo}) => {
     const [modalshow, setModalshow] = useState(false)
-    const [modalselection1, setModalselection1] = useState(false)
-    const [modalselection2, setModalselection2] = useState(false)
+    const [modalcommon, setModalcommon] = useState(false)
+    const [modalextinct, setModalextinct] = useState(false)
+    const [modalreduce, setModalreduce] = useState(false)
     const totalCBDC = userInfo.common_cbdc_balance + userInfo.reduce_cbdc_balance + userInfo.extinct_cbdc_balance
     const [extinctValidity,setExtinctValidity] = useState("")
     const [reduceValidity,setReduceValidity] = useState("")
@@ -101,7 +102,7 @@ const CBDCPage = ({userInfo}) => {
                         <div style={{display: 'flex', alignItems: 'center', marginTop:10}}>
                             <Button1
                                 style={{marginLeft:'auto'}}
-                                onClick={() => setModalselection1(true)}
+                                onClick={() => setModalcommon(true)}
                             >거래선택
                             </Button1>
                             <Button1
@@ -145,7 +146,7 @@ const CBDCPage = ({userInfo}) => {
                         <div style={{display:'flex', alignItems: 'center', marginTop:10}}>
                             <Button1
                                 style={{marginLeft:'auto'}}
-                                onClick={() => setModalselection2(true)}
+                                onClick={() => setModalextinct(true)}
                             >거래선택
                             </Button1>
                             <Button1
@@ -190,7 +191,7 @@ const CBDCPage = ({userInfo}) => {
                             </Button2> */}
                             <Button2 
                                 style={{marginLeft: 5}}
-                                onClick={() => setModalselection2(true)}
+                                onClick={() => setModalreduce(true)}
                             >
                                 거래선택
                             </Button2>
@@ -346,24 +347,64 @@ const CBDCPage = ({userInfo}) => {
                     </div>                    
                 </ModalContent>
             </Modal>}
-            {modalselection1 && <Modal>
-                <ModalBackground onClick={() => setModalselection1(false)}></ModalBackground>
-                <ModalContent>
-
-                </ModalContent>
+            {modalcommon && <Modal>
+                <ModalBackground onClick={() => setModalcommon(false)}></ModalBackground>
+                <ModalContent2>
+                <ModalHeader>
+                        <div style={{marginLeft: 180, fontSize: '4.5vw'}}>거래 선택</div>
+                        <FontAwesomeIcon icon={faTimes} style={{color: "#000", fontSize: '4vw', marginRight:20}} onClick={() => setModalextinct(false)}/>
+                    </ModalHeader>
+                    <Mline/>
+                    <MButton onClick={() => history.push('/personal/Exchange')}>교환</MButton>
+                    <Mline/>
+                    <MButton onClick={() => history.push('/personal/transfer')}>이체</MButton>
+                    <Mline/>
+                    <MButton
+                        onClick={() => history.push({
+                            pathname :'/personal/payment'
+                            ,state : {cbdcType : "common"}
+                            })}>결제</MButton>
+                    <Mline/>
+                    <MButton>결제취소요청</MButton>
+                    <Mline/>
+                </ModalContent2>
             </Modal>}
-            {modalselection2 && <Modal2>
-                <ModalBackground onClick={() => setModalselection2(false)}></ModalBackground>
-                <ModalContent2 >
+            {modalextinct && <Modal2>
+                <ModalBackground onClick={() => setModalextinct(false)}></ModalBackground>
+                <ModalContent2>
                     <ModalHeader>
                         <div style={{marginLeft: 180, fontSize: '4.5vw'}}>거래 선택</div>
-                        <FontAwesomeIcon icon={faTimes} style={{color: "#000", fontSize: '4vw', marginRight:20}} onClick={() => setModalselection2(false)}/>
+                        <FontAwesomeIcon icon={faTimes} style={{color: "#000", fontSize: '4vw', marginRight:20}} onClick={() => setModalextinct(false)}/>
                     </ModalHeader>
-                    <div style={{color: '#000', fontSize: '2.93vw'}}>
-                        결제
-                    </div>
+                    <Mline/>
+                    <MButton
+                        onClick={() => history.push({
+                            pathname :'/personal/payment'
+                            ,state : {cbdcType : "extinct"}
+                            })}>결제</MButton>
+                    <Mline/>
+                    <MButton>결제취소요청</MButton>
+                    <Mline/>
                 </ModalContent2>
             </Modal2>}
+            {modalreduce && <Modal2>
+                <ModalBackground onClick={() => setModalreduce(false)}></ModalBackground>
+                <ModalContent2>
+                    <ModalHeader>
+                        <div style={{marginLeft: 180, fontSize: '4.5vw'}}>거래 선택</div>
+                        <FontAwesomeIcon icon={faTimes} style={{color: "#000", fontSize: '4vw', marginRight:20}} onClick={() => setModalextinct(false)}/>
+                    </ModalHeader>
+                    <Mline/>
+                    <MButton
+                        onClick={() => history.push({
+                            pathname :'/personal/payment'
+                            ,state : {cbdcType : "reduce"}
+                            })}>결제</MButton>
+                    <Mline/>
+                    <MButton>결제취소요청</MButton>
+                    <Mline/>
+                </ModalContent2>
+                </Modal2>}
         </div>
     )
 }
@@ -476,9 +517,9 @@ const Modal2 = styled.div`
     z-index: 1000;
 `
 const ModalContent2 = styled.div`
+    top: 67%;
     height: 80%;
     width: 95%;
-    padding: 0.7vh 2.2vw;
     border-radius:5px;
     position: fixed;
     z-index: 1000;
@@ -486,6 +527,7 @@ const ModalContent2 = styled.div`
     background-color: #ffffff;
     transfrom: translate(-50%,-50%);
     overflow-y: auto;
+    margin-left: 10px;
 `
 
 const ModalBackground = styled.div`
@@ -533,7 +575,6 @@ const Value = styled.div`
 const Xline = styled.div`
     height: 1px;
     width: 100%;
-    margin-left: 45px;
     background-color: #888888;
 `
 const Xlabel = styled.div`
@@ -542,4 +583,18 @@ const Xlabel = styled.div`
     margin-top: 3px;
     font-size: 2.93vw;
 `
-
+const MButton = styled.div`
+    width: 100%;
+    color: #000000;
+    height: 2vh;
+    background-color: #ffffff;
+    font-size: 3.5vw;
+    outline: none;
+    padding: 3.5vw 2.5vh;
+    cursor: pointer;
+`
+const Mline = styled.div`
+    height: 1.4px;
+    width: 110%;
+    background-color: #808080;
+`
