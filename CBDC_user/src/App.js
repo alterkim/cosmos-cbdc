@@ -88,7 +88,7 @@ function App() {
                             <Route exact path="/" component={HomePage} />
                             <Route path="/personal/deal/save" render ={()=><SaveDealPage userInfo={userInfo}/>} />
                             <Route path="/personal/deal/cbdc/common" render ={()=><CBDCDealCommonPage userInfo={userInfo}/>}/>
-                            <Route path="/personal/deal/cbdc/cancel" render ={()=><CancelPage userInfo={userInfo}/>} />
+                            <Route path="/personal/cancel" render ={()=><CancelPage userInfo={userInfo}/>} />
                             <Route path="/personal/deal/cbdc/disaster/Extinct" render ={()=><CBDCDealDisasterExtinctPage userInfo={userInfo}/>} />
                             <Route path="/personal/deal/cbdc/disaster/Reduction" render ={()=><CBDCDealDisasterReductionPage userInfo={userInfo}/>} />
                             <Route path="/personal/save" render ={()=><SaveAccountPage userInfo={userInfo}/>} />

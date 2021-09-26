@@ -305,7 +305,10 @@ const CBDCPage = ({userInfo}) => {
                             ,state : {cbdcType : "common"}
                             })}>결제</MButton>
                     <Mline/>
-                    <MButton>결제취소요청</MButton>
+                    <MButton
+                        onClick={() => history.push({
+                            pathname: '/personal/cancel'
+                        })}>결제취소요청</MButton>
                     <Mline/>
                 </ModalContent2>
             </Modal>}
