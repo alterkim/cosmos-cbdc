@@ -225,7 +225,7 @@ const ACancelPage = ({userInfo, affiliateInfo}) => {
                                             setCancelTx(tx)
                                             console.log(canceltx.tx_id)
                                         }}>승인</ApproveButton>
-                                    <RefuseButton>거절</RefuseButton>
+                                    <RefuseButton onClick={onClickRefuse}>거절</RefuseButton>
                                 </div>
                             </ListItem>
                         ))
@@ -290,7 +290,7 @@ const ACancelPage = ({userInfo, affiliateInfo}) => {
                     </CardChild2>
                     <div style={{textAlign: 'center', marginTop: 20, marginBottom: 20, fontSize: '3vw'}}>승인하시겠습니까?</div>
                     <div style={{display: 'flex', position: 'relative'}}>
-                        <CancelButton onClick={onClickRefuse}>취소</CancelButton>
+                        <CancelButton onClick={() => setModalshow(false)}>취소</CancelButton>
                         <PaymentCancelButton2 onClick={onClickPaymentCancel}>승인</PaymentCancelButton2>
                     </div>
                 </ModalContent>
@@ -566,7 +566,7 @@ const CloseButton = styled.button`
     background-color: #00b2a7;
     font-size: 3.73vw;
     font-weight: 600;
-    width: 83vw;
+    width: 100%;
     height: 10vw;
     text-align: center;
     cursor: pointer;

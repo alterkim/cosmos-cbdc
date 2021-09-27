@@ -322,7 +322,7 @@ const CloseButton = styled.button`
     background-color: #00b2a7;
     font-size: 3.73vw;
     font-weight: 600;
-    width: 83vw;
+    width: 100%;
     height: 10vw;
     text-align: center;
     cursor: pointer;
