@@ -120,7 +120,7 @@ const ACancelPage = ({userInfo, affiliateInfo}) => {
                     ["sender_account"] : canceltx.sender_account,
                     ["sender_name"] : canceltx.sender_name,
                     ["sender_wallet"] : canceltx.sender_wallet,
-                    ["transaction_date"] : canceltx.transaction_date,
+                    ["transaction_date"] : GetDatetime(),
                     ["transaction_type"] : "결제취소",
                     ["tx_id"] : "TX2021-" + randomNum,
                     ["cancel_complete_date"] : GetDatetime2()
@@ -130,17 +130,17 @@ const ACancelPage = ({userInfo, affiliateInfo}) => {
                 .doc(approveSnapshot.docs[0].id)
                 .update({payment_cancel_progress: "결제취소승인"})
             
-                var user_cbdc_balance = {}
-                user_cbdc_balance["common_cbdc_balance"] = firebaseInstance.firestore.FieldValue.increment(canceltx.amount)
-                await dbService
-                    .doc(`UserInfo/${userInfo.uid}`)
-                    .update(user_cbdc_balance)
+            var user_cbdc_balance = {}
+            user_cbdc_balance["common_cbdc_balance"] = firebaseInstance.firestore.FieldValue.increment(canceltx.amount)
+            await dbService
+                .doc(`UserInfo/${userInfo.uid}`)
+                .update(user_cbdc_balance)
                                 
-                var affiliate_cbdc_balance ={}
-                affiliate_cbdc_balance["common_cbdc_balance"] = firebaseInstance.firestore.FieldValue.increment(-canceltx.amount)
-                await dbService
-                    .doc(`UserInfo/${affiliateInfo.uid}`)
-                    .update(affiliate_cbdc_balance)
+            var affiliate_cbdc_balance ={}
+            affiliate_cbdc_balance["common_cbdc_balance"] = firebaseInstance.firestore.FieldValue.increment(-canceltx.amount)
+            await dbService
+                .doc(`UserInfo/${affiliateInfo.uid}`)
+                .update(affiliate_cbdc_balance)
 
         } catch(error) {
             console.log(error)
@@ -223,6 +223,7 @@ const ACancelPage = ({userInfo, affiliateInfo}) => {
                                         onClick={() => {
                                             setModalshow(true)
                                             setCancelTx(tx)
+                                            console.log(canceltx.tx_id)
                                         }}>승인</ApproveButton>
                                     <RefuseButton>거절</RefuseButton>
                                 </div>
@@ -383,6 +384,7 @@ const RefuseButton = styled.button`
     border-radius: 2vw;
     border: none;
     text-align: center;
+    cursor: pointer;
 `
 const ApproveButton = styled.button`
     color: #ffffff;
