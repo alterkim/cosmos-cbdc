@@ -1,4 +1,4 @@
-import { faChevronLeft, faHome, faSearch, faCog, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft, faHome, faSearch, faCog, faChevronUp, faChevronDown, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import React, {useEffect, useState} from "react"
 import styled from "styled-components"
@@ -9,178 +9,14 @@ import GetDatetime from '../../_helpers/GetDatetime'
 import TokenTransfer from '../../_helpers/TokenTransfer'
 import { ADDRESS_AFILIATE, ADDRESS_ESCROW, ADDRESS_USER_1 } from '../../constants/Accounts'
 
-// const ACancelPage = ({userInfo, affiliateInfo}) => {
-//     const [txs, setTxs] = useState([])
-//     const txId = useLocation().state.txId
-//     const getUserTxHistory = async() => {
-//         try {
-//             const userQuerySnapshot = await dbService
-//                 .collection(`TxInfo`)
-//                 .where('tx_id', '==', txId)
-//                 .get()
-            
-//             const txsArray = userQuerySnapshot.docs.map((doc=>({
-//                 ...doc.data()
-//             })))
-//             setTxs(txsArray.filter(tx => tx.cbdc_type === "common" 
-//                 && tx.sender_account ===userInfo.account))
-//         } catch(error) {
-//             console.log(error)
-//         }
-//     }
-
-//     useEffect(()=> {
-//         getUserTxHistory()
-//     },[userInfo,setTxs])
-
-//     const onClickRefuse = async(e) => {
-//         try {
-//             const refuseSnapshot = await dbService
-//                 .collection(`TxInfo`)
-//                 .where('tx_id', '==', txId)
-//                 .get()
-            
-//             await dbService.collection(`TxInfo`)
-//                 .doc(refuseSnapshot.docs[0].id)
-//                 .update({payment_cancel_progress : "결제취소거부"})
-//         } catch(error) {
-//             console.log(error)
-//         }
-//         history.push('/affiliate/deal/cbdc')
-//     }
-
-//     const onClickApprove = async(e) => {
-//         try {
-//             // Check time interval
-//             const timeInterval = Date.parse(GetDatetime()) - Date.parse(e.target.value)
-//             const refuseSnapshot = await dbService
-//                 .collection(`TxInfo`)
-//                 .where('tx_id', '==', txId)
-//                 .get()
-
-//             var amount, cbdc_type, receiver_account, receiver_name, receiver_wallet, sender_account, sender_name, sender_wallet;
-//             txs.map((tx,index) => {
-//                 amount = tx.amount
-//                 cbdc_type = tx.cbdc_type
-//                 receiver_account = tx.receiver_account
-//                 receiver_name = tx.receiver_name
-//                 receiver_wallet = tx.receiver_wallet
-//                 sender_account = tx.sender_account
-//                 sender_name = tx.sender_name
-//                 sender_wallet = tx.sender_wallet
-//             })
-//             var randomNum = (Math.floor(Math.random()*(10000-1)) + 1)+'';
-//             while(randomNum.length < 5){
-//                 randomNum = '0'+randomNum
-//             }
-            
-
-//             if (timeInterval < 259200000) {
-//                 // Before 3 days
-//                 TokenTransfer(amount, ADDRESS_ESCROW, ADDRESS_USER_1)
-//             } else {
-//                 // After 3 days
-//                 TokenTransfer(amount, ADDRESS_AFILIATE, ADDRESS_USER_1)
-//             }
-//             await dbService.collection(`TxInfo`)
-//                 .add({
-//                     ["amount"] : amount,
-//                     ["cbdc_type"] : cbdc_type,
-//                     ["receiver_account"] : receiver_account,
-//                     ["receiver_name"] : receiver_name,
-//                     ["receiver_wallet"] :receiver_wallet,
-//                     ["sender_account"] : sender_account,
-//                     ["sender_name"] : sender_name,
-//                     ["sender_wallet"] : sender_wallet,
-//                     ["transaction_date"] : GetDatetime(),
-//                     ["transaction_type"] : "결제취소",
-//                     ["tx_id"] : "TX2021-" + randomNum
-//                 })
-
-//             await dbService.collection(`TxInfo`)
-//                 .doc(refuseSnapshot.docs[0].id)
-//                 .update({payment_cancel_progress : "결제취소승인"})
-            
-//             var user_cbdc_balance = {}
-//             user_cbdc_balance["common_cbdc_balance"] = firebaseInstance.firestore.FieldValue.increment(amount)
-//             await dbService
-//                 .doc(`UserInfo/${userInfo.uid}`)
-//                 .update(user_cbdc_balance)
-                
-//             var affiliate_cbdc_balance ={}
-//             affiliate_cbdc_balance["common_cbdc_balance"] = firebaseInstance.firestore.FieldValue.increment(-amount)
-//             await dbService
-//                 .doc(`UserInfo/${affiliateInfo.uid}`)
-//                 .update(affiliate_cbdc_balance)
-//         } catch(error) {
-//             console.log(error)
-//         }
-//         history.push('/affiliate/deal/cbdc')
-//     }
-
-//     return(
-//         <div>
-//             <Header>
-//                 <FontAwesomeIcon
-//                     icon={faChevronLeft}
-//                     style={{color: "#000", fontSize: '4vw', marginLeft: '5vw', cursor:'pointer'}}
-//                     onClick={()=> history.push('/affiliate/deal/cbdc')}
-//                 />
-//                 <HeaderText>결제취소 요청</HeaderText>
-//                 <div style={{display: 'flex', alignItems: 'center'}}>
-//                     <FontAwesomeIcon icon={faHome} style={{color: "#000", fontSize: '4vw', marginRight: '3vw'}}/>
-//                     <Dbutton
-//                         style={{
-//                             marginRight: '4vw'
-//                         }}
-//                         onClick={() => history.push('/personal/CBDC')}
-//                     >
-//                         D
-//                     </Dbutton>
-//                 </div>
-//             </Header>
-//             <Body>
-//                 <CardChild>
-//                     <div style={{display: 'flex', flexDirection: 'column', padding: '0 4vw'}}>
-//                         <div style={{marginTop: '2vw', color: '#000', fontSize:'3.73vw'}}>
-//                         <img 
-//                             src={"/images/hana_logo.png"} 
-//                             alt="logo"
-//                             style={{
-//                                 height:20,
-//                                 marginRight:10
-//                             }}
-//                         />거래내역-상세</div>
-//                         {txs.map((tx,index)=>(
-//                             <>
-//                             <span style={{marginLeft:20, marginBottom:5, marginTop:5}}>결제자: {tx.sender_name}</span>
-//                             <span style={{marginLeft:20, marginBottom:5}}>결제처: {tx.receiver_name}</span>
-//                             <span style={{marginLeft:20, marginBottom:5}}>결제시간: {tx.transaction_date}</span>
-//                             <div style={{marginTop: '1vw', display: 'flex', justifyContent: 'flex-end', position: 'relative'}}>
-//                                 <div style={{fontSize: '6vw'}}>{tx.amount&&tx.amount.toLocaleString()} <span style={{fontSize: '4vw'}}>D-KRW</span></div>
-//                             </div>
-//                             </>
-//                         ))}
-//                     </div>
-//                 </CardChild>
-//                 <div className="d-flex justify-content-center">
-//                     {txs.map((tx,index)=>(
-//                         <>
-//                             <RefuseButton style={{marginRight:20, marginTop:20, marginBottom: 20}} onClick={onClickRefuse}>거절</RefuseButton>
-//                             <ApproveButton  value={tx.transaction_date} onClick={onClickApprove}>승인</ApproveButton>
-//                         </>
-//                     ))}
-//                 </div>
-//             </Body>
-//         </div>
-//     )
-// }
-
 const ACancelPage = ({userInfo, affiliateInfo}) => {
     const [state, setState] = useState(false)
     const [state2, setState2] = useState(false)
     const [canceltxs, setCancelTxs] = useState([])
     const [completetxs, setCompleteTxs] = useState([])
+    const [modalshow, setModalshow] = useState(false)
+    const [modalcomplete, setModalcomplete] = useState(false)
+    const [canceltx, setCancelTx] = useState({})
 
     const getCancelHistory = async(e) => {
         try {
@@ -229,6 +65,78 @@ const ACancelPage = ({userInfo, affiliateInfo}) => {
     useEffect(() => {
         getCancelHistory()
     }, [userInfo, setCancelTxs])
+
+    const GetDatetime2 = () =>{
+        var now = new Date()
+        var datetime = now.getUTCFullYear().toString() + "/" +
+            (now.getUTCMonth() + 1).toString() +
+            "/" + now.getUTCDate()
+        return datetime
+    }
+
+    const onClickPaymentCancel = async(e) => {
+        try {
+            // Check time interval
+            const timeInterval = Date.parse(GetDatetime()) - Date.parse(canceltx.transaction_date)
+            const approveSnapshot = await dbService
+                .collection(`TxInfo`)
+                .where("tx_id", "==", canceltx.tx_id)
+                .get()
+
+            if (timeInterval < 259200000) {
+                // Before 3 days
+                TokenTransfer(canceltx.amount, ADDRESS_ESCROW, ADDRESS_USER_1)
+            } else {
+                // After 3 days
+                TokenTransfer(canceltx.amount, ADDRESS_AFILIATE, ADDRESS_USER_1)
+            }
+            var randomNum = (Math.floor(Math.random()*(10000-1)) + 1)+'';
+            while(randomNum.length < 5){
+                randomNum = '0'+randomNum
+            }
+            await dbService.collection(`TxInfo`)
+                .add({
+                    ["amount"] : canceltx.amount,
+                    ["cbdc_type"] : canceltx.cbdc_type,
+                    ["receiver_account"] : canceltx.receiver_account,
+                    ["receiver_name"] : canceltx.receiver_name,
+                    ["receiver_wallet"] :canceltx.receiver_wallet,
+                    ["sender_account"] : canceltx.sender_account,
+                    ["sender_name"] : canceltx.sender_name,
+                    ["sender_wallet"] : canceltx.sender_wallet,
+                    ["transaction_date"] : canceltx.transaction_date,
+                    ["transaction_type"] : "결제취소",
+                    ["tx_id"] : "TX2021-" + randomNum,
+                    ["cancel_complete_date"] : GetDatetime2()
+                })
+            
+            await dbService.collection(`TxInfo`)
+                .doc(approveSnapshot.docs[0].id)
+                .update({payment_cancel_progress: "결제취소승인"})
+            
+                var user_cbdc_balance = {}
+                user_cbdc_balance["common_cbdc_balance"] = firebaseInstance.firestore.FieldValue.increment(canceltx.amount)
+                await dbService
+                    .doc(`UserInfo/${userInfo.uid}`)
+                    .update(user_cbdc_balance)
+                                
+                var affiliate_cbdc_balance ={}
+                affiliate_cbdc_balance["common_cbdc_balance"] = firebaseInstance.firestore.FieldValue.increment(-canceltx.amount)
+                await dbService
+                    .doc(`UserInfo/${affiliateInfo.uid}`)
+                    .update(affiliate_cbdc_balance)
+
+        } catch(error) {
+            console.log(error)
+        }
+        setModalshow(false)
+        setModalcomplete(true)
+    }
+
+    const onClickClose = async(e) => {
+        setModalcomplete(false)
+        window.location.reload()
+    }
 
     return (
         <div>
@@ -294,8 +202,13 @@ const ACancelPage = ({userInfo, affiliateInfo}) => {
                                 <ListItemRight style={{textAligin: 'right'}}>
                                     {tx.amount.toLocaleString()} D-KRW
                                 </ListItemRight>
-                                <div style={{}}>
-                                    
+                                <div style={{display: 'flex', alignContent: 'space-between', flexDirection: 'column'}}>
+                                    <ApproveButton style={{marginBottom: 10}}
+                                        onClick={() => {
+                                            setModalshow(true)
+                                            setCancelTx(tx)
+                                        }}>승인</ApproveButton>
+                                    <RefuseButton>거절</RefuseButton>
                                 </div>
                             </ListItem>
                         ))
@@ -322,14 +235,61 @@ const ACancelPage = ({userInfo, affiliateInfo}) => {
                                 <ListItemRight style={{textAligin: 'right'}}>
                                     {tx.amount.toLocaleString()} D-KRW
                                 </ListItemRight>
-                                <div style={{}}>
-                                    
+                                <div style={{display: 'flex'}}>
+                                    <CompleteButton>취소일시<br/>{tx.cancel_complete_date}</CompleteButton>                                    
                                 </div>
                             </ListItem>
                         ))
                     }
                 </ListBody>}
             </List>
+            {modalshow && <Modal>
+                <ModalBackground onClick={() => setModalshow(false)}></ModalBackground>
+                <ModalContent>
+                    <ModalHeader>
+                        <div style={{marginLeft: 110, fontSize: '4.5vw'}}>결제 취소 승인</div>
+                        <FontAwesomeIcon icon={faTimes} style={{color: "#000", fontSize: '4vw', marginRight:20, cursor: 'pointer'}} onClick={() => setModalshow(false)}/>
+                    </ModalHeader>
+                    <Mline/>
+                    <CardChild2>
+                        <div style={{display: 'flex', flexDirection: 'column', padding: '0.4vw', marginLeft:10}}>
+                            <div style={{marginTop: '1vw', color: '#000', fontSize: '3.4vw'}}>
+                                <img
+                                    src={"/images/hana_logo.png"}
+                                    alt="logo"
+                                    style={{
+                                        height: 18,
+                                        marginRight:9
+                                    }}
+                                />거래내역-상세
+                            </div>
+                            <span style={{marginLeft:20, marginBottom:4, marginTop:6}}>결제자: {canceltx.sender_name}</span>
+                            <span style={{marginLeft:20, marginBottom:4, marginTop:3}}>결제처: {canceltx.receiver_name}</span>
+                            <span style={{marginLeft:20, marginBottom:4, marginTop:3}}>결제시간: {canceltx.transaction_date}</span>
+                            <div style={{marginTop: '1vw', display: 'flex', justifyContent: 'flex-end', position: 'relative', marginRight: 10}}>
+                                <div style={{fontSize: '5vw'}}>{canceltx.amount&&canceltx.amount.toLocaleString()} <span style={{fontSize: '3vw'}}>D-KRW</span></div>
+                            </div>
+                        </div>
+                    </CardChild2>
+                    <div style={{textAlign: 'center', marginTop: 20, marginBottom: 20, fontSize: '3vw'}}>승인하시겠습니까?</div>
+                    <div style={{display: 'flex', position: 'relative'}}>
+                        <CancelButton>취소</CancelButton>
+                        <PaymentCancelButton2 onClick={onClickPaymentCancel}>승인</PaymentCancelButton2>
+                    </div>
+                </ModalContent>
+            </Modal>}
+            {modalcomplete && <Modal>
+                <ModalBackground></ModalBackground>
+                <ModalContent>
+                    <ModalHeader>
+                        <div style={{marginLeft: 110, fontSize: '4.5vw'}}>결제 취소 승인</div>
+                        <FontAwesomeIcon icon={faTimes} style={{color: "#000", fontSize: '4vw', marginRight:20, cursor: 'pointer'}} onClick={() => setModalshow(false)}/>
+                    </ModalHeader>
+                    <Mline/>
+                    <div style={{marginTop: 50, marginBottom: 80, textAlign: 'center', fontSize: '16px'}}>결제 취소가 완료되었습니다.</div>
+                    <CloseButton onClick={onClickClose}>닫기</CloseButton>
+                </ModalContent>
+            </Modal>}
         </div>
     )
 }
@@ -383,9 +343,23 @@ const CardChild = styled.div`
     flex-direction: column;
     justify-content: space-between;
 `
+const CardChild2 = styled.div`
+    background-color: #f8f8f8;
+    height: 12.31vh;
+    padding-top: 2vh;
+    padding-bottom: 3vh;
+    border-top: 1px solid #dcdcdc;
+    box-shadow: 1px 2px 6px 1px #bfcfea;
+    border-radius: 4vw;
+    margin-top: 4vw;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+`
 const RefuseButton = styled.button`
-    color: #adacac;
-    background-color: #ffffff;
+    color: #202020;
+    background-color: #e0e0e0;
     font-size: 3.73vw;
     font-weight: 600;
     width: 25vw;
@@ -401,6 +375,18 @@ const ApproveButton = styled.button`
     font-weight: 600;
     width: 25vw;
     height: 8vw;
+    border-radius: 2vw;
+    border: none;
+    text-align: center;
+    cursor: pointer;
+`
+const CompleteButton = styled.button`
+    color: #202020;
+    background-color: #e0e0e0;
+    font-size: 3.4vw;
+    font-weight: 400;
+    width: 25vw;
+    height: 12vw;
     border-radius: 2vw;
     border: none;
     text-align: center;
@@ -489,4 +475,82 @@ const Content = styled.div`
     color: #212121;
     font-size: 3.8vw;
     font-weight: 600;
+`
+const Modal = styled.div`
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+`
+const ModalBackground = styled.div`
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: #000000;
+    opacity: 0.4;
+`
+const ModalContent = styled.div`
+    position: fixed;
+    z-index: 1000;
+    top: 20vh;
+    right: 5vw;
+    left: 5vw;
+    padding: 0.7vh 3.7vw;
+    font-size: 13px;
+    border-radius: 5px;
+    background-color: #ffffff;
+`
+const ModalHeader = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 5.08vh;
+    background-color: #fff;
+    color: #000;
+    font-size: 3.7vw;
+    font-weight: 600;
+    font-weight: 600;
+`
+const Mline = styled.div`
+    height: 1.4px;
+    width: 100%;
+    background-color: #808080;
+`
+const CancelButton = styled.button`
+    color: #000000;
+    background-color: #ffffff;
+    font-size: 3.73vw;
+    font-weight: 600;
+    width: 30vw;
+    height: 10vw;
+    border: 1px solid #dcdcdc;
+    text-align: center;
+    cursor: pointer;
+`
+const PaymentCancelButton2 = styled.button`
+    color: #ffffff;
+    background-color: #00b2a7;
+    font-size: 3.73vw;
+    font-weight: 600;
+    width: 60vw;
+    height: 10vw;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #dcdcdc;
+`
+const CloseButton = styled.button`
+    color: #ffffff;
+    background-color: #00b2a7;
+    font-size: 3.73vw;
+    font-weight: 600;
+    width: 83vw;
+    height: 10vw;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #dcdcdc;
 `
