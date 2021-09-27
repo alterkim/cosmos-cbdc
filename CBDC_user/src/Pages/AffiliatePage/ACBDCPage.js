@@ -30,23 +30,21 @@ const ACBDCPage = ({affiliateInfo}) => {
                     </div>
                 </CardHeader>
                 <CardBody>
-                    <CardChild style={{marginTop: 50}}>
+                    <CardChild>
                         <CardChildName>가맹점 보유금</CardChildName>
                         <span style={{marginLeft:20}}>147-1471-1471</span>
                         <span style={{marginLeft:20}}>(cosmos456zzt)</span>
                         <div style={{display: 'flex' }}>
-                            <div style={{marginLeft: 'auto', marginRight: 30, marginTop: 30, fontWeight: 600, fontSize: '6vw'}}>
+                            <div style={{marginLeft: 'auto', marginRight: 30, marginTop: 10, fontWeight: 600, fontSize: '6vw'}}>
                                 {affiliateInfo.common_cbdc_balance &&affiliateInfo.common_cbdc_balance.toLocaleString()} <span style={{fontSize: '4vw'}}>D-KRW</span>
                             </div>
                         </div>
-                        <div style={{display: 'flex', alignItems: 'center', marginTop:10}}>
+                        <div style={{display: 'flex', justifyContent: 'space-evenly', position: 'relative', marginTop:10}}>
                             <Button1
-                                style={{marginLeft:'auto'}}
                                 onClick={() => setModalcommon(true)}
                             >거래선택
                             </Button1>
                             <Button1
-                                style={{marginLeft: 45, marginRight: 27}}
                                 onClick={() => history.push('/affiliate/deal/cbdc')}
                             >거래내역
                             </Button1>
@@ -101,7 +99,7 @@ const CardHeader = styled.div`
     align-items: center;
     justify-content: space-between;
     width: 90vw;
-    height: 11.88vh;
+    height: 11vh;
     background-color: #00b2a7;
     color: #000;
     font-weight: 600;
@@ -127,9 +125,9 @@ const CardBody = styled.div`
 `
 const CardChild = styled.div`
     width: 90vw;
-    height: 18.31vh;
-    padding-top: 3.5vh;
-    padding-bottom: 3vh;
+    height: 19vh;
+    padding-top: 1vh;
+    padding-bottom: 2.5vh;
     border-top: 1px solid #dcdcdc;
     box-shadow: 1px 2px 6px 1px #bfcfea;
     border-radius: 4vw;
@@ -153,7 +151,7 @@ const Button1 = styled.button`
     background-color: #00b2a7;
     font-size: 3.6vw;
     outline: none;
-    padding: 0.5vw 4.0vh;
+    padding: 0px 35px;
     cursor : pointer;
 `
 const Button2 = styled.button`
