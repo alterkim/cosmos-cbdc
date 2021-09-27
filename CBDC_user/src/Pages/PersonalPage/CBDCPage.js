@@ -14,6 +14,8 @@ const CBDCPage = ({userInfo}) => {
     const totalCBDC = userInfo.common_cbdc_balance + userInfo.reduce_cbdc_balance + userInfo.extinct_cbdc_balance
     const [extinctValidity,setExtinctValidity] = useState("")
     const [reduceValidity,setReduceValidity] = useState("")
+    const [currentClick, setCurrentClick] = useState(null)
+    const [prevClick, setPrevClick] = useState(null)
     const getIssueData = async(e) =>{
         try{
             dbService
@@ -35,6 +37,11 @@ const CBDCPage = ({userInfo}) => {
     useEffect(()=>{
         getIssueData()
     },[])
+
+    const getClick = async(e) => {
+        setCurrentClick(e.target.id)
+        console.log(e.target.id)
+    }
 
     return (
         <div>
@@ -69,15 +76,11 @@ const CBDCPage = ({userInfo}) => {
                             {userInfo.common_cbdc_balance&&userInfo.common_cbdc_balance.toLocaleString()} <span style={{fontSize: '4vw'}}>D-KRW</span>
                             </div>
                         </div>
-                        <div style={{display: 'flex', alignItems: 'center', marginTop:10}}>
-                            <Button1
-                                style={{marginLeft:'auto'}}
-                                onClick={() => setModalcommon(true)}
+                        <div style={{display: 'flex', marginTop:10, justifyContent: 'space-evenly', position: "relative"}}>
+                            <Button1 onClick={() => setModalcommon(true)}
                             >거래선택
                             </Button1>
-                            <Button1
-                                style={{marginLeft: 45, marginRight: 27}}
-                                onClick={() => history.push('/personal/deal/cbdc/common')}
+                            <Button1  onClick={() => history.push('/personal/deal/cbdc/common')}
                             >거래내역
                             </Button1>
                         </div>
@@ -85,22 +88,20 @@ const CBDCPage = ({userInfo}) => {
                     {(userInfo.extinct_cbdc_balance>0)&&
                     <CardChild>
                         <CardChildName>재난지원금(소멸형)</CardChildName>
-                        <div style={{marginLeft: 20, marginTop:5, fontSize: '3vw', color: '#00b2a7'}}>유효기간 {extinctValidity}</div>
+                        <div style={{marginLeft: 20, marginTop:5, fontSize: '2.7vw', color: '#00b2a7'}}>유효기간 {extinctValidity}</div>
                         <span style={{marginLeft:20}}>456-4564-4564</span>
                         <span style={{marginLeft:20}}>(cosmos2y933z)</span>
                         <div style={{display: 'flex' }}>
-                            <div style={{marginLeft: 'auto', marginRight: 30, marginTop: 30, fontWeight: 600, fontSize: '6vw'}}>
+                            <div style={{marginLeft: 'auto', marginRight: 30, marginTop: 10, fontWeight: 600, fontSize: '6vw'}}>
                             {userInfo.extinct_cbdc_balance&&userInfo.extinct_cbdc_balance.toLocaleString()}  <span style={{fontSize: '4vw'}}>D-KRW</span>
                             </div>
                         </div>
-                        <div style={{display:'flex', alignItems: 'center', marginTop:10}}>
+                        <div style={{display:'flex', justifyContent: 'space-evenly', position: 'relative', marginTop:10}}>
                             <Button1
-                                style={{marginLeft:'auto'}}
                                 onClick={() => setModalextinct(true)}
                             >거래선택
                             </Button1>
                             <Button1
-                                style={{marginLeft:45, marginRight: 27}}
                                 onClick={() => history.push('/personal/deal/cbdc/disaster/Extinct')}
                             >거래내역
                             </Button1>
@@ -110,19 +111,18 @@ const CBDCPage = ({userInfo}) => {
                     {(userInfo.reduce_cbdc_balance>0)&&
                     <CardChild>
                         <CardChildName>재난지원금(감소형)</CardChildName>
-                        <div style={{marginLeft: 20, marginTop:5, fontSize: '3vw', color: '#00b2a7'}}>유효기간 {reduceValidity}</div>
+                        <div style={{marginLeft: 20, marginTop:5, fontSize: '2.7vw', color: '#00b2a7'}}>유효기간 {reduceValidity}</div>
                         <span style={{marginLeft:20}}>789-7897-7897</span>
                         <span style={{marginLeft:20}}>(cosmos543z3t)</span>
                         <div style={{display: 'flex' }}>
-                            <div style={{marginLeft: 'auto', marginRight: 30, marginTop: 30, fontWeight: 600, fontSize: '6vw'}}>
+                            <div style={{marginLeft: 'auto', marginRight: 30, marginTop: 10, fontWeight: 600, fontSize: '6vw'}}>
                             {userInfo.reduce_cbdc_balance&&userInfo.reduce_cbdc_balance.toLocaleString()}  <span style={{fontSize: '4vw'}}>D-KRW</span>
                             </div>
                         </div>
-                        <div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginTop: 10}}>
+                        <div style={{display: 'flex', justifyContent: 'space-around', position: 'relative', marginTop: 10}}>
                             <Button2 
                                 style={{
-                                    marginLeft: 'auto', 
-                                    fontSize: '3vw'
+                                    fontSize: '2.7vw'
                                 }}
                                 onClick={() => setModalshow(true)}
                             >
@@ -130,16 +130,11 @@ const CBDCPage = ({userInfo}) => {
                                 <br/> 잔액 확인
                             </Button2>
                             <Button2 
-                                style={{marginLeft: 5}}
                                 onClick={() => setModalreduce(true)}
                             >
                                 거래선택
                             </Button2>
                             <Button2 
-                                style={{
-                                    marginLeft: 5, 
-                                    marginRight: 20
-                                }}
                                 onClick={() => history.push('/personal/deal/cbdc/disaster/Reduction')}
                             >
                                 거래내역
@@ -405,9 +400,9 @@ const CardBody = styled.div`
 `
 const CardChild = styled.div`
     width: 90vw;
-    height: 18vh;
+    height: 19vh;
     padding-top: 1vh;
-    padding-bottom: 3vh;
+    padding-bottom: 2.5vh;
     border-top: 1px solid #dcdcdc;
     box-shadow: 1px 2px 6px 1px #bfcfea;
     border-radius: 4vw;
@@ -442,7 +437,7 @@ const Button2 = styled.button`
     background-color: #00b2a7;
     font-size: 3.6vw;
     outline: none;
-    padding: 0.5vw 2.5vh;
+    padding: 0px 35px;
     cursor : pointer;
 `
 const Modal = styled.div`
@@ -460,7 +455,7 @@ const Modal2 = styled.div`
     z-index: 1000;
 `
 const ModalContent2 = styled.div`
-    top: 67%;
+    top: 61%;
     height: 80%;
     width: 95%;
     border-radius:5px;
