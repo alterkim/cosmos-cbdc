@@ -74,6 +74,22 @@ const ACancelPage = ({userInfo, affiliateInfo}) => {
         return datetime
     }
 
+    const onClickRefuse = async(e) => {
+        try {
+            const refuseSnapshot = await dbService
+                .collection(`TxInfo`)
+                .where("tx_id", "==", canceltx.tx_id)
+                .get()
+            
+            await dbService.collection(`TxInfo`)
+                .doc(refuseSnapshot.docs[0].id)
+                .update({payment_cancel_progress: "결제취소거부"})
+        } catch(error) {
+            console.log(error)
+        }
+        window.location.reload()
+    }
+
     const onClickPaymentCancel = async(e) => {
         try {
             // Check time interval
@@ -273,7 +289,7 @@ const ACancelPage = ({userInfo, affiliateInfo}) => {
                     </CardChild2>
                     <div style={{textAlign: 'center', marginTop: 20, marginBottom: 20, fontSize: '3vw'}}>승인하시겠습니까?</div>
                     <div style={{display: 'flex', position: 'relative'}}>
-                        <CancelButton>취소</CancelButton>
+                        <CancelButton onClick={onClickRefuse}>취소</CancelButton>
                         <PaymentCancelButton2 onClick={onClickPaymentCancel}>승인</PaymentCancelButton2>
                     </div>
                 </ModalContent>
