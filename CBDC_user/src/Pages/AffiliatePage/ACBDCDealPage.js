@@ -117,26 +117,11 @@ const ACBDCDealPage = ({affiliateInfo}) => {
                                     </>
                                 ):(
                                     <>
-                                        <Content>결제취소 ({tx.sender_name})</Content>
+                                        <Content>매출취소 ({tx.sender_name})</Content>
                                     </>
                                 )}
                                 
                             </ListItemLeft>
-                            {/* {tx.payment_cancel_progress == "결제취소요청"?(
-                                <>
-                                    <CancelButton style={{
-                                    marginRight:'4vw'
-                                    }}
-                                    onClick={() => history.push({
-                                        pathname: '/affiliate/deal/cancel',
-                                        state: {txId : tx.tx_id}
-                                    })}>
-                                        결제취소
-                                    </CancelButton>
-                                </>
-                            ):(
-                                <></>
-                            )} */}
                             <ListItemRight style={{textAlign: 'right'}}>    
                                 {
                                     tx.transaction_type == "결제취소"?(
