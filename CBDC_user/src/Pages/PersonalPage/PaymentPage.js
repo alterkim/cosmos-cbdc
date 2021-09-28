@@ -92,7 +92,7 @@ const PaymentPage = ({userInfo,affiliateInfo}) => {
             <Header>
                 <FontAwesomeIcon 
                     icon={faChevronLeft} 
-                    style={{color: "#000", fontSize: '4vw', marginLeft: '5vw'}}
+                    style={{color: "#000", fontSize: '4vw', marginLeft: '5vw', cursor: 'pointer'}}
                     onClick={() => history.push('/personal/CBDC')}
                 />
                 <HeaderText>결제하기</HeaderText>
@@ -289,6 +289,7 @@ const ExRunButton = styled.button`
     border: none;
     font-size: 4.5vw;
     color: #ffffff;
+    cursor: pointer;
 `
 const Card = styled.div`
     width: 44.5vw;
