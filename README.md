@@ -34,7 +34,7 @@ CBDC_server :  코스모스 블록체인에 쿼리를 보낼 서버
 
 CBDC_admin : 은행 관리 시나리오 데모
 
-CBDC_user : 유저 서비스 데모
+CBDC_user : 유저 서비스 데모, 현재 크롬창 최적화 사이즈: `516 * 992`(viewport)
 
 dpnmd : CBDC 코스모스 블록체인
 
