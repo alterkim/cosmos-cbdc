@@ -18,7 +18,7 @@ CBDC demo project made by cosmos-sdk
    - [x] 디자인 요청 반영
    - [x] 영/한 토글 기능 추가
 4. CBDC 해외송금
-   - [ ] Klaytn Testnet(Baobab) 노드 구성, Wallet 발행 - `해당 작업중`
+   - [x] Klaytn Testnet(Baobab) 노드 구성, Wallet 발행
    - [ ] LFB-SDK를 사용해서 독자적인 Testnet 구성, Wallet 발행
    - [ ] Klaytn과 LINE 블록체인과 Cosmos 블록체인 간의 정보 교환 기능 추가
    - [ ] User 첫 화면에서 해외송금 화면 추가
