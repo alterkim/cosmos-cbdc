@@ -1,7 +1,8 @@
 import { faChevronLeft, faHome, faBars } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { feeDelegatedValueTransfer } from "caver-js/packages/caver-transaction"
-import React from "react"
+import React, {useState} from "react"
+import Select from "react-select"
 import styled from "styled-components"
 import { history } from "../../_helpers"
 
@@ -78,7 +79,26 @@ const testFunction = async() => {
     console.log(receipt)
 }
 
+const countries = [
+    {value: 'THB', label: '태국'},
+    {value: 'USD', label: '미국'}
+]
+
+const send_method = [
+    {value: 'account', label: '계좌로 입금'}
+]
+
+
 const OverseasTransferpage = ({userInfo}) => {
+    const [CBDCAmount, setCBDCAmount] = useState(0)
+    const [ExchangeAmount, setExchangeAmount] = useState(0)
+
+    const onChangeCBDCAmount=(e) =>{
+        var val = Number(e.target.value.replace(/\D/g, ''))
+        const exchangeRate = 0.028
+        setCBDCAmount(val.toLocaleString())
+        setExchangeAmount((exchangeRate * val).toLocaleString())
+    }
 
     return (
         <div>
@@ -94,7 +114,35 @@ const OverseasTransferpage = ({userInfo}) => {
                 </div>
             </Header>
             <Body>
-                <MButton onClick={testFunction}>Load</MButton>
+                <div style={{color: '#212121', fontSize: '3.5vw', width: '90vw', marginTop: '2vw'}}>보내는 국가</div>
+                <Select
+                    style={{width: "500px", autosize: false ,fontSize: '4vw'}}
+                    placeholder="선택하여 주세요" 
+                    options={countries}>
+                </Select>
+
+                <div style={{color: '#212121', fontSize: '3.5vw', width: '90vw', marginTop: '5vw'}}>보내는 방법</div>
+                <Select
+                    style={{width: "500px", autosize: false ,fontSize: '4vw'}}
+                    placeholder="선택하여 주세요" 
+                    options={send_method}>
+                </Select>
+
+                <div style={{color: '#212121', fontSize: '3.5vw', width: '90vw', marginTop: '5vw'}}>보내는 금액</div>
+                <Amount>
+                    <div style={{display: 'flex', alignItems: 'center'}}>
+                        <PriceInput defaultValue="0" value={CBDCAmount} onChange={onChangeCBDCAmount}/>
+                        <div style={{fontSize: '3.8vw', marginLeft: 10}}>D-KRW</div>
+                    </div>
+                </Amount>
+
+                <div style={{color: '#212121', fontSize: '3.5vw', width: '90vw', marginTop: '5vw'}}>받는 금액</div>
+                <Amount>
+                    <div style={{display: 'flex', alignItems: 'center'}}>
+                        <PriceOutput defaultValue="0" value={ExchangeAmount} readOnly={true}/>
+                        <div style={{fontSize: '3.8vw', marginLeft: 10}}>D-THB</div>
+                    </div>
+                </Amount>
             </Body>
         </div>
     )
@@ -130,4 +178,29 @@ const MButton = styled.div`
     outline: none;
     padding: 3.5vw 2.5vh;
     cursor: pointer;
+`
+const Amount = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90vw;
+    margin: 2vw 0;
+`
+const PriceInput = styled.input`
+    border: 1px solid #cfcccc;
+    border-radius: 5px;
+    text-align: right;
+    width: 71vw;
+    height: 7.5vh;
+    font-size: 4vw;
+    padding-right: 20px;
+`
+const PriceOutput = styled.input`
+    border: 1px solid #cfcccc;
+    border-radius: 5px;
+    text-align: right;
+    width: 71vw;
+    height: 7.5vh;
+    font-size: 4vw;
+    padding-right: 20px;
 `
