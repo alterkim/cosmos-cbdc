@@ -90,7 +90,7 @@ const CBDCPage = ({userInfo}) => {
                     </CardChild>
                     {(userInfo.extinct_cbdc_balance>0)&&
                     <CardChild>
-                        <CardChildName>{language? "재난지원금(소멸형)" : "Disaster Assistance(Extinct)"}</CardChildName>
+                        <CardChildName>{language? "재난지원금(소멸형)" : "Disaster Assistance (Extinct)"}</CardChildName>
                         <div style={{marginLeft: 20, marginTop:5, fontSize: '2.7vw', color: '#00b2a7'}}>{language? "유효기간" : "Validity"} {extinctValidity}</div>
                         <span style={{marginLeft:20}}>456-4564-4564</span>
                         <span style={{marginLeft:20}}>(cosmos2y933z)</span>
@@ -113,7 +113,7 @@ const CBDCPage = ({userInfo}) => {
                     
                     {(userInfo.reduce_cbdc_balance>0)&&
                     <CardChild>
-                        <CardChildName>{language? "재난지원금(감소형)" : "Disaster Assistance(Reduced)"}</CardChildName>
+                        <CardChildName>{language? "재난지원금(감소형)" : "Disaster Assistance (Reduced)"}</CardChildName>
                         <div style={{marginLeft: 20, marginTop:5, fontSize: '2.7vw', color: '#00b2a7'}}>{language? "유효기간" : "Validity"} {reduceValidity}</div>
                         <span style={{marginLeft:20}}>789-7897-7897</span>
                         <span style={{marginLeft:20}}>(cosmos543z3t)</span>
