@@ -1,8 +1,8 @@
-import { faChevronLeft, faHome, faBars } from "@fortawesome/free-solid-svg-icons"
+import { faChevronLeft, faHome, faBars, faTimes } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { feeDelegatedValueTransfer } from "caver-js/packages/caver-transaction"
 import React, {useState} from "react"
-import Select from "react-select"
+import Select, {defaultTheme} from "react-select"
 import styled from "styled-components"
 import { history } from "../../_helpers"
 
@@ -81,7 +81,15 @@ const testFunction = async() => {
 
 const countries = [
     {value: 'THB', label: '태국'},
-    {value: 'USD', label: '미국'}
+    {value: 'USD', label: '미국'},
+    {value: 'CAN', label: '캐나다'},
+    {value: 'UK', label: '영국'},
+    {value: 'AUS', label: '호주'},
+    {value: 'JAP', label: '일본'},
+    {value: 'FRA', label: '프랑스'},
+    {value: 'GER', label: '독일'},
+    {value: 'NEW', label: '뉴질랜드'},
+    {value: 'SIN', label: '싱가포르'}
 ]
 
 const send_method = [
@@ -92,12 +100,33 @@ const send_method = [
 const OverseasTransferpage = ({userInfo}) => {
     const [CBDCAmount, setCBDCAmount] = useState(0)
     const [ExchangeAmount, setExchangeAmount] = useState(0)
+    const [countrymodal, setCountryModal] = useState(false)
+    const [selectcountry, setCountry] = useState({value:"not", label:"선택하여 주세요"})
+
 
     const onChangeCBDCAmount=(e) =>{
         var val = Number(e.target.value.replace(/\D/g, ''))
         const exchangeRate = 0.028
         setCBDCAmount(val.toLocaleString())
         setExchangeAmount((exchangeRate * val).toLocaleString())
+    }
+
+    const onMenuOpen = () => {
+        setCountryModal(true)
+        console.log(selectcountry)
+    }
+
+    const selectSytles = {
+        container: (provided, state) => ({
+            ...provided,
+            width: "90%",
+            height: "110%"
+        }),
+        control: (provided, state) => ({
+            ...provided,
+            margin: "8px 8px",
+            padding: "8px 18px"
+          }),
     }
 
     return (
@@ -114,16 +143,18 @@ const OverseasTransferpage = ({userInfo}) => {
                 </div>
             </Header>
             <Body>
-                <div style={{color: '#212121', fontSize: '3.5vw', width: '90vw', marginTop: '2vw'}}>보내는 국가</div>
+                <div style={{color: '#212121', fontSize: '3.5vw', width: '90vw', marginTop: '3vw', marginBottom: '2vw', fontWeight: '600'}}>송금 보낼 국가</div>
                 <Select
-                    style={{width: "500px", autosize: false ,fontSize: '4vw'}}
-                    placeholder="선택하여 주세요" 
-                    options={countries}>
+                    placeholder="선택하여 주세요"
+                    onMenuOpen={onMenuOpen}
+                    value={selectcountry}
+                    styles={selectSytles}
+                    >
                 </Select>
 
                 <div style={{color: '#212121', fontSize: '3.5vw', width: '90vw', marginTop: '5vw'}}>보내는 방법</div>
                 <Select
-                    style={{width: "500px", autosize: false ,fontSize: '4vw'}}
+                    styles={selectSytles}
                     placeholder="선택하여 주세요" 
                     options={send_method}>
                 </Select>
@@ -144,6 +175,178 @@ const OverseasTransferpage = ({userInfo}) => {
                     </div>
                 </Amount>
             </Body>
+            {countrymodal && <Modal>
+                <ModalBackground onClick={() => setCountryModal(false)}></ModalBackground>
+                <ModalContent>
+                    <ModalHeader>
+                        <div style={{marginLeft: 150, fontSize: '4.7vw'}}>송금 보낼 국가</div>
+                        <FontAwesomeIcon icon={faTimes} style={{color: "#000", fontSize: '5vw', marginRight:20, cursor:'pointer', marginRight: '8vw'}} onClick={() => setCountryModal(false)}/>
+                    </ModalHeader>
+                    <Mline/>
+                    <div style={{display:'flex', justifyContent: 'space-between', position: 'relative'}}>
+                        <CButton onClick={()=> {
+                            setCountry({value: "usa", label: "미국"})
+                            setCountryModal(false)
+                            } }>
+                            <img
+                                src={"/images/usa.png"}
+                                alt="usa"
+                                style={{
+                                    height:20,
+                                    width:20,
+                                    marginRight:10,
+                                    marginTop:5,
+                                    borderRadius:'70%',
+                                    overflow:'hidden',
+                                    objectFit: 'cover'
+                                }}></img>
+                        미국</CButton>
+                        <CButton>
+                            <img
+                                src={"/images/canada.png"}
+                                alt="canada"
+                                style={{
+                                    height:20,
+                                    width:20,
+                                    marginRight:10,
+                                    marginTop:5,
+                                    borderRadius:'70%',
+                                    borderColor: '#808080',
+                                    overflow:'hidden',
+                                    objectFit: 'cover'
+                                }}></img>
+                        캐나다</CButton>
+                    </div>
+                    <div style={{display:'flex', justifyContent: 'space-between', position: 'relative'}}>
+                        <CButton>
+                            <img
+                                src={"/images/uk.png"}
+                                alt="uk"
+                                style={{
+                                    height:20,
+                                    width:20,
+                                    marginRight:10,
+                                    marginTop:5,
+                                    borderRadius:'70%',
+                                    borderColor: '#808080',
+                                    overflow:'hidden',
+                                    objectFit: 'cover'
+                                }}></img>
+                        영국</CButton>
+                        <CButton>
+                            <img
+                                src={"/images/austrailia.png"}
+                                alt="austrailia"
+                                style={{
+                                    height:20,
+                                    width:20,
+                                    marginRight:10,
+                                    marginTop:5,
+                                    borderRadius:'70%',
+                                    borderColor: '#808080',
+                                    overflow:'hidden',
+                                    objectFit: 'cover'
+                                }}></img>
+                        호주</CButton>
+                    </div>
+                    <div style={{display:'flex', justifyContent: 'space-between', position: 'relative'}}>
+                        <CButton>
+                            <img
+                                src={"/images/japan.png"}
+                                alt="japan"
+                                style={{
+                                    height:20,
+                                    width:20,
+                                    marginRight:10,
+                                    marginTop:5,
+                                    borderRadius:'70%',
+                                    borderColor: '#808080',
+                                    borderWidth: '5px',
+                                    overflow:'hidden',
+                                    objectFit: 'cover'
+                                }}></img>
+                        일본</CButton>
+                        <CButton>
+                            <img
+                                src={"/images/france.png"}
+                                alt="france"
+                                style={{
+                                    height:20,
+                                    width:20,
+                                    marginRight:10,
+                                    marginTop:5,
+                                    borderRadius:'70%',
+                                    borderColor: '#808080',
+                                    overflow:'hidden',
+                                    objectFit: 'cover'
+                                }}></img>
+                        프랑스</CButton>
+                    </div>
+                    <div style={{display:'flex', justifyContent: 'space-between', position: 'relative'}}>
+                        <CButton>
+                            <img
+                                src={"/images/germany.png"}
+                                alt="germany"
+                                style={{
+                                    height:20,
+                                    width:20,
+                                    marginRight:10,
+                                    marginTop:5,
+                                    borderRadius:'70%',
+                                    borderColor: '#808080',
+                                    overflow:'hidden',
+                                    objectFit: 'cover'
+                                }}></img>
+                        독일</CButton>
+                        <CButton>
+                            <img
+                                src={"/images/newzealand.png"}
+                                alt="newzealand"
+                                style={{
+                                    height:20,
+                                    width:20,
+                                    marginRight:10,
+                                    marginTop:5,
+                                    borderRadius:'70%',
+                                    borderColor: '#808080',
+                                    overflow:'hidden',
+                                    objectFit: 'cover'
+                                }}></img>
+                        뉴질랜드</CButton>
+                    </div>
+                    <div style={{display:'flex', justifyContent: 'space-between', position: 'relative'}}>
+                        <CButton>
+                            <img
+                                src={"/images/taiwan.png"}
+                                alt="taiwan"
+                                style={{
+                                    height:20,
+                                    width:20,
+                                    marginRight:10,
+                                    marginTop:5,
+                                    borderRadius:'70%',
+                                    overflow:'hidden',
+                                    objectFit: 'cover'
+                                }}></img>
+                        태국</CButton>
+                        <CButton>
+                            <img
+                                src={"/images/singapore.png"}
+                                alt="singapore"
+                                style={{
+                                    height:20,
+                                    width:20,
+                                    marginRight:10,
+                                    marginTop:5,
+                                    borderRadius:'70%',
+                                    borderColor: '#808080',
+                                    overflow:'hidden',
+                                    objectFit: 'cover'
+                                }}></img>
+                        싱가포르</CButton>
+                    </div>
+                </ModalContent>
+            </Modal>}
         </div>
     )
 }
@@ -203,4 +406,60 @@ const PriceOutput = styled.input`
     height: 7.5vh;
     font-size: 4vw;
     padding-right: 20px;
+`
+const Modal = styled.div`
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+`
+const ModalBackground = styled.div`
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: #000000;
+    opacity: 0.4;
+`
+const ModalContent = styled.div`
+    top: 20%;
+    height: 80%;
+    width: 100%;
+    border-radius: 35px;
+    position: fixed;
+    z-index: 1000;
+    font-size: 13px;
+    background-color: #ffffff;
+    overflow-y: auto;
+    overflow-x: hidden;
+`
+const ModalHeader = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 6.08vh;
+    background-color: #fff;
+    color: #000;
+    font-size: 3.3vw;
+    font-weight: 400;
+`
+const Mline = styled.div`
+    height: 1.4px;
+    width: 110%;
+    background-color: #808080;
+`
+const CButton = styled.div`
+    width: 100%;
+    color: #000000;
+    height: 2vh;
+    background-color: #ffffff;
+    font-size: 3.5vw;
+    outline: none;
+    padding: 3.5vw 2.5vh;
+    cursor: pointer; 
+    font-weight:500;
 `
