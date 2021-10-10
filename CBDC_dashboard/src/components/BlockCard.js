@@ -4,6 +4,7 @@ import CountUp from 'react-countup';
 import ReactLoading from 'react-loading';
 
 import { dbService } from "../fbase";
+import GetBlockNum from "../_helpers/GetBlockNum";
 const Card = (props) =>{
     return (
         <div>
@@ -39,6 +40,9 @@ const BlockCard = ({name}) =>{
 
     const [blockTxHistory, setBlockTxHistory] = useState([])
     const [curBlocknum, setCurBlocknum] =useState([])
+    const [cosmosBlocknum, setCosmosBlockNum] = useState(0)
+
+    var con;
 
     const getCurBlocknum = async(e) =>{
         try{
@@ -51,6 +55,18 @@ const BlockCard = ({name}) =>{
             console.log(error)
         }
     }
+    const updateCurBlocknum = async(e) => {
+        try {
+            await dbService
+                .collection(`CrossBlockInfo`)
+                .doc("cosmos")
+                .update({blocknum: con})
+            
+        } catch(error) {
+            console.log(error)
+        }
+    }
+
     const getBlockTxHistory = async(e) => {
         try {
             var blockTxSnapshot = await dbService
@@ -75,12 +91,26 @@ const BlockCard = ({name}) =>{
         }
     }
 
+    const setBlockNum = async() => {
+        await fetch('http://localhost:3030/v1/blocknum')
+            .then(response => response.text())
+            .then((response)=> {
+                var i_res = parseInt(response)
+                //setCosmosBlockNum(i_res)
+                con = i_res;
+                updateCurBlocknum()
+            })
+            .catch((error) => console.log(error))
+        
+    }
+
     useEffect(()=> {
         const id = setInterval(()=>{
             dispatch({type:'tick'});
+            // setBlockNum()
             getBlockTxHistory()
             getCurBlocknum()
-        },1000)
+        },2000)
 
 
 

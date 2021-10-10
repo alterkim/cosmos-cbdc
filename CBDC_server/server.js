@@ -1,9 +1,14 @@
-const express = require('express');
-var bodyParser = require('body-parser')
+import fetch from 'node-fetch'
+import express from 'express'
+import cors from 'cors'
+import exe from 'child_process'
+// const express = require('express');
+// var bodyParser = require('body-parser')
 const app = express();
 const port = 3030
-const cors = require('cors')
-const exec = require('child_process').exec
+// const cors = require('cors')
+const exec = exe.exec;
+
 app.use(
     express.urlencoded({
       extended: true
@@ -39,3 +44,24 @@ app.post('/v1/transfer', (req, res) => {
   app.listen(port, () => {
     console.log(`CBDC server listening at http://localhost:${port}`)
   })
+
+var blocknum;
+
+app.get('/v1/blocknum', (req, res)=> {
+    try {
+        var cmd = `yes y | sh blocknum.sh`
+        
+        exec(cmd,
+              function (error, stdout, stderr){
+                const obj = JSON.parse(stdout)
+                blocknum = obj.block.header.height
+
+                if (error !== null) {
+                  //console.log('exec error: ' + error);
+                  }
+              });
+    } catch(error) {
+        console.log(error)
+    }
+    res.send(blocknum)
+})
