@@ -1,4 +1,4 @@
-import { faChevronLeft, faHome, faBars, faTimes } from "@fortawesome/free-solid-svg-icons"
+import { faChevronLeft, faHome, faBars, faTimes, faArrowsAltV } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { feeDelegatedValueTransfer } from "caver-js/packages/caver-transaction"
 import React, {useState} from "react"
@@ -92,7 +92,7 @@ const OverseasTransferpage = ({userInfo}) => {
 
     const onChangeCBDCAmount = async(e) =>{
         var val = Number(e.target.value.replace(/\D/g, ''))
-        const exchangeRate = 0.028
+        const exchangeRate = 35.34
         setCBDCAmount(val.toLocaleString())
         setExchangeAmount((exchangeRate * val).toLocaleString())
     }
@@ -169,15 +169,16 @@ const OverseasTransferpage = ({userInfo}) => {
                 <Amount>
                     <div style={{display: 'flex', alignItems: 'center'}}>
                         <PriceInput defaultValue="0" value={CBDCAmount} onChange={onChangeCBDCAmount}/>
-                        <div style={{fontSize: '3.8vw', marginLeft: 10}}>D-KRW</div>
+                        <div style={{fontSize: '3.8vw', marginLeft: 10}}>D-THB</div>
                     </div>
                 </Amount>
-
-                <div style={{color: '#212121', fontSize: '3.5vw', width: '90vw', marginTop: '5vw', fontWeight: '600'}}>받는 금액</div>
+                <div>
+                    <FontAwesomeIcon icon={faArrowsAltV} style={{color: "#000", fontSize: '5vw', marginRight: '16vw'}}/>
+                </div>
                 <Amount>
                     <div style={{display: 'flex', alignItems: 'center'}}>
                         <PriceOutput defaultValue="0" value={ExchangeAmount} readOnly={true}/>
-                        <div style={{fontSize: '3.8vw', marginLeft: 10}}>D-THB</div>
+                        <div style={{fontSize: '3.8vw', marginLeft: 10}}>D-KRW</div>
                     </div>
                 </Amount>
             </Body>
