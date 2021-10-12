@@ -142,7 +142,7 @@ const BlockCard = ({name}) =>{
             
             <div class="card-header">
                 <img src={"/images/"+name+".png"} style={{height : 20, width : 20}} alt="img"/>
-                <h2 class="card-header-title">{name}</h2>
+                <h1 class="card-header-title">{name}</h1>
                 <div>
                     <div class="center">
                         <ReactLoading type={"cubes"} color={"#e7eaf3"}/>
