@@ -9,7 +9,7 @@ function App() {
         <BlockCard name={"Klaytn"}></BlockCard>
         <SplitPane split="vertical" defaultSize="50%">
           <BlockCard name={"Cosmos"}></BlockCard>
-          <BlockCard name={"LINK"}></BlockCard>
+          <BlockCard name={"LINE"}></BlockCard>
         </SplitPane>
     </SplitPane>
   );
