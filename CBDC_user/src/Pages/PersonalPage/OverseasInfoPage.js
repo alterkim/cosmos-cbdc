@@ -172,28 +172,28 @@ const OverseasInfoPage = ({userInfo}) => {
                     styles={selectSytles}>
                 </Select>
 
-                <div style={{marginTop:'5vw', fontSize: '3.3vw', width:'85vw', fontWeight: '400'}}>입금지갑주소 (Address)</div>
+                <div style={{marginTop:'5vw', fontSize: '3.3vw', width:'85vw', fontWeight: '400', color:'#696969'}}>입금지갑주소 (Address)</div>
                 <Info>
                     <div style={{marginLeft:'3.5vw'}}>
                         <InfoInput placeholder="주소를 입력하세요" />
                     </div>
                 </Info>
 
-                <div style={{marginTop:'4.3vw', fontSize: '3.3vw', width:'85vw', fontWeight: '400'}}>이름 (First name)</div>
+                <div style={{marginTop:'4.3vw', fontSize: '3.3vw', width:'85vw', fontWeight: '400', color:'#696969'}}>이름 (First name)</div>
                 <Info>
                     <div style={{marginLeft:'3.5vw'}}>
                         <InfoInput placeholder="이름을 입력하세요"/>
                     </div>
                 </Info>
 
-                <div style={{marginTop:'4.3vw', fontSize: '3.3vw', width:'85vw', fontWeight: '400'}}>성 (Last name)</div>
+                <div style={{marginTop:'4.3vw', fontSize: '3.3vw', width:'85vw', fontWeight: '400', color:'#696969'}}>성 (Last name)</div>
                 <Info>
                     <div style={{marginLeft:'3.5vw'}}>
                         <InfoInput placeholder="성을 입력하세요"/>
                     </div>
                 </Info>
 
-                <div style={{marginTop:'4.3vw', fontSize: '3.3vw', width:'85vw', fontWeight: '400'}}>연락처 (Phone Nubmer)</div>
+                <div style={{marginTop:'4.3vw', fontSize: '3.3vw', width:'85vw', fontWeight: '400', color:'#696969'}}>연락처 (Phone Nubmer)</div>
                 <Info>
                     <div style={{marginLeft:'3.5vw'}}>
                         <InfoInput placeholder="연락처를 입력하세요"/>
@@ -217,7 +217,7 @@ const OverseasInfoPage = ({userInfo}) => {
                     </div>
                 </Amount> */}
             </Body>
-            <ExRunButton onClick={transferClick}>다음</ExRunButton>
+            <ExRunButton onClick={()=>history.push('/personal/overseasamount')}>다음</ExRunButton>
             {countrymodal && <Modal>
                 <ModalBackground onClick={() => setCountryModal(false)}></ModalBackground>
                 <ModalContent>
