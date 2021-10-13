@@ -31,9 +31,6 @@ const PersonalPage = ({userInfo}) => {
                     <div>CBDC</div>
                     <div><span style={{color: "#212121"}}>{totalCBDC&&totalCBDC.toLocaleString()}</span> D-KRW</div>
                 </Button>
-                <Button style={{marginTop: 15}} href="personal/overseas">
-                    <div>해외송금</div>
-                </Button>
             </Body>
         </div>
     )

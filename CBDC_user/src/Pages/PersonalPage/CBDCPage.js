@@ -308,6 +308,8 @@ const CBDCPage = ({userInfo}) => {
                             pathname: '/personal/cancel'
                         })}>결제취소요청</MButton>
                     <Mline/>
+                    <MButton onClick={() => history.push('/personal/overseas')}>해외송금</MButton>
+                    <Mline/>
                 </ModalContent2>
             </Modal>}
             {modalextinct && <Modal2>
@@ -458,7 +460,7 @@ const Modal2 = styled.div`
     z-index: 1000;
 `
 const ModalContent2 = styled.div`
-    top: 61%;
+    top: 58%;
     height: 80%;
     width: 95%;
     border-radius:5px;

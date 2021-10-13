@@ -79,16 +79,14 @@ const testFunction = async() => {
     console.log(receipt)
 }
 
-const send_method = [
-    {value: 'account', label: '계좌로 입금'}
-]
 
-
-const OverseasTransferpage = ({userInfo}) => {
+const OverseasInfoPage = ({userInfo}) => {
     const [CBDCAmount, setCBDCAmount] = useState(0)
     const [ExchangeAmount, setExchangeAmount] = useState(0)
     const [countrymodal, setCountryModal] = useState(false)
-    const [selectcountry, setCountry] = useState({value:"not", label:"선택하여 주세요"})
+    const [bankModal, setBankModal] = useState(false)
+    const [selectcountry, setCountry] = useState({value:'not', label:'선택하여 주세요'})
+    const [selectbank, setBank] = useState({value:'not', label: '선택하여 주세요'})
 
     const onChangeCBDCAmount = async(e) =>{
         var val = Number(e.target.value.replace(/\D/g, ''))
@@ -97,8 +95,12 @@ const OverseasTransferpage = ({userInfo}) => {
         setExchangeAmount((exchangeRate * val).toLocaleString())
     }
 
-    const onMenuOpen = () => {
+    const onCountryOpen = () => {
         setCountryModal(true)
+    }
+
+    const onBankOpen = () => {
+        setBankModal(true)
     }
 
     const selectSytles = {
@@ -141,31 +143,64 @@ const OverseasTransferpage = ({userInfo}) => {
                 <FontAwesomeIcon
                     icon={faChevronLeft}
                     style={{color: "#000", fontSize: '4vw', marginLeft: '5vw', cursor: 'pointer'}}
-                    onClick={() => history.push('/personal')}/>
-                <HeaderText style={{marginLeft: 40}}>해외송금</HeaderText>
+                    onClick={() => history.push('/personal/CBDC')}/>
+                <HeaderText style={{marginLeft: 40}}>CBDC 해외송금</HeaderText>
                 <div>
                     <FontAwesomeIcon icon={faHome} style={{color: "#000", fontSize: '4vw', marginRight: 15}}/>
                     <FontAwesomeIcon icon={faBars} style={{color: "#000", fontSize: '4vw', marginRight: '5vw'}}/>
                 </div>
             </Header>
+            <Mline/>
+            <div style={{width:'100%', height:'10vh', backgroundColor:'white', fontSize:'3.5vw', display:'flex', alignItems:'center', justifyContent:'center', textAlign:'center', fontWeight:'600'}}>
+                받는 분의 송금 정보를<br/> 정확히 입력해주세요.
+            </div>
             <Body>
-                <div style={{color: '#212121', fontSize: '3.5vw', width: '90vw', marginTop: '3vw', marginBottom: '2vw', fontWeight: '600'}}>송금 보낼 국가</div>
+                <div style={{color: '#212121', fontSize: '3.5vw', width: '90vw', marginTop: '3.5vw', marginBottom: '2vw', fontWeight: '600'}}>송금 보낼 국가</div>
                 <Select
                     placeholder="선택하여 주세요"
-                    onMenuOpen={onMenuOpen}
+                    onMenuOpen={onCountryOpen}
                     value={selectcountry}
                     styles={selectSytles}
                     >
                 </Select>
 
-                <div style={{color: '#212121', fontSize: '3.5vw', width: '90vw', marginTop: '5vw', fontWeight: '600'}}>보내는 방법</div>
+                <div style={{color: '#212121', fontSize: '3.5vw', width: '90vw', marginTop: '5.5vw', marginBottom: '2vw', fontWeight: '600'}}>입금은행</div>
                 <Select
-                    styles={selectSytles}
-                    placeholder="선택하여 주세요" 
-                    options={send_method}>
+                    placeholder="선택하여 주세요"
+                    onMenuOpen={onBankOpen}
+                    value={selectbank}
+                    styles={selectSytles}>
                 </Select>
 
-                <div style={{color: '#212121', fontSize: '3.5vw', width: '90vw', marginTop: '5vw', fontWeight: '600'}}>보내는 금액</div>
+                <div style={{marginTop:'5vw', fontSize: '3.3vw', width:'85vw', fontWeight: '400'}}>입금지갑주소 (Address)</div>
+                <Info>
+                    <div style={{marginLeft:'3.5vw'}}>
+                        <InfoInput placeholder="주소를 입력하세요" />
+                    </div>
+                </Info>
+
+                <div style={{marginTop:'4.3vw', fontSize: '3.3vw', width:'85vw', fontWeight: '400'}}>이름 (First name)</div>
+                <Info>
+                    <div style={{marginLeft:'3.5vw'}}>
+                        <InfoInput placeholder="이름을 입력하세요"/>
+                    </div>
+                </Info>
+
+                <div style={{marginTop:'4.3vw', fontSize: '3.3vw', width:'85vw', fontWeight: '400'}}>성 (Last name)</div>
+                <Info>
+                    <div style={{marginLeft:'3.5vw'}}>
+                        <InfoInput placeholder="성을 입력하세요"/>
+                    </div>
+                </Info>
+
+                <div style={{marginTop:'4.3vw', fontSize: '3.3vw', width:'85vw', fontWeight: '400'}}>연락처 (Phone Nubmer)</div>
+                <Info>
+                    <div style={{marginLeft:'3.5vw'}}>
+                        <InfoInput placeholder="연락처를 입력하세요"/>
+                    </div>
+                </Info>
+
+                {/* <div style={{color: '#212121', fontSize: '3.5vw', width: '90vw', marginTop: '5vw', fontWeight: '600'}}>보내는 금액</div>
                 <Amount>
                     <div style={{display: 'flex', alignItems: 'center'}}>
                         <PriceInput defaultValue="0" value={CBDCAmount} onChange={onChangeCBDCAmount}/>
@@ -180,14 +215,14 @@ const OverseasTransferpage = ({userInfo}) => {
                         <PriceOutput defaultValue="0" value={ExchangeAmount} readOnly={true}/>
                         <div style={{fontSize: '3.8vw', marginLeft: 10}}>D-KRW</div>
                     </div>
-                </Amount>
+                </Amount> */}
             </Body>
-            <ExRunButton onClick={transferClick}>이체하기</ExRunButton>
+            <ExRunButton onClick={transferClick}>다음</ExRunButton>
             {countrymodal && <Modal>
                 <ModalBackground onClick={() => setCountryModal(false)}></ModalBackground>
                 <ModalContent>
                     <ModalHeader>
-                        <div style={{marginLeft: 150, fontSize: '4.7vw'}}>송금 보낼 국가</div>
+                        <div style={{marginLeft: 170, fontSize: '4vw'}}>송금 보낼 국가</div>
                         <FontAwesomeIcon icon={faTimes} style={{color: "#000", fontSize: '5vw', marginRight:20, cursor:'pointer', marginRight: '8vw'}} onClick={() => setCountryModal(false)}/>
                     </ModalHeader>
                     <Mline/>
@@ -332,11 +367,28 @@ const OverseasTransferpage = ({userInfo}) => {
                     </div>
                 </ModalContent>
             </Modal>}
+            {bankModal && <Modal>
+                <ModalBackground onClick={() => setBankModal(false)} ></ModalBackground>
+                <ModalContent2>
+                    <ModalHeader>
+                        <div style={{marginLeft: 140, fontSize:'4vw'}}>입금은행 선택</div>
+                        <FontAwesomeIcon icon={faTimes} style={{color: "#000", fontSize: '4vw', marginRight:20, cursor: 'pointer'}} onClick={() => setBankModal(false)}/>
+                    </ModalHeader>
+                    <Mline style={{width:'100%'}}/>
+                    <BButton onClick={() => {
+                        setBank({value:'bankok', label: '방콕은행(Bangkok Bank Public Company)'})
+                        setBankModal(false)
+                        }}>방콕은행(Bangkok Bank Public Company)</BButton>
+                    <Mline style={{width:'100%'}}/>
+                    <BButton>직접입력</BButton>
+                    <Mline style={{width:'100%'}}/>
+                </ModalContent2>
+            </Modal>}
         </div>
     )
 }
 
-export { OverseasTransferpage}
+export {OverseasInfoPage}
 
 const Header = styled.div`
     background-color: #fff;
@@ -353,6 +405,7 @@ const Body = styled.div`
     flex-direction: column;
     align-items: center;
     width: 100%;
+    background-color: #f6f6f6;
 `
 const HeaderText = styled.div`
     color: #000;
@@ -367,20 +420,20 @@ const MButton = styled.div`
     padding: 3.5vw 2.5vh;
     cursor: pointer;
 `
-const Amount = styled.div`
+const Info = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 90vw;
     margin: 2vw 0;
 `
-const PriceInput = styled.input`
+const InfoInput = styled.input`
     border: 1px solid #cfcccc;
     border-radius: 5px;
     text-align: right;
-    width: 71vw;
-    height: 7.5vh;
-    font-size: 4vw;
+    width: 80vw;
+    height: 4.5vh;
+    font-size: 3.5vw;
     padding-right: 20px;
 `
 const PriceOutput = styled.input`
@@ -422,6 +475,17 @@ const ModalContent = styled.div`
     overflow-y: auto;
     overflow-x: hidden;
 `
+const ModalContent2 = styled.div`
+    position: fixed;
+    z-index: 1000;
+    top: 20vh;
+    right: 5vw;
+    left: 5vw;
+    padding: 0.7vh 3.7vw;
+    font-size: 13px;
+    border-radius: 5px;
+    background-color: #ffffff;
+`
 const ModalHeader = styled.div`
     display: flex;
     justify-content: space-between;
@@ -435,7 +499,7 @@ const ModalHeader = styled.div`
 const Mline = styled.div`
     height: 1.4px;
     width: 110%;
-    background-color: #808080;
+    background-color: #e2e2e2;
 `
 const CButton = styled.div`
     width: 100%;
@@ -459,4 +523,17 @@ const ExRunButton = styled.button`
     font-size: 4.5vw;
     color: #ffffff;
     cursor: pointer;
+    font-weight: 600;
+`
+const BButton = styled.div`
+    width: 100%;
+    color: #000000;
+    height: 4.5vh;
+    background-color: #ffffff;
+    font-size: 3.5vw;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
 `
