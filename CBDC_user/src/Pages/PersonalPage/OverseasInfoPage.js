@@ -271,7 +271,7 @@ const OverseasInfoPage = ({userInfo}) => {
                             setCountry({value: "aus", label:
                             <div style={{display: 'flex', flexDirection: 'column'}}>
                             <div style={{color: '#000', fontSize:'3.5vw'}}>
-                                <img src={"/images/uaustrailia.png"} 
+                                <img src={"/images/austrailia.png"} 
                                 style={countryStyle2}></img>호주</div></div>})
                             setCountryModal(false)
                             } }>
