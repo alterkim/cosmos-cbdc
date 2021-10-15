@@ -18,7 +18,8 @@ import { PersonalPage,
         CancelPage,
         OverseasInfoPage,
         OverseasAmountPage,
-        OverseasTransferPage
+        OverseasTransferPage,
+        OverseasStatusPage
     } from './Pages/PersonalPage'
 
 import { 
@@ -100,6 +101,7 @@ function App() {
                             <Route path="/personal/overseas" render ={()=><OverseasInfoPage userInfo={userInfo}/>}/>
                             <Route path="/personal/overseasamount" render={()=><OverseasAmountPage userInfo={userInfo}/>}/>
                             <Route path="/personal/overseastransfer" render={()=><OverseasTransferPage userInfo={userInfo}/>}/>
+                            <Route path="/personal/overseasstatus" render={()=><OverseasStatusPage userInfo={userInfo}/>}/>
 
                             <Route path="/personal/transfer" render ={()=><TransferPage userInfo={userInfo}/>}/>
                             <Route path="/personal/payment/read-qr" render ={()=><PaymentQR userInfo={userInfo}/>} />

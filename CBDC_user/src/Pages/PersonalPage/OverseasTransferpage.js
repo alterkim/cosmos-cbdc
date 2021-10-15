@@ -90,7 +90,8 @@ const OverseasTransferPage = ({userInfo}) => {
             </Body>
             {transfer == true?(
                 <> 
-                    <div style={{margin: 'auto', border:'1px solid gray', width: '60%',padding:'1vh', cursor: 'pointer', color: 'gray', textAlign: 'center', marginTop: '3vh', borderRadius:'8px', fontSize: '3.8vw'}}>
+                    <div style={{margin: 'auto', border:'1px solid gray', width: '60%',padding:'1vh', cursor: 'pointer', color: 'gray', textAlign: 'center', marginTop: '3vh', borderRadius:'8px', fontSize: '3.8vw'}}
+                        onClick={() => history.push('/personal/overseasstatus')}>
                         송금진행상태 조회
                     </div>
                 </>
