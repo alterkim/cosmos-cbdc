@@ -19,6 +19,16 @@ const OverseasStatusPage = ({userInfo}) => {
                     <FontAwesomeIcon icon={faBars} style={{color: "#000", fontSize: '4vw', marginRight: '5vw'}}/>
                 </div>
             </Header>
+            <Body>
+                <div style={{display:'flex', flexDirection: 'column', justifyContent:'center', width: '100%', marginTop: '2vh'}}>
+                    <div style={{margin: 'auto', fontSize: '3.4vw'}}>3개월 이내의 거래 내역만 조회 가능합니다.</div>
+                    <div style={{display: 'flex', justifyContent:'space-evenly', marginTop: '2vh'}}>
+                        <MonthButton>1개월</MonthButton>
+                        <MonthButton style={{backgroundColor: '#00b2a7', color: 'white'}}>2개월</MonthButton>
+                        <MonthButton>3개월</MonthButton>
+                    </div>
+                </div>
+            </Body>
         </div>
     )
 }
@@ -44,4 +54,15 @@ const Body = styled.div`
 `
 const HeaderText = styled.div`
     color: #000;
+`
+const MonthButton = styled.div`
+    background-color: #f6f6f6;
+    border-radius: 20px;
+    border: 1px solid gray;
+    font-size: 3.2vw;
+    width: 18vw;
+    padding: 0.7vh 1.8vw;
+    text-align: center;
+    cursor: pointer;
+    color: gray;
 `
