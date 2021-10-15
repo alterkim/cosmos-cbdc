@@ -4,10 +4,11 @@ import { history } from "../../_helpers"
 import React, {useState} from "react"
 import styled from "styled-components"
 import { dbService } from "../../fbase"
+import { useLocation } from "react-router"
 
 
 const OverseasAmountPage = ({userInfo}) => {
-
+    const location = useLocation()
     const [walletShow,setWalletShow] = useState(false)
     const [senderAccount, setSenderAccount] = useState(userInfo.account)
     const [senderWallet,setSenderWallet] = useState(userInfo.wallet)
@@ -52,6 +53,27 @@ const OverseasAmountPage = ({userInfo}) => {
             setExchangeRate(35.74)
             setSendAmount(0)
             setExchangeAmount(0)
+        }
+        console.log(location.state.txId)
+    }
+
+    const onClickUpdateInfo = async(e) => {
+        const txId = location.state.txId
+        try {
+            const overseasSnapshot = await dbService
+                .collection(`OverseasInfo`)
+                .where('id', '==', txId)
+                .get()
+        
+            await dbService.collection(`OverseasInfo`)
+                .doc(overseasSnapshot.docs[0].id)
+                .update({
+                    amount: sendAmount,
+                    sender_name: 'JEONGHEON KIM',
+                    sender_address: '123-1231-1231'           
+            })
+        } catch (error) {
+            console.log(error)
         }
     }
 
@@ -143,7 +165,12 @@ const OverseasAmountPage = ({userInfo}) => {
             <div style={{width:'100%', height:'10vh', backgroundColor:'white', fontSize:'3.5vw', display:'flex', alignItems:'center', justifyContent:'center', textAlign:'center', fontWeight:'600'}}>
                 입력 정보를 확인해주세요.
             </div>
-            <ExRunButton onClick={() => history.push('/personal/overseastransfer')}>다음</ExRunButton>
+            <ExRunButton onClick={() => {
+                onClickUpdateInfo()
+                history.push({
+                    pathname: '/personal/overseastransfer',
+                    state: {txId: location.state.txId}
+                    })}}>다음</ExRunButton>
         </div>
     )
 }

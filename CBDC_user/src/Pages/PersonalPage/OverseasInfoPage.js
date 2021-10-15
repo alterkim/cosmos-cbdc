@@ -1,7 +1,7 @@
 import { faChevronLeft, faHome, faBars, faTimes, faArrowsAltV } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { feeDelegatedValueTransfer } from "caver-js/packages/caver-transaction"
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import Select, {defaultTheme} from "react-select"
 import styled from "styled-components"
 import { dbService } from "../../fbase"
@@ -92,6 +92,7 @@ const OverseasInfoPage = ({userInfo}) => {
     const [selectfname, setFname] = useState("")
     const [selectlname, setLname] = useState("")
     const [selectnumber, setNumber] = useState("")
+    const [id, setId] = useState("")
 
     const onCountryOpen = () => {
         setCountryModal(true)
@@ -132,16 +133,20 @@ const OverseasInfoPage = ({userInfo}) => {
         objectFit: 'cover'
     }
 
-    const onClickAddInfo = async(e) => {
-
+    useEffect(()=> {
         var randomNum = (Math.floor(Math.random()*(10000-1)) + 1)+'';
             while(randomNum.length < 5){
                 randomNum = '0'+randomNum
             }
+        setId("OS2021-" + randomNum)
+    },[])
+
+    const onClickAddInfo = async(e) => {
+
         await dbService
             .collection(`OverseasInfo`)
             .add({
-                id: "OS2021-" + randomNum,
+                id: id,
                 receiver_address: selectaddress,
                 receiver_bank: selectbank.value,
                 receiver_country: selectcountry.value,
@@ -229,7 +234,9 @@ const OverseasInfoPage = ({userInfo}) => {
             </Body>
             <ExRunButton onClick={()=>{
                 onClickAddInfo()
-                history.push('/personal/overseasamount')
+                history.push({
+                    pathname: '/personal/overseasamount',
+                    state: {txId: id}})
             }}>다음</ExRunButton>
             {countrymodal && <Modal>
                 <ModalBackground onClick={() => setCountryModal(false)}></ModalBackground>
