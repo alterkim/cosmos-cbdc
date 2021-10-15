@@ -1,12 +1,15 @@
 import { faChevronLeft, faHome, faBars, faCheckCircle } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { history } from "../../_helpers"
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import styled from "styled-components"
 import { dbService } from "../../fbase"
+import { useLocation } from "react-router"
 
 const OverseasTransferPage = ({userInfo}) => {
+    const location = useLocation()
     const [transfer, setTransfer] = useState(false)
+    const [tx, setTx] = useState({})
 
     const countryStyle = {
         height:'20px',
@@ -20,6 +23,24 @@ const OverseasTransferPage = ({userInfo}) => {
         // TODO
         setTransfer(true)
     }
+
+    const getOverseasHistory = async(e) => {
+        const txId = location.state.txId
+        try {
+            const overseasSnapshot = await dbService
+                .collection(`OverseasInfo`)
+                .where('id', '==', txId)
+                .get()
+            
+            setTx(overseasSnapshot.docs[0].data())
+        } catch(error) {
+            console.log(error)
+        }
+    }
+    
+    useEffect(()=> {
+        getOverseasHistory()
+    },[])
 
     return (
         <div>
@@ -48,26 +69,26 @@ const OverseasTransferPage = ({userInfo}) => {
             <Body>
                 <div style={{marginTop: "1vh", display: 'flex', alignItems: 'center', width: '100%', height: 40}}>
                         <div style={{fontSize:'3.5vw', marginLeft: '10%', fontWeight: '600'}}>송금하실 금액</div>
-                        <PriceOutput defaultValue="0" value="10,000" readOnly={true} style={{fontWeight:"600", color:'blue'}}/>
+                        <PriceOutput defaultValue="0" value={tx.amount} readOnly={true} style={{fontWeight:"600", color:'blue'}}/>
                         <div style={{fontSize:'3.5vw', textAlign: 'right', marginLeft: '2%', fontWeight:'600'}}>D-THB</div>
                 </div>
                 <CardChild>
                     <div style={{marginTop: "1vh", display: 'flex', alignItems: 'center', width: '100%', height: 40, borderBottom: '2px solid gray'}}>
                         <div style={{fontSize:'3.5vw', marginLeft: '4vw', fontWeight: '600'}}>받는 분</div>
-                        <div style={{fontSize:'3.4vw', marginLeft: '60%', fontWeight: '400'}}>태국</div>
+                        <div style={{fontSize:'3.4vw', marginLeft: '60%', fontWeight: '400'}}>{tx.receiver_country}</div>
                         <img src={"/images/taiwan.png"} style={countryStyle}></img>
                     </div>
                     <div style={{marginTop: "1vh", display: 'flex', justifyContent:'space-between' , alignItems: 'center', width: '100%', height: 40, borderBottom: '2px solid #d3d3d3'}}>
                         <div style={{fontSize: '3.3vw', marginLeft: '4vw', color:'gray'}}>이름</div>
-                        <div style={{fontSize:'3.4vw', marginRight:'6vw', fontWeight: '400'}}>GILDONG HONG</div>
+                        <div style={{fontSize:'3.4vw', marginRight:'6vw', fontWeight: '400'}}>{tx.receiver_fname} {tx.receiver_lname}</div>
                     </div>
                     <div style={{marginTop: "1vh", display: 'flex', justifyContent:'space-between', alignItems: 'center', width: '100%', height: 40, borderBottom: '2px solid #d3d3d3'}}>
                         <div style={{fontSize: '3.3vw', marginLeft: '4vw', color:'gray'}}>입금은행</div>
-                        <div style={{fontSize:'3.4vw', marginRight:'6vw', fontWeight: '400'}}>Bangkok Bank</div>
+                        <div style={{fontSize:'3.4vw', marginRight:'6vw', fontWeight: '400'}}>{tx.receiver_bank}</div>
                     </div>
                     <div style={{marginTop: "1vh", display: 'flex', justifyContent:'space-between', alignItems: 'center', width: '100%', height: 40, borderBottom: '2px solid #d3d3d3'}}>
                         <div style={{fontSize: '3.3vw', marginLeft: '4vw', color:'gray'}}>입금지갑주소</div>
-                        <div style={{fontSize:'3.4vw', marginRight:'6vw', fontWeight: '400'}}>lineTx32g8</div>
+                        <div style={{fontSize:'3.4vw', marginRight:'6vw', fontWeight: '400'}}>{tx.receiver_address}</div>
                     </div>
                 </CardChild>
                 <CardChild>
@@ -76,11 +97,11 @@ const OverseasTransferPage = ({userInfo}) => {
                     </div>
                     <div style={{marginTop: "1vh", display: 'flex', justifyContent:'space-between' , alignItems: 'center', width: '100%', height: 40, borderBottom: '2px solid #d3d3d3'}}>
                         <div style={{fontSize: '3.3vw', marginLeft: '4vw', color:'gray'}}>이름</div>
-                        <div style={{fontSize:'3.4vw', marginRight:'6vw', fontWeight: '400'}}>Jeongheon Kim</div>
+                        <div style={{fontSize:'3.4vw', marginRight:'6vw', fontWeight: '400'}}>{tx.sender_name}</div>
                     </div>
                     <div style={{marginTop: "1vh", display: 'flex', justifyContent:'space-between', alignItems: 'center', width: '100%', height: 40, borderBottom: '2px solid #d3d3d3'}}>
                         <div style={{fontSize: '3.3vw', marginLeft: '4vw', color:'gray'}}>출금지갑주소</div>
-                        <div style={{fontSize:'3.4vw', marginRight:'6vw', fontWeight: '400', marginBottom: '1vh'}}>123-1231-1231<br/>(cosmosTx92f6)</div>
+                        <div style={{fontSize:'3.4vw', marginRight:'6vw', fontWeight: '400', marginBottom: '1vh'}}>{tx.sender_address}<br/>(cosmosTx92f6)</div>
                     </div>
                     <div style={{marginTop: "1vh", display: 'flex', justifyContent:'space-between', alignItems: 'center', width: '100%', height: 40, borderBottom: '2px solid #d3d3d3'}}>
                         <div style={{fontSize: '3.3vw', marginLeft: '4vw', color:'gray'}}>예상출금금액</div>
