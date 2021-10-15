@@ -4,6 +4,7 @@ import { feeDelegatedValueTransfer } from "caver-js/packages/caver-transaction"
 import React, {useState} from "react"
 import Select, {defaultTheme} from "react-select"
 import styled from "styled-components"
+import { dbService } from "../../fbase"
 import { history } from "../../_helpers"
 
 const Caver = require('caver-js')
@@ -87,13 +88,10 @@ const OverseasInfoPage = ({userInfo}) => {
     const [bankModal, setBankModal] = useState(false)
     const [selectcountry, setCountry] = useState({value:'not', label:'선택하여 주세요'})
     const [selectbank, setBank] = useState({value:'not', label: '선택하여 주세요'})
-
-    const onChangeCBDCAmount = async(e) =>{
-        var val = Number(e.target.value.replace(/\D/g, ''))
-        const exchangeRate = 35.34
-        setCBDCAmount(val.toLocaleString())
-        setExchangeAmount((exchangeRate * val).toLocaleString())
-    }
+    const [selectaddress, setAddress] = useState("")
+    const [selectfname, setFname] = useState("")
+    const [selectlname, setLname] = useState("")
+    const [selectnumber, setNumber] = useState("")
 
     const onCountryOpen = () => {
         setCountryModal(true)
@@ -134,7 +132,36 @@ const OverseasInfoPage = ({userInfo}) => {
         objectFit: 'cover'
     }
 
-    const transferClick = async(e) => {
+    const onClickAddInfo = async(e) => {
+
+        var randomNum = (Math.floor(Math.random()*(10000-1)) + 1)+'';
+            while(randomNum.length < 5){
+                randomNum = '0'+randomNum
+            }
+        await dbService
+            .collection(`OverseasInfo`)
+            .add({
+                id: "OS2021-" + randomNum,
+                receiver_address: selectaddress,
+                receiver_bank: selectbank.value,
+                receiver_country: selectcountry.value,
+                receiver_fname: selectfname,
+                receiver_lname: selectlname,
+                receiver_number: selectnumber,
+            })
+    }
+
+    const onChangeAddress = (e) => {
+        setAddress(e.target.value)
+    }
+    const onChangeFname = (e) => {
+        setFname(e.target.value)
+    }
+    const onChangeLname = (e) => {
+        setLname(e.target.value)
+    }
+    const onChangeNumber = (e) => {
+        setNumber(e.target.value)
     }
 
     return (
@@ -175,49 +202,35 @@ const OverseasInfoPage = ({userInfo}) => {
                 <div style={{marginTop:'5vw', fontSize: '3.3vw', width:'85vw', fontWeight: '400', color:'#696969'}}>입금지갑주소 (Address)</div>
                 <Info>
                     <div style={{marginLeft:'3.5vw'}}>
-                        <InfoInput placeholder="주소를 입력하세요" />
+                        <InfoInput placeholder="주소를 입력하세요" value={selectaddress} onChange={onChangeAddress} />
                     </div>
                 </Info>
 
                 <div style={{marginTop:'4.3vw', fontSize: '3.3vw', width:'85vw', fontWeight: '400', color:'#696969'}}>이름 (First name)</div>
                 <Info>
                     <div style={{marginLeft:'3.5vw'}}>
-                        <InfoInput placeholder="이름을 입력하세요"/>
+                        <InfoInput placeholder="이름을 입력하세요" value={selectfname} onChange={onChangeFname}/>
                     </div>
                 </Info>
 
                 <div style={{marginTop:'4.3vw', fontSize: '3.3vw', width:'85vw', fontWeight: '400', color:'#696969'}}>성 (Last name)</div>
                 <Info>
                     <div style={{marginLeft:'3.5vw'}}>
-                        <InfoInput placeholder="성을 입력하세요"/>
+                        <InfoInput placeholder="성을 입력하세요" value={selectlname} onChange={onChangeLname}/>
                     </div>
                 </Info>
 
                 <div style={{marginTop:'4.3vw', fontSize: '3.3vw', width:'85vw', fontWeight: '400', color:'#696969'}}>연락처 (Phone Nubmer)</div>
                 <Info>
                     <div style={{marginLeft:'3.5vw'}}>
-                        <InfoInput placeholder="연락처를 입력하세요"/>
+                        <InfoInput placeholder="연락처를 입력하세요" value={selectnumber} onChange={onChangeNumber}/>
                     </div>
                 </Info>
-
-                {/* <div style={{color: '#212121', fontSize: '3.5vw', width: '90vw', marginTop: '5vw', fontWeight: '600'}}>보내는 금액</div>
-                <Amount>
-                    <div style={{display: 'flex', alignItems: 'center'}}>
-                        <PriceInput defaultValue="0" value={CBDCAmount} onChange={onChangeCBDCAmount}/>
-                        <div style={{fontSize: '3.8vw', marginLeft: 10}}>D-THB</div>
-                    </div>
-                </Amount>
-                <div>
-                    <FontAwesomeIcon icon={faArrowsAltV} style={{color: "#000", fontSize: '5vw', marginRight: '16vw'}}/>
-                </div>
-                <Amount>
-                    <div style={{display: 'flex', alignItems: 'center'}}>
-                        <PriceOutput defaultValue="0" value={ExchangeAmount} readOnly={true}/>
-                        <div style={{fontSize: '3.8vw', marginLeft: 10}}>D-KRW</div>
-                    </div>
-                </Amount> */}
             </Body>
-            <ExRunButton onClick={()=>history.push('/personal/overseasamount')}>다음</ExRunButton>
+            <ExRunButton onClick={()=>{
+                onClickAddInfo()
+                history.push('/personal/overseasamount')
+            }}>다음</ExRunButton>
             {countrymodal && <Modal>
                 <ModalBackground onClick={() => setCountryModal(false)}></ModalBackground>
                 <ModalContent>
@@ -228,7 +241,7 @@ const OverseasInfoPage = ({userInfo}) => {
                     <Mline/>
                     <div style={{display:'flex', justifyContent: 'space-between', position: 'relative'}}>
                         <CButton onClick={()=> {
-                            setCountry({value: "usa", label:
+                            setCountry({value: "미국", label:
                                 <div style={{display: 'flex', flexDirection: 'column'}}>
                                     <div style={{color: '#000', fontSize:'3.5vw'}}>
                                         <img src={"/images/usa.png"} 
@@ -241,7 +254,7 @@ const OverseasInfoPage = ({userInfo}) => {
                                 style={countryStyle1}></img>
                         미국</CButton>
                         <CButton onClick={()=> {
-                            setCountry({value: "can", label: 
+                            setCountry({value: "캐나다", label: 
                             <div style={{display: 'flex', flexDirection: 'column'}}>
                             <div style={{color: '#000', fontSize:'3.5vw'}}>
                                 <img src={"/images/canada.png"} 
@@ -256,7 +269,7 @@ const OverseasInfoPage = ({userInfo}) => {
                     </div>
                     <div style={{display:'flex', justifyContent: 'space-between', position: 'relative'}}>
                         <CButton onClick={()=> {
-                            setCountry({value: "uk", label: <div style={{display: 'flex', flexDirection: 'column'}}>
+                            setCountry({value: "영국", label: <div style={{display: 'flex', flexDirection: 'column'}}>
                             <div style={{color: '#000', fontSize:'3.5vw'}}>
                                 <img src={"/images/uk.png"} 
                                 style={countryStyle2}></img>영국</div></div>})
@@ -268,7 +281,7 @@ const OverseasInfoPage = ({userInfo}) => {
                                 style={countryStyle1}></img>
                         영국</CButton>
                         <CButton onClick={()=> {
-                            setCountry({value: "aus", label:
+                            setCountry({value: "호주", label:
                             <div style={{display: 'flex', flexDirection: 'column'}}>
                             <div style={{color: '#000', fontSize:'3.5vw'}}>
                                 <img src={"/images/austrailia.png"} 
@@ -283,7 +296,7 @@ const OverseasInfoPage = ({userInfo}) => {
                     </div>
                     <div style={{display:'flex', justifyContent: 'space-between', position: 'relative'}}>
                         <CButton onClick={()=> {
-                            setCountry({value: "jap", label: 
+                            setCountry({value: "일본", label: 
                             <div style={{display: 'flex', flexDirection: 'column'}}>
                             <div style={{color: '#000', fontSize:'3.5vw'}}>
                                 <img src={"/images/japan.png"} 
@@ -296,7 +309,7 @@ const OverseasInfoPage = ({userInfo}) => {
                                 style={countryStyle1}></img>
                         일본</CButton>
                         <CButton onClick={()=> {
-                            setCountry({value: "fra", label:
+                            setCountry({value: "프랑스", label:
                             <div style={{display: 'flex', flexDirection: 'column'}}>
                             <div style={{color: '#000', fontSize:'3.5vw'}}>
                                 <img src={"/images/france.png"} 
@@ -311,7 +324,7 @@ const OverseasInfoPage = ({userInfo}) => {
                     </div>
                     <div style={{display:'flex', justifyContent: 'space-between', position: 'relative'}}>
                         <CButton onClick={()=> {
-                            setCountry({value: "ger", label: 
+                            setCountry({value: "독일", label: 
                             <div style={{display: 'flex', flexDirection: 'column'}}>
                             <div style={{color: '#000', fontSize:'3.5vw'}}>
                                 <img src={"/images/germany.png"} 
@@ -324,7 +337,7 @@ const OverseasInfoPage = ({userInfo}) => {
                                 style={countryStyle1}></img>
                         독일</CButton>
                         <CButton onClick={()=> {
-                            setCountry({value: "new", label: 
+                            setCountry({value: "뉴질랜드", label: 
                             <div style={{display: 'flex', flexDirection: 'column'}}>
                             <div style={{color: '#000', fontSize:'3.5vw'}}>
                                 <img src={"/images/newzealand.png"} 
@@ -339,7 +352,7 @@ const OverseasInfoPage = ({userInfo}) => {
                     </div>
                     <div style={{display:'flex', justifyContent: 'space-between', position: 'relative'}}>
                         <CButton onClick={()=> {
-                            setCountry({value: "thb", label: 
+                            setCountry({value: "태국", label: 
                             <div style={{display: 'flex', flexDirection: 'column'}}>
                             <div style={{color: '#000', fontSize:'3.5vw'}}>
                                 <img src={"/images/taiwan.png"} 
@@ -352,7 +365,7 @@ const OverseasInfoPage = ({userInfo}) => {
                                 style={countryStyle1}></img>
                         태국</CButton>
                         <CButton onClick={()=> {
-                            setCountry({value: "sin", label: 
+                            setCountry({value: "싱가포르", label: 
                             <div style={{display: 'flex', flexDirection: 'column'}}>
                             <div style={{color: '#000', fontSize:'3.5vw'}}>
                                 <img src={"/images/singapore.png"} 
@@ -376,7 +389,7 @@ const OverseasInfoPage = ({userInfo}) => {
                     </ModalHeader>
                     <Mline style={{width:'100%'}}/>
                     <BButton onClick={() => {
-                        setBank({value:'bankok', label: '방콕은행(Bangkok Bank Public Company)'})
+                        setBank({value:'방콕은행', label: '방콕은행(Bangkok Bank Public Company)'})
                         setBankModal(false)
                         }}>방콕은행(Bangkok Bank Public Company)</BButton>
                     <Mline style={{width:'100%'}}/>
@@ -410,16 +423,6 @@ const Body = styled.div`
 const HeaderText = styled.div`
     color: #000;
 `
-const MButton = styled.div`
-    width: 100%;
-    color: #000000;
-    height: 2vh;
-    background-color: #ffffff;
-    font-size: 3.5vw;
-    outline: none;
-    padding: 3.5vw 2.5vh;
-    cursor: pointer;
-`
 const Info = styled.div`
     display: flex;
     justify-content: space-between;
@@ -434,15 +437,6 @@ const InfoInput = styled.input`
     width: 80vw;
     height: 4.5vh;
     font-size: 3.5vw;
-    padding-right: 20px;
-`
-const PriceOutput = styled.input`
-    border: 1px solid #cfcccc;
-    border-radius: 5px;
-    text-align: right;
-    width: 71vw;
-    height: 7.5vh;
-    font-size: 4vw;
     padding-right: 20px;
 `
 const Modal = styled.div`
