@@ -167,10 +167,10 @@ const OverseasAmountPage = ({userInfo}) => {
             </div>
             <ExRunButton onClick={() => {
                 onClickUpdateInfo()
-                history.push({
+                setTimeout(history.push({
                     pathname: '/personal/overseastransfer',
                     state: {txId: location.state.txId}
-                    })}}>다음</ExRunButton>
+                    }),2500)}}>다음</ExRunButton>
         </div>
     )
 }
