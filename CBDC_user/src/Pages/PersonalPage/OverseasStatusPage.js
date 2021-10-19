@@ -16,7 +16,15 @@ const OverseasStatusPage = ({userInfo}) => {
             
             const txsArray = txSnapshot.docs.map((doc)=>({
                 ...doc.data()
-            }))
+            })).sort(function(a,b){
+                if(a.transaction_date > b.transaction_date){
+                    return -1;
+                }
+                if(a.transaction_date < b.transaction_date){
+                    return 1;
+                }
+                return 0;
+            })
             setTxs(txsArray)
         } catch(error) {
             console.log(error)
@@ -60,7 +68,7 @@ const OverseasStatusPage = ({userInfo}) => {
                                         <Amount>{tx.amount} D-THB</Amount>
                                     </ListItemLeft>
                                     <ListItemRight>
-                                        <Time>2021-10-12</Time>
+                                        <Time>{tx.transaction_date}</Time>
                                         <StatusButton>송금완료</StatusButton>
                                     </ListItemRight>
                                 </ListItem>
@@ -149,6 +157,7 @@ const Name = styled.div`
 const Time = styled.div`
     color: #aaaaaa;
     font-size: 3vw;
+    margin-right: 3vw;
 `
 const Amount = styled.div`
     margin-top: 10px;

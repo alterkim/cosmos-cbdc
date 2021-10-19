@@ -6,6 +6,7 @@ import Select, {defaultTheme} from "react-select"
 import styled from "styled-components"
 import { dbService } from "../../fbase"
 import { history } from "../../_helpers"
+import GetDatetime from "../../_helpers/GetDatetime"
 
 const Caver = require('caver-js')
 const caver = new Caver('http://localhost:8551/')
@@ -153,6 +154,7 @@ const OverseasInfoPage = ({userInfo}) => {
                 receiver_fname: selectfname,
                 receiver_lname: selectlname,
                 receiver_number: selectnumber,
+                transaction_date: GetDatetime()
             })
     }
 

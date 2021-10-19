@@ -105,7 +105,7 @@ const OverseasTransferPage = ({userInfo}) => {
                     </div>
                     <div style={{marginTop: "1vh", display: 'flex', justifyContent:'space-between', alignItems: 'center', width: '100%', height: 40, borderBottom: '2px solid #d3d3d3'}}>
                         <div style={{fontSize: '3.3vw', marginLeft: '4vw', color:'gray'}}>예상출금금액</div>
-                        <div style={{fontSize:'3.4vw', marginRight:'6vw', fontWeight: '400'}}>360,000 D-KRW</div>
+                        <div style={{fontSize:'3.4vw', marginRight:'6vw', fontWeight: '400'}}>{tx.krw_amount} D-KRW</div>
                     </div>
                 </CardChild>
             </Body>

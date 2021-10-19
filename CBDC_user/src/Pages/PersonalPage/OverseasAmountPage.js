@@ -15,6 +15,7 @@ const OverseasAmountPage = ({userInfo}) => {
     const [senderQuerySnapshot,setSenderQuerySnapshot] = useState([])
     const [sendAmount, setSendAmount] = useState(0)
     const [exchangeAmount, setExchangeAmount] = useState(0)
+    const [krwAmount, setKRWAmount] = useState(0)
     const [exchangeRate, setExchangeRate] = useState(35.74)
     const [exchangeArrow, setExchangeArrow] = useState(false)
 
@@ -37,7 +38,12 @@ const OverseasAmountPage = ({userInfo}) => {
     }
 
     const onChangeCBDCAmount = async(e) =>{
-        var val = Number(e.target.value.replace(/\D/g, ''))
+        var val = Number(e.target.value.replace(/\D/g, ''));
+        if(!exchangeArrow){
+            setKRWAmount((exchangeRate * val).toLocaleString())
+        } else {
+            setKRWAmount(val.toLocaleString())
+        }
         setSendAmount(val.toLocaleString())
         setExchangeAmount((exchangeRate * val).toLocaleString())
     }
@@ -69,6 +75,7 @@ const OverseasAmountPage = ({userInfo}) => {
                 .doc(overseasSnapshot.docs[0].id)
                 .update({
                     amount: sendAmount,
+                    krw_amount: krwAmount,
                     sender_name: 'JEONGHEON KIM',
                     sender_address: '123-1231-1231'           
             })

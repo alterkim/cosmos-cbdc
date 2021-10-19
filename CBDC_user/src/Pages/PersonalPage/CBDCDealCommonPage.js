@@ -7,6 +7,8 @@ import { dbService } from "../../fbase"
 
 const CBDCDealCommonPage = ({userInfo}) => {
     const [txs,setTxs] = useState([])
+    const [overtxs, setOverTxs] = useState([])
+    const [concattxs, setConcatTxs] = useState([])
     const curDate = new Date().getUTCFullYear().toString()+"-"+(new Date().getUTCMonth()+1).toString()
     const getUserTxHistory = async(e) =>{
         try{
@@ -31,9 +33,32 @@ const CBDCDealCommonPage = ({userInfo}) => {
             console.log(error)
         }  
     }
+    const getOverseasHistory = async(e) => {
+        try {
+            var txSnapshot = await dbService
+                .collection(`OverseasInfo`)
+                .get()
+            
+            const txsArray = txSnapshot.docs.map((doc)=>({
+                ...doc.data()
+            })).sort(function(a,b){
+                if(a.transaction_date > b.transaction_date){
+                    return -1;
+                }
+                if(a.transaction_date < b.transaction_date){
+                    return 1;
+                }
+                return 0;
+            })
+            setOverTxs(txsArray)
+        } catch(error) {
+            console.log(error)
+        }
+    }
     useEffect(() =>{
         getUserTxHistory()
-    },[userInfo,setTxs])
+        getOverseasHistory()
+    },[userInfo,setTxs,setOverTxs])
     const [state, setState] = useState(false)
 
     return (
@@ -101,11 +126,28 @@ const CBDCDealCommonPage = ({userInfo}) => {
                     </ListHeader>
                     {!state && <ListBody>
                         {
-                        txs.map((tx,index)=>(
+                        txs.concat(overtxs).sort(function(a,b){
+                            if(a.transaction_date > b.transaction_date){
+                                return -1;
+                            }
+                            if(a.transaction_date < b.transaction_date){
+                                return 1;
+                            }
+                            return 0;
+                        }).map((tx,index)=>(
                         <ListItem key={index}>
                             <ListItemLeft>
                                 <Time>{tx.transaction_date}</Time>
-                                <Content>{tx.receiver_name} {' '} {tx.transaction_type}</Content>
+                                {/* <Content>{tx.receiver_name} {' '} {tx.transaction_type}</Content> */}
+                                <Content>{
+                                    tx.transaction_type != undefined?(
+                                        <>{tx.receiver_name} {' '} {tx.transaction_type}</>
+                                    )
+                                    :
+                                    (
+                                        <>해외송금</>
+                                    )    
+                                }</Content>
                             </ListItemLeft>
                             <ListItemRight style={{textAlign: 'right'}}>    
                                 {
@@ -116,9 +158,15 @@ const CBDCDealCommonPage = ({userInfo}) => {
                                     :
                                     ( tx.transaction_type == "결제취소"?(
                                         <>{(tx.amount).toLocaleString()}</>
-                                        ):(
+                                    )
+                                    :
+                                    ( tx.transaction_type != undefined?(
                                         <>{(-tx.amount).toLocaleString()}</>
-                                    ))
+                                    )
+                                    :
+                                    (
+                                        <>{(tx.krw_amount)}</>
+                                    )))
                                 }
                                 <br/>
                                 D-KRW
