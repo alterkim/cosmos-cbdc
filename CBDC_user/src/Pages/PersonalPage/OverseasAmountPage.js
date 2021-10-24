@@ -77,7 +77,9 @@ const OverseasAmountPage = ({userInfo}) => {
                     amount: sendAmount,
                     krw_amount: krwAmount,
                     sender_name: 'JEONGHEON KIM',
-                    sender_address: '123-1231-1231'           
+                    sender_address: '123-1231-1231',
+                    sender_country: 'Korea',
+                    sender_bank: 'Hana Bank'       
             })
         } catch (error) {
             console.log(error)

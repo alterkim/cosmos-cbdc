@@ -60,7 +60,11 @@ const OverseasInfoPage = () => {
                                     </ListItemLeft>
                                     <ListItemRight>
                                         <Time>{tx.transaction_date}</Time>
-                                        <StatusButton onClick={()=>history.push('/detail')}>Sending<br/>Complete</StatusButton>
+                                        <StatusButton onClick={()=>{
+                                            history.push({
+                                                pathname: '/detail',
+                                                state: {txId: tx.id}
+                                             })}}>Sending<br/>Complete</StatusButton>
                                     </ListItemRight>
                                 </ListItem>
                             ))
