@@ -32,7 +32,7 @@ const OverseasInfoPage = () => {
 
     useEffect(()=> {
         getOverseasHistory()
-    },[txs])
+    },[])
 
     const logoStyle = {
         height: '8vh',

@@ -12,7 +12,6 @@ const OverseasAmountPage = ({userInfo}) => {
     const [walletShow,setWalletShow] = useState(false)
     const [senderAccount, setSenderAccount] = useState(userInfo.account)
     const [senderWallet,setSenderWallet] = useState(userInfo.wallet)
-    const [senderQuerySnapshot,setSenderQuerySnapshot] = useState([])
     const [sendAmount, setSendAmount] = useState(0)
     const [exchangeAmount, setExchangeAmount] = useState(0)
     const [krwAmount, setKRWAmount] = useState(0)
@@ -22,14 +21,13 @@ const OverseasAmountPage = ({userInfo}) => {
     const onClickSender= async(e) => {
         try{
             // sender 세팅
-            const senderSnapshot = await dbService
-                .collection(`UserInfo`)
-                .where('account','==',e.target.value)
-                .get()
-            const senderData = senderSnapshot.docs[0].data()
-            setSenderAccount(senderData.account)
-            setSenderWallet(senderData.wallet)
-            setSenderQuerySnapshot(senderSnapshot)
+            // const senderSnapshot = await dbService
+            //     .collection(`UserInfo`)
+            //     .where('account','==',e.target.value)
+            //     .get()
+            // const senderData = senderSnapshot.docs[0].data()
+            // setSenderAccount(senderData.account)
+            // setSenderWallet(senderData.wallet)
             setWalletShow(true)
         }catch(error){
             console.log(error)
@@ -60,7 +58,6 @@ const OverseasAmountPage = ({userInfo}) => {
             setSendAmount(0)
             setExchangeAmount(0)
         }
-        console.log(location.state.txId)
     }
 
     const onClickUpdateInfo = async(e) => {
@@ -70,7 +67,7 @@ const OverseasAmountPage = ({userInfo}) => {
                 .collection(`OverseasInfo`)
                 .where('id', '==', txId)
                 .get()
-        
+
             await dbService.collection(`OverseasInfo`)
                 .doc(overseasSnapshot.docs[0].id)
                 .update({

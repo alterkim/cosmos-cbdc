@@ -33,7 +33,7 @@ const OverseasStatusPage = ({userInfo}) => {
 
     useEffect(()=> {
         getOverseasHistory()
-    },[txs])
+    },[])
 
     return (
         <div>

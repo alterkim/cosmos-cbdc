@@ -55,7 +55,7 @@ const OverseasTransferPage = ({userInfo}) => {
     
     useEffect(()=> {
         getOverseasHistory()
-    },[tx])
+    },[])
 
     return (
         <div>
