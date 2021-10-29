@@ -20,7 +20,22 @@ const OverseasTransferPage = ({userInfo}) => {
     }
 
     const onClickTransfer = async(e) => {
+        const txId = location.state.txId
         // TODO
+        try {
+            const overseasSnapshot = await dbService
+                .collection(`OverseasInfo`)
+                .where('id', '==', txId)
+                .get()
+        
+            await dbService.collection(`OverseasInfo`)
+                .doc(overseasSnapshot.docs[0].id)
+                .update({
+                    status: 'send'    
+            })
+        } catch(error) {
+            console.log(error)
+        }
         setTransfer(true)
     }
 

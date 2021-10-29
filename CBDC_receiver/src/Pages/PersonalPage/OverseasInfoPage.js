@@ -10,6 +10,7 @@ const OverseasInfoPage = () => {
         try {
             var txSnapshot = await dbService
                 .collection(`OverseasInfo`)
+                .where('status', '==', 'send')
                 .get()
             
             const txsArray = txSnapshot.docs.map((doc)=>({
