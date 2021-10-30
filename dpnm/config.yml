@@ -5,13 +5,13 @@ accounts:
   - name: hana-bank
     coins: ["200000000000token", "100000000stake"]
   - name: escrow
-    coins: ["100000000token"]
+    coins: ["1000000000token"]
   - name: user1
-    coins: ["1000000token"]
+    coins: ["500000000token"]
   - name: user2
-    coins: ["2000000token"]
+    coins: ["200000000token"]
   - name: affiliate
-    coins: ["30000000token"]
+    coins: ["300000000token"]
 validator:
   name: central-bank
   staked: "100000000stake"
