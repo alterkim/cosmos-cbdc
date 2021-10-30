@@ -3,13 +3,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { history } from "../../_helpers"
 import React, {useEffect, useState} from "react"
 import styled from "styled-components"
-import { dbService } from "../../fbase"
+import { dbService, firebaseInstance } from "../../fbase"
 import { useLocation } from "react-router"
+import TokenTransfer from "../../_helpers/TokenTransfer"
+import { ADDRESS_HANA_BANK, ADDRESS_USER_1 } from "../../constants/Accounts"
 
 const OverseasTransferPage = ({userInfo}) => {
     const location = useLocation()
     const [transfer, setTransfer] = useState(false)
     const [tx, setTx] = useState({})
+    const [confirm, setConfirm] = useState(false)
 
     const countryStyle = {
         height:'20px',
@@ -21,7 +24,33 @@ const OverseasTransferPage = ({userInfo}) => {
 
     const onClickTransfer = async(e) => {
         const txId = location.state.txId
-        // TODO
+        const krw_amount = parseInt(tx.krw_amount.replace(/,/g,""))
+        const usd_amount = krw_amount * 0.001
+        const thb_amount = parseInt(tx.amount.replace(/,/g,""))
+
+        // 1. User A KRW-C Wallet -> 하나은행 KRW-C Wallet
+        try {
+            TokenTransfer(krw_amount, ADDRESS_USER_1, ADDRESS_HANA_BANK)
+            setConfirm(true)
+        } catch(error) {
+            console.log(error)
+            setConfirm(false)
+        }
+        try {
+            if(confirm){
+                await dbService
+                    .collection(`UserInfo`)
+                    .doc(userInfo.uid)
+                    .update({
+                        common_cbdc_balance: firebaseInstance.firestore.FieldValue.increment(-krw_amount)
+                    })
+            }
+        } catch(error) {
+            console.log(error)
+            setConfirm(false)
+        }
+
+        // Status Update
         try {
             const overseasSnapshot = await dbService
                 .collection(`OverseasInfo`)
@@ -31,12 +60,168 @@ const OverseasTransferPage = ({userInfo}) => {
             await dbService.collection(`OverseasInfo`)
                 .doc(overseasSnapshot.docs[0].id)
                 .update({
-                    status: 'send'    
+                    status: 'send'
             })
+
+            setTransfer(true)
         } catch(error) {
             console.log(error)
         }
-        setTransfer(true)
+        
+        // 2. 하나은행 KRW-C Wallet -> 하나은행 KRW Account
+        try {
+            if(confirm){
+                await dbService
+                    .collection(`BankInfo`)
+                    .doc("Hana Bank")
+                    .update({
+                        krw_amount: firebaseInstance.firestore.FieldValue.increment(krw_amount)
+                    })
+            }
+        } catch(error) {
+            console.log(error)
+            setConfirm(false)
+        }
+
+        // 3. 하나은행 KRW Account -> 하나은행 USD Account
+        try {
+            if(confirm){
+                await dbService
+                    .collection(`BankInfo`)
+                    .doc("Hana Bank")
+                    .update({
+                        krw_amount: firebaseInstance.firestore.FieldValue.increment(-krw_amount),
+                        usd_amount: firebaseInstance.firestore.FieldValue.increment(usd_amount)
+                    })
+                }
+        } catch(error) {
+            console.log(error)
+            setConfirm(false)
+        }
+
+        // 4. 하나은행 USD Account -> 하나은행 JP Morgan USD Account
+        try {
+            if(confirm){
+                await dbService
+                    .collection(`BankInfo`)
+                    .doc("Hana Bank")
+                    .update({
+                        usd_amount: firebaseInstance.firestore.FieldValue.increment(-usd_amount),
+                        jpmorgan_amount: firebaseInstance.firestore.FieldValue.increment(usd_amount)
+                    })
+                }
+        } catch(error) {
+            console.log(error)
+            setConfirm(false)
+        }
+
+        // 5. 하나은행 JP Morgan USD Account -> JP Morgan USD-C Wallet 이체 확인 && 6. JP Morgan USD-C Wallet -> 하나은행 USD-C Wallet
+        try {
+            if(confirm) {
+                // TODO: TokenTransfer in Klaytn Network
+            }
+        } catch(error) {
+            console.log(error)
+            setConfirm(false)
+        }
+
+        // 7. 하나은행 USD-C Wallet -> 방콕은행 USD-C Wallet
+        try {
+            if(confirm) {
+                // TODO: TokenTransfer in Klaytn Network
+            }
+        } catch(error) {
+            console.log(error)
+            setConfirm(false)
+        }
+
+        // 8. 방콕은행 USD-C Wallet -> Citibank USD-C Wallet
+        try {
+            if(confirm) {
+                // TODO: TokenTransfer in Klaytn Network
+            }
+        } catch(error) {
+            console.log(error)
+            setConfirm(false)
+        }
+
+        // 9. Citibank 이체 확인
+        try {
+            if(confirm) {
+                await dbService
+                    .collection(`BankInfo`)
+                    .doc("Bangkok Bank")
+                    .update({
+                        citibank_amount: firebaseInstance.firestore.FieldValue.increment(usd_amount)
+                    })
+                setConfirm(true)
+            }
+        } catch(error) {
+            console.log(error)
+            setConfirm(false)
+        }
+
+        // 10. 방콕은행 Citibank USD Account -> 방콕은행 USD Account
+        try {
+            if (confirm) {
+                await dbService
+                    .collection(`BankInfo`)
+                    .doc("Bangkok Bank")
+                    .update({
+                        citibank_amount: firebaseInstance.firestore.FieldValue.increment(-usd_amount),
+                        usd_amount: firebaseInstance.firestore.FieldValue.increment(usd_amount)
+                    })
+                setConfirm(true)
+            }
+        } catch(error) {
+            console.log(error)
+            setConfirm(false)
+        }
+
+        // 11. 방콕은행 USD Account -> 방콕은행 THB Account
+        try {
+            if (confirm) {
+                await dbService
+                    .collection(`BankInfo`)
+                    .doc("Bangkok Bank")
+                    .update({
+                        usd_amount: firebaseInstance.firestore.FieldValue.increment(-usd_amount),
+                        thb_amount: firebaseInstance.firestore.FieldValue.increment(thb_amount)
+                    })
+                setConfirm(true)
+            }
+        } catch(error) {
+            console.log(error)
+            setConfirm(false)
+        }
+
+        // 12. 방콕은행 THB Account -> 방콕은행 THB-C Wallet
+        try {
+            if (confirm) {
+                await dbService
+                    .collection(`BankInfo`)
+                    .doc("Bangkok Bank")
+                    .update({
+                        thb_amount: firebaseInstance.firestore.FieldValue.increment(-thb_amount)
+                    })
+                setConfirm(true)
+            }
+        } catch(error) {
+            console.log(error)
+            setConfirm(false)
+        }
+
+        // 13. 방콕은행 THB-C Wallet -> User B THB-C Wallet
+        try {
+            if (confirm) {
+                // TODO: Token Transfer in Line Network
+
+                setConfirm(true)
+            }
+        } catch(error) {
+            console.log(error)
+        }
+        // User B Info 만들어서 해당 balance 늘려야 하나?
     }
 
     const getOverseasHistory = async(e) => {
