@@ -36,12 +36,14 @@ app.post('/v1/cosmos/transfer', (req, res) => {
     res.send(cmd);
   })
 
-app.post('v1/line/transfer', (req, res) => {
+app.post('/v1/line/transfer', (req, res) => {
     try {
       var cmd = `yes y | sh line.sh ${req.body.sender} ${req.body.receiver} ${req.body.amount}${req.body.token}`
 
       exec(cmd,
           function (error, stdout, stderr) {
+            console.log('stdout: ' + stdout);
+            console.log('stderr: ' + stderr)
             if (error !== null) {
               console.log('exec error: ' + error);
             }
@@ -50,6 +52,8 @@ app.post('v1/line/transfer', (req, res) => {
     } catch(error) {
       console.log(error)
     }
+
+    res.send(cmd);
 })
 
   app.listen(port, () => {
