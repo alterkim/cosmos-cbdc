@@ -6,13 +6,14 @@ import styled from "styled-components"
 import { dbService, firebaseInstance } from "../../fbase"
 import { useLocation } from "react-router"
 import TokenCosmosTransfer from "../../_helpers/TokenCosmosTransfer"
-import { ADDRESS_HANA_BANK, ADDRESS_USER_1 } from "../../constants/Accounts"
+import { ADDRESS_BANGKOK_BANK, ADDRESS_HANA_BANK, ADDRESS_USER_1, ADDRESS_USER_B } from "../../constants/Accounts"
+import TokenLineTransfer from "../../_helpers/TokenLineTransfer"
 
 const OverseasTransferPage = ({userInfo}) => {
     const location = useLocation()
     const [transfer, setTransfer] = useState(false)
     const [tx, setTx] = useState({})
-    const [confirm, setConfirm] = useState(false)
+    const [confirm, setConfirm] = useState(true)
 
     const countryStyle = {
         height:'20px',
@@ -28,13 +29,14 @@ const OverseasTransferPage = ({userInfo}) => {
         const usd_amount = krw_amount * 0.001
         const thb_amount = parseInt(tx.amount.replace(/,/g,""))
 
+        // setConfirm(true)
         // 1. User A KRW-C Wallet -> 하나은행 KRW-C Wallet
         try {
             TokenCosmosTransfer(krw_amount, ADDRESS_USER_1, ADDRESS_HANA_BANK)
-            setConfirm(true)
+            
         } catch(error) {
             console.log(error)
-            setConfirm(false)
+            // setConfirm(false)
         }
         try {
             if(confirm){
@@ -47,7 +49,7 @@ const OverseasTransferPage = ({userInfo}) => {
             }
         } catch(error) {
             console.log(error)
-            setConfirm(false)
+            // setConfirm(false)
         }
 
         // Status Update
@@ -80,7 +82,7 @@ const OverseasTransferPage = ({userInfo}) => {
             }
         } catch(error) {
             console.log(error)
-            setConfirm(false)
+            // setConfirm(false)
         }
 
         // 3. 하나은행 KRW Account -> 하나은행 USD Account
@@ -96,7 +98,7 @@ const OverseasTransferPage = ({userInfo}) => {
                 }
         } catch(error) {
             console.log(error)
-            setConfirm(false)
+            // setConfirm(false)
         }
 
         // 4. 하나은행 USD Account -> 하나은행 JP Morgan USD Account
@@ -112,7 +114,7 @@ const OverseasTransferPage = ({userInfo}) => {
                 }
         } catch(error) {
             console.log(error)
-            setConfirm(false)
+            // setConfirm(false)
         }
 
         // 5. 하나은행 JP Morgan USD Account -> JP Morgan USD-C Wallet 이체 확인 && 6. JP Morgan USD-C Wallet -> 하나은행 USD-C Wallet
@@ -122,7 +124,7 @@ const OverseasTransferPage = ({userInfo}) => {
             }
         } catch(error) {
             console.log(error)
-            setConfirm(false)
+            // setConfirm(false)
         }
 
         // 7. 하나은행 USD-C Wallet -> 방콕은행 USD-C Wallet
@@ -132,7 +134,7 @@ const OverseasTransferPage = ({userInfo}) => {
             }
         } catch(error) {
             console.log(error)
-            setConfirm(false)
+            // setConfirm(false)
         }
 
         // 8. 방콕은행 USD-C Wallet -> Citibank USD-C Wallet
@@ -142,7 +144,7 @@ const OverseasTransferPage = ({userInfo}) => {
             }
         } catch(error) {
             console.log(error)
-            setConfirm(false)
+            // setConfirm(false)
         }
 
         // 9. Citibank 이체 확인
@@ -154,11 +156,11 @@ const OverseasTransferPage = ({userInfo}) => {
                     .update({
                         citibank_amount: firebaseInstance.firestore.FieldValue.increment(usd_amount)
                     })
-                setConfirm(true)
+                // setConfirm(true)
             }
         } catch(error) {
             console.log(error)
-            setConfirm(false)
+            // setConfirm(false)
         }
 
         // 10. 방콕은행 Citibank USD Account -> 방콕은행 USD Account
@@ -171,11 +173,11 @@ const OverseasTransferPage = ({userInfo}) => {
                         citibank_amount: firebaseInstance.firestore.FieldValue.increment(-usd_amount),
                         usd_amount: firebaseInstance.firestore.FieldValue.increment(usd_amount)
                     })
-                setConfirm(true)
+                // setConfirm(true)
             }
         } catch(error) {
             console.log(error)
-            setConfirm(false)
+            // setConfirm(false)
         }
 
         // 11. 방콕은행 USD Account -> 방콕은행 THB Account
@@ -188,11 +190,11 @@ const OverseasTransferPage = ({userInfo}) => {
                         usd_amount: firebaseInstance.firestore.FieldValue.increment(-usd_amount),
                         thb_amount: firebaseInstance.firestore.FieldValue.increment(thb_amount)
                     })
-                setConfirm(true)
+                // setConfirm(true)
             }
         } catch(error) {
             console.log(error)
-            setConfirm(false)
+            // setConfirm(false)
         }
 
         // 12. 방콕은행 THB Account -> 방콕은행 THB-C Wallet
@@ -204,19 +206,18 @@ const OverseasTransferPage = ({userInfo}) => {
                     .update({
                         thb_amount: firebaseInstance.firestore.FieldValue.increment(-thb_amount)
                     })
-                setConfirm(true)
+                // setConfirm(true)
             }
         } catch(error) {
             console.log(error)
-            setConfirm(false)
+            // setConfirm(false)
         }
 
         // 13. 방콕은행 THB-C Wallet -> User B THB-C Wallet
         try {
             if (confirm) {
-                // TODO: Token Transfer in Line Network
-
-                setConfirm(true)
+                TokenLineTransfer(thb_amount, ADDRESS_BANGKOK_BANK, ADDRESS_USER_B)
+                // setConfirm(true)
             }
         } catch(error) {
             console.log(error)
