@@ -6,7 +6,7 @@ import { history } from '../../_helpers';
 import { dbService, firebaseInstance } from "../../fbase";
 import GetDatetime from "../../_helpers/GetDatetime";
 import {useLocation} from "react-router"
-import TokenTransfer from "../../_helpers/TokenTransfer";
+import TokenCosmosTransfer from "../../_helpers/TokenCosmosTransfer";
 import { ADDRESS_USER_1, ADDRESS_AFILIATE } from "../../constants/Accounts";
 
 const PaymentPage = ({userInfo,affiliateInfo}) => {
@@ -74,7 +74,7 @@ const PaymentPage = ({userInfo,affiliateInfo}) => {
                 .update(affiliate_cbdc_balance)
             
     
-            TokenTransfer(val, ADDRESS_USER_1, ADDRESS_AFILIATE)
+            TokenCosmosTransfer(val, ADDRESS_USER_1, ADDRESS_AFILIATE)
                   
             history.push('/personal/CBDC')
             window.location.reload();

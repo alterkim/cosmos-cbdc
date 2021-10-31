@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { history } from '../../_helpers';
 import GetDatetime from "../../_helpers/GetDatetime";
 import { dbService, firebaseInstance } from "../../fbase";
-import TokenTransfer from "../../_helpers/TokenTransfer";
+import TokenCosmosTransfer from "../../_helpers/TokenCosmosTransfer";
 import { ADDRESS_USER_1, ADDRESS_USER_2 } from "../../constants/Accounts";
 
 const Transfer = ({userInfo, returnPage}) => {
@@ -116,7 +116,7 @@ const Transfer = ({userInfo, returnPage}) => {
                     })
                 
 
-                TokenTransfer(val, ADDRESS_USER_1, ADDRESS_USER_2)
+                TokenCosmosTransfer(val, ADDRESS_USER_1, ADDRESS_USER_2)
 
                 history.push(returnPage)
                 window.location.reload();

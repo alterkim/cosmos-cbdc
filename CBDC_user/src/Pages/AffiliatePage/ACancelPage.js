@@ -6,7 +6,7 @@ import { history } from '../../_helpers'
 import { dbService, firebaseInstance } from "../../fbase"
 import { useLocation } from 'react-router'
 import GetDatetime from '../../_helpers/GetDatetime'
-import TokenTransfer from '../../_helpers/TokenTransfer'
+import TokenCosmosTransfer from '../../_helpers/TokenCosmosTransfer'
 import { ADDRESS_AFILIATE, ADDRESS_ESCROW, ADDRESS_USER_1 } from '../../constants/Accounts'
 
 const ACancelPage = ({userInfo, affiliateInfo}) => {
@@ -101,10 +101,10 @@ const ACancelPage = ({userInfo, affiliateInfo}) => {
 
             if (timeInterval < 259200000) {
                 // Before 3 days
-                TokenTransfer(canceltx.amount, ADDRESS_ESCROW, ADDRESS_USER_1)
+                TokenCosmosTransfer(canceltx.amount, ADDRESS_ESCROW, ADDRESS_USER_1)
             } else {
                 // After 3 days
-                TokenTransfer(canceltx.amount, ADDRESS_AFILIATE, ADDRESS_USER_1)
+                TokenCosmosTransfer(canceltx.amount, ADDRESS_AFILIATE, ADDRESS_USER_1)
             }
             var randomNum = (Math.floor(Math.random()*(10000-1)) + 1)+'';
             while(randomNum.length < 5){

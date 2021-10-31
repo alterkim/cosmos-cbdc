@@ -1,6 +1,6 @@
-const TokenTransfer = async(amount, _sender, _receiver) =>{
+const TokenCosmosTransfer = async(amount, _sender, _receiver) =>{
     const tokenName = "token";
-    const req = await fetch('http://localhost:3030/v1/transfer',{
+    const req = await fetch('http://localhost:3030/v1/cosmos/transfer',{
         headers: {
             'Content-Type':'application/json',
             'Accept':'application/json',
@@ -10,4 +10,4 @@ const TokenTransfer = async(amount, _sender, _receiver) =>{
     }) 
 }
 
-export default TokenTransfer
+export default TokenCosmosTransfer

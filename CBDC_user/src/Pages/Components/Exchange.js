@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { history } from '../../_helpers';
 import { dbService, firebaseInstance } from "../../fbase";
 import GetDatetime from "../../_helpers/GetDatetime";
-import TokenTransfer from "../../_helpers/TokenTransfer";
+import TokenCosmosTransfer from "../../_helpers/TokenCosmosTransfer";
 import { ADDRESS_USER_1, ADDRESS_USER_2 } from "../../constants/Accounts";
 
 const AccountComponent = ({userInfo,state}) =>{
@@ -117,7 +117,7 @@ const Exchange = ({userInfo,returnPage}) => {
                             cbdc_type : "common"
                         })
 
-            // TokenTransfer(val,)
+            // TokenCosmosTransfer(val,)
 
             history.push(returnPage)
             window.location.reload();

@@ -5,7 +5,7 @@ import React, {useEffect, useState} from "react"
 import styled from "styled-components"
 import { dbService, firebaseInstance } from "../../fbase"
 import { useLocation } from "react-router"
-import TokenTransfer from "../../_helpers/TokenTransfer"
+import TokenCosmosTransfer from "../../_helpers/TokenCosmosTransfer"
 import { ADDRESS_HANA_BANK, ADDRESS_USER_1 } from "../../constants/Accounts"
 
 const OverseasTransferPage = ({userInfo}) => {
@@ -30,7 +30,7 @@ const OverseasTransferPage = ({userInfo}) => {
 
         // 1. User A KRW-C Wallet -> 하나은행 KRW-C Wallet
         try {
-            TokenTransfer(krw_amount, ADDRESS_USER_1, ADDRESS_HANA_BANK)
+            TokenCosmosTransfer(krw_amount, ADDRESS_USER_1, ADDRESS_HANA_BANK)
             setConfirm(true)
         } catch(error) {
             console.log(error)
