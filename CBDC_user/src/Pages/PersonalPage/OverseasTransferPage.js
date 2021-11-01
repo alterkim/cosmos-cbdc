@@ -8,12 +8,21 @@ import { useLocation } from "react-router"
 import TokenCosmosTransfer from "../../_helpers/TokenCosmosTransfer"
 import { ADDRESS_BANGKOK_BANK, ADDRESS_HANA_BANK, ADDRESS_USER_1, ADDRESS_USER_B } from "../../constants/Accounts"
 import TokenLineTransfer from "../../_helpers/TokenLineTransfer"
+import { KEY_BANGKOKBANK, KEY_CITIBANK, KEY_HANABANK, KEY_JPMORGAN } from "../../constants/Keys"
+
+const Caver = require('caver-js')
+const caver = new Caver('http://localhost:8551/')
 
 const OverseasTransferPage = ({userInfo}) => {
     const location = useLocation()
     const [transfer, setTransfer] = useState(false)
     const [tx, setTx] = useState({})
     const [confirm, setConfirm] = useState(true)
+
+    const key_jpmorgan = caver.wallet.keyring.createFromPrivateKey(KEY_JPMORGAN)
+    const key_hanabank = caver.wallet.keyring.createFromPrivateKey(KEY_HANABANK)
+    const key_bangkokbank = caver.wallet.keyring.createFromPrivateKey(KEY_BANGKOKBANK)
+    const key_citibank = caver.wallet.keyring.createFromPrivateKey(KEY_CITIBANK)
 
     const countryStyle = {
         height:'20px',
@@ -121,6 +130,17 @@ const OverseasTransferPage = ({userInfo}) => {
         try {
             if(confirm) {
                 // TODO: TokenTransfer in Klaytn Network
+                const TokenKlaytnTransfer = caver.transaction.valueTransfer.create({
+                    from: key_jpmorgan.address,
+                    to: key_hanabank.address,
+                    value: caver.utils.toPeb(usd_amount, 'KLAY'),
+                    gas: 25000,
+                })
+
+                await TokenKlaytnTransfer.sign(key_jpmorgan)
+
+                const receipt = await caver.rpc.klay.sendRawTransaction(TokenKlaytnTransfer)
+                console.log(receipt)
             }
         } catch(error) {
             console.log(error)
@@ -131,6 +151,17 @@ const OverseasTransferPage = ({userInfo}) => {
         try {
             if(confirm) {
                 // TODO: TokenTransfer in Klaytn Network
+                const TokenKlaytnTransfer = caver.transaction.valueTransfer.create({
+                    from: key_hanabank.address,
+                    to: key_bangkokbank.address,
+                    value: caver.utils.toPeb(usd_amount, 'KLAY'),
+                    gas: 25000,
+                })
+
+                await TokenKlaytnTransfer.sign(key_hanabank)
+
+                const receipt = await caver.rpc.klay.sendRawTransaction(TokenKlaytnTransfer)
+                console.log(receipt)
             }
         } catch(error) {
             console.log(error)
@@ -141,6 +172,17 @@ const OverseasTransferPage = ({userInfo}) => {
         try {
             if(confirm) {
                 // TODO: TokenTransfer in Klaytn Network
+                const TokenKlaytnTransfer = caver.transaction.valueTransfer.create({
+                    from: key_bangkokbank.address,
+                    to: key_citibank.address,
+                    value: caver.utils.toPeb(usd_amount, 'KLAY'),
+                    gas: 25000,
+                })
+
+                await TokenKlaytnTransfer.sign(key_hanabank)
+
+                const receipt = await caver.rpc.klay.sendRawTransaction(TokenKlaytnTransfer)
+                console.log(receipt)
             }
         } catch(error) {
             console.log(error)
