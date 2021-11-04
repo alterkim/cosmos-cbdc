@@ -11,7 +11,7 @@ import TokenLineTransfer from "../../_helpers/TokenLineTransfer"
 import { KEY_BANGKOKBANK, KEY_CITIBANK, KEY_HANABANK, KEY_JPMORGAN } from "../../constants/Keys"
 
 const Caver = require('caver-js')
-const caver = new Caver('http://localhost:8551/')
+const caver = new Caver('http://141.223.215.224:8551/')
 
 const OverseasTransferPage = ({userInfo}) => {
     const location = useLocation()
@@ -35,7 +35,7 @@ const OverseasTransferPage = ({userInfo}) => {
     const onClickTransfer = async(e) => {
         const txId = location.state.txId
         const krw_amount = parseInt(tx.krw_amount.replace(/,/g,""))
-        const usd_amount = krw_amount * 0.001
+        const usd_amount = (krw_amount * 0.001).toFixed(3)
         const thb_amount = parseInt(tx.amount.replace(/,/g,""))
 
         // setConfirm(true)
@@ -129,18 +129,16 @@ const OverseasTransferPage = ({userInfo}) => {
         // 5. 하나은행 JP Morgan USD Account -> JP Morgan USD-C Wallet 이체 확인 && 6. JP Morgan USD-C Wallet -> 하나은행 USD-C Wallet
         try {
             if(confirm) {
-                // TODO: TokenTransfer in Klaytn Network
-                const TokenKlaytnTransfer = caver.transaction.valueTransfer.create({
+                const TokenKlaytnTransfer1 = caver.transaction.valueTransfer.create({
                     from: key_jpmorgan.address,
                     to: key_hanabank.address,
-                    value: caver.utils.toPeb(usd_amount, 'KLAY'),
+                    value: caver.utils.toPeb(usd_amount, 'kpeb'),
                     gas: 25000,
                 })
 
-                await TokenKlaytnTransfer.sign(key_jpmorgan)
-
-                const receipt = await caver.rpc.klay.sendRawTransaction(TokenKlaytnTransfer)
-                console.log(receipt)
+                const signed1 = await caver.rpc.klay.signTransaction(TokenKlaytnTransfer1)
+                const raw1 = await signed1.raw
+                await caver.rpc.klay.sendRawTransaction(raw1).then(console.log)
             }
         } catch(error) {
             console.log(error)
@@ -150,18 +148,16 @@ const OverseasTransferPage = ({userInfo}) => {
         // 7. 하나은행 USD-C Wallet -> 방콕은행 USD-C Wallet
         try {
             if(confirm) {
-                // TODO: TokenTransfer in Klaytn Network
-                const TokenKlaytnTransfer = caver.transaction.valueTransfer.create({
+                const TokenKlaytnTransfer2 = caver.transaction.valueTransfer.create({
                     from: key_hanabank.address,
                     to: key_bangkokbank.address,
-                    value: caver.utils.toPeb(usd_amount, 'KLAY'),
+                    value: caver.utils.toPeb(usd_amount, 'kpeb'),
                     gas: 25000,
                 })
 
-                await TokenKlaytnTransfer.sign(key_hanabank)
-
-                const receipt = await caver.rpc.klay.sendRawTransaction(TokenKlaytnTransfer)
-                console.log(receipt)
+                const signed2 = await caver.rpc.klay.signTransaction(TokenKlaytnTransfer2)
+                const raw2 = await signed2.raw
+                await caver.rpc.klay.sendRawTransaction(raw2).then(console.log)
             }
         } catch(error) {
             console.log(error)
@@ -171,18 +167,16 @@ const OverseasTransferPage = ({userInfo}) => {
         // 8. 방콕은행 USD-C Wallet -> Citibank USD-C Wallet
         try {
             if(confirm) {
-                // TODO: TokenTransfer in Klaytn Network
-                const TokenKlaytnTransfer = caver.transaction.valueTransfer.create({
+                const TokenKlaytnTransfer3 = caver.transaction.valueTransfer.create({
                     from: key_bangkokbank.address,
                     to: key_citibank.address,
-                    value: caver.utils.toPeb(usd_amount, 'KLAY'),
+                    value: caver.utils.toPeb(usd_amount, 'kpeb'),
                     gas: 25000,
                 })
 
-                await TokenKlaytnTransfer.sign(key_hanabank)
-
-                const receipt = await caver.rpc.klay.sendRawTransaction(TokenKlaytnTransfer)
-                console.log(receipt)
+                const signed3 = await caver.rpc.klay.signTransaction(TokenKlaytnTransfer3)
+                const raw3 = await signed3.raw
+                await caver.rpc.klay.sendRawTransaction(raw3).then(console.log)
             }
         } catch(error) {
             console.log(error)
