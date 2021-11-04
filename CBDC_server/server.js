@@ -15,25 +15,26 @@ app.use(
 app.use(cors())
 app.use(express.json())
 
+
 app.post('/v1/cosmos/transfer', (req, res) => {
     try{
-        var cmd = `yes y | sh CBDC.sh ${req.body.sender} ${req.body.receiver} ${req.body.amount}${req.body.token}` 
-        
+        var cmd = `yes y | sh CBDC.sh ${req.body.sender} ${req.body.receiver} ${req.body.amount}${req.body.token} | jq` 
+        var result
         //console.log(cmd)
         exec(cmd,
             function (error, stdout, stderr) {
-                //console.log('stdout: ' + stdout);
+                //console.log(stdout)
+                result = JSON.parse(stdout)
+                //cosmosBlockNumber = result.height
                 //console.log('stderr: ' + stderr);
                 if (error !== null) {
                 //console.log('exec error: ' + error);
                 }
+                res.send(result)
             });
-        
     }catch(error){
         console.log(error)
     }
-    
-    res.send(cmd);
   })
 
 app.post('/v1/line/transfer', (req, res) => {
