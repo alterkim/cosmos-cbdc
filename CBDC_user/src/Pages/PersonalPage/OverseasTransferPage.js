@@ -32,6 +32,18 @@ const OverseasTransferPage = ({userInfo}) => {
         objectFit: 'cover'
     }
 
+    const updateCrossTxInfo = async(_amount, _blockNumber, _chain, _receiver, _sender,) => {
+        await dbService
+            .collection(`CrossTxInfo`)
+            .add({
+                amount: _amount,
+                blocknum: _blockNumber,
+                chain_name: _chain,
+                receiver_wallet: _receiver,
+                sender_wallet: _sender
+            })
+    }
+
     const onClickTransfer = async(e) => {
         const txId = location.state.txId
         const krw_amount = parseInt(tx.krw_amount.replace(/,/g,""))
@@ -41,8 +53,8 @@ const OverseasTransferPage = ({userInfo}) => {
         // setConfirm(true)
         // 1. User A KRW-C Wallet -> 하나은행 KRW-C Wallet
         try {
-            TokenCosmosTransfer(krw_amount, ADDRESS_USER_1, ADDRESS_HANA_BANK)
-            
+            const blockNumber = await TokenCosmosTransfer(krw_amount, ADDRESS_USER_1, ADDRESS_HANA_BANK)
+            updateCrossTxInfo(krw_amount, blockNumber, "cosmos", ADDRESS_HANA_BANK, ADDRESS_USER_1)
         } catch(error) {
             console.log(error)
             // setConfirm(false)
@@ -138,7 +150,11 @@ const OverseasTransferPage = ({userInfo}) => {
 
                 const signed1 = await caver.rpc.klay.signTransaction(TokenKlaytnTransfer1)
                 const raw1 = await signed1.raw
-                await caver.rpc.klay.sendRawTransaction(raw1).then(console.log)
+                const receipt1 = await caver.rpc.klay.sendRawTransaction(raw1)
+                const blockNumber = await receipt1.blockNumber
+                const sender = await receipt1.from
+                const receiver = await receipt1.to
+                updateCrossTxInfo(usd_amount, parseInt(blockNumber), "klaytn", receiver, sender)
             }
         } catch(error) {
             console.log(error)
@@ -157,7 +173,11 @@ const OverseasTransferPage = ({userInfo}) => {
 
                 const signed2 = await caver.rpc.klay.signTransaction(TokenKlaytnTransfer2)
                 const raw2 = await signed2.raw
-                await caver.rpc.klay.sendRawTransaction(raw2).then(console.log)
+                const receipt2 = await caver.rpc.klay.sendRawTransaction(raw2)
+                const blockNumber = await receipt2.blockNumber
+                const sender = await receipt2.from
+                const receiver = await receipt2.to
+                updateCrossTxInfo(usd_amount, parseInt(blockNumber), "klaytn", receiver, sender)
             }
         } catch(error) {
             console.log(error)
@@ -176,7 +196,11 @@ const OverseasTransferPage = ({userInfo}) => {
 
                 const signed3 = await caver.rpc.klay.signTransaction(TokenKlaytnTransfer3)
                 const raw3 = await signed3.raw
-                await caver.rpc.klay.sendRawTransaction(raw3).then(console.log)
+                const receipt3 = await caver.rpc.klay.sendRawTransaction(raw3)
+                const blockNumber = await receipt3.blockNumber
+                const sender = await receipt3.from
+                const receiver = await receipt3.to
+                updateCrossTxInfo(usd_amount, parseInt(blockNumber), "klaytn", receiver, sender)
             }
         } catch(error) {
             console.log(error)
@@ -252,7 +276,8 @@ const OverseasTransferPage = ({userInfo}) => {
         // 13. 방콕은행 THB-C Wallet -> User B THB-C Wallet
         try {
             if (confirm) {
-                TokenLineTransfer(thb_amount, ADDRESS_BANGKOK_BANK, ADDRESS_USER_B)
+                const blockNumber = await TokenLineTransfer(thb_amount, ADDRESS_BANGKOK_BANK, ADDRESS_USER_B)
+                updateCrossTxInfo(thb_amount, blockNumber, "line", ADDRESS_USER_B, ADDRESS_BANGKOK_BANK)
                 // setConfirm(true)
             }
         } catch(error) {
