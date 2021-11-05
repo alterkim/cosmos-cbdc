@@ -20,8 +20,8 @@ function requestCosmosBlockNumber() {
     request(url_cosmos, function(error, response, body) {
         if(!error && response.statusCode==200) {
             result = JSON.parse(body);
-            blockNumber = result.block.header.height;
-            updateCrossBlockInfo("cosmos", blockNumber)
+            blockNumber = parseInt(result.block.header.height);
+            updateCrossBlockInfo("cosmos", blockNumber);
         }
     });
 }
@@ -30,7 +30,7 @@ function requestLineBlockNumber() {
     request(url_line, function(error, response, body) {
         if(!error && response.statusCode==200) {
             result = JSON.parse(body);
-            blockNumber = result.result.sync_info.latest_block_height;
+            blockNumber = parseInt(result.result.sync_info.latest_block_height);
             updateCrossBlockInfo("line", blockNumber)
         }
     })
