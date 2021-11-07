@@ -11,7 +11,7 @@ import TokenLineTransfer from "../../_helpers/TokenLineTransfer"
 import { KEY_BANGKOKBANK, KEY_CITIBANK, KEY_HANABANK, KEY_JPMORGAN } from "../../constants/Keys"
 
 const Caver = require('caver-js')
-const caver = new Caver('http://141.223.215.224:8551/')
+const caver = new Caver('http://141.223.181.204:8551/')
 
 const OverseasTransferPage = ({userInfo}) => {
     const location = useLocation()

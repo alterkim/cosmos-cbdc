@@ -58,7 +58,7 @@ app.post('/v1/line/transfer', (req, res) => {
 })
 
   app.listen(port, () => {
-    console.log(`CBDC server listening at http://localhost:${port}`)
+    console.log(`CBDC server listening at http://141.223.181.204:${port}`)
   })
 
 var blocknum;

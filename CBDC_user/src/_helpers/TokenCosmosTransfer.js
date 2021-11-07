@@ -1,7 +1,7 @@
 const TokenCosmosTransfer = async(amount, _sender, _receiver) =>{
     const tokenName = "token";
     var blockNumber = 0;
-    await fetch('http://localhost:3030/v1/cosmos/transfer',{
+    await fetch('http://141.223.181.204:3030/v1/cosmos/transfer',{
         headers: {
             'Content-Type':'application/json',
             'Accept':'application/json',

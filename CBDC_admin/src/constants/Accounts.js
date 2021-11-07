@@ -1,2 +1,2 @@
-export const ADDRESS_CENTRAL_BANK = "cosmos1lj8fk9dqk4hkz6pr6pdquze0mcmr7n764vgqpd"
-export const ADDRESS_HANA_BANK = "cosmos1rts0gqj7s97t9sa3fsgraalscg7s7qr40pz727"
+export const ADDRESS_CENTRAL_BANK = "cosmos16pgppq8zpky3ncn69d9gaw5zv4n7zc0zdgvq5l"
+export const ADDRESS_HANA_BANK = "cosmos1t92trjc5tv2qmsnlu8uhexym780vdmckurvlwt"
