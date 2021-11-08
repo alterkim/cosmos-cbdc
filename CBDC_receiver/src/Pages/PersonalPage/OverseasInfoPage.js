@@ -65,7 +65,7 @@ const OverseasInfoPage = () => {
                                             history.push({
                                                 pathname: '/detail',
                                                 state: {txId: tx.id}
-                                             })}}>Sending<br/>Complete</StatusButton>
+                                             })}}>Transfer<br/>Complete</StatusButton>
                                     </ListItemRight>
                                 </ListItem>
                             ))
