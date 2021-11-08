@@ -32,53 +32,58 @@ const PaymentPage = ({userInfo,affiliateInfo}) => {
     }
 
     const onClickPayment = async() => {
-        if(amount !== "0"){
-            var val = Number(amount.replace(/\D/g, ''))
+        try{
+            if(amount !== "0"){
+                var val = Number(amount.replace(/\D/g, ''))
             
-            const receiverSnapshot = await dbService
-                .collection(`UserInfo`)
-                .where('name','==',affiliateInfo.name)
-                .get()
-            const receiverData = receiverSnapshot.docs[0].data()
+                const receiverSnapshot = await dbService
+                    .collection(`UserInfo`)
+                    .where('name','==',affiliateInfo.name)
+                    .get()
+                const receiverData = receiverSnapshot.docs[0].data()
             
-            var randomNum = (Math.floor(Math.random()*(10000-1)) + 1)+'';
-            while(randomNum.length < 5){
-                randomNum = '0'+randomNum
-            }
+                var randomNum = (Math.floor(Math.random()*(10000-1)) + 1)+'';
+                while(randomNum.length < 5){
+                    randomNum = '0'+randomNum
+                }
             
-            await dbService
-                .collection(`TxInfo`)
-                .add({
-                    sender_account : userInfo.account,
-                    sender_wallet : userInfo.wallet,
-                    sender_name : userInfo.name,
-                    receiver_name : receiverData.name,
-                    receiver_wallet : receiverData.wallet,
-                    receiver_account : receiverData.account,
-                    amount : val,
-                    transaction_type : "결제",
-                    transaction_date : GetDatetime(),
-                    cbdc_type : clickBtn,
-                    tx_id: "TX2021-" + randomNum
-                })
-            var user_cbdc_balance = {}
-            user_cbdc_balance[clickBtn + "_cbdc_balance"] = firebaseInstance.firestore.FieldValue.increment(-val)
-            await dbService
-                .doc(`UserInfo/${userInfo.uid}`)
-                .update(user_cbdc_balance)
+                await dbService
+                    .collection(`TxInfo`)
+                    .add({
+                        sender_account : userInfo.account,
+                        sender_wallet : userInfo.wallet,
+                        sender_name : userInfo.name,
+                        receiver_name : receiverData.name,
+                        receiver_wallet : receiverData.wallet,
+                        receiver_account : receiverData.account,
+                        amount : val,
+                        transaction_type : "결제",
+                        transaction_date : GetDatetime(),
+                        cbdc_type : clickBtn,
+                        tx_id: "TX2021-" + randomNum
+                    })  
+                var user_cbdc_balance = {}
+                user_cbdc_balance[clickBtn + "_cbdc_balance"] = firebaseInstance.firestore.FieldValue.increment(-val)
+                await dbService
+                    .doc(`UserInfo/${userInfo.uid}`)
+                    .update(user_cbdc_balance)
             
-            var affiliate_cbdc_balance ={}
-            affiliate_cbdc_balance["common_cbdc_balance"] = firebaseInstance.firestore.FieldValue.increment(val)
-            await dbService
-                .doc(`UserInfo/${affiliateInfo.uid}`)
-                .update(affiliate_cbdc_balance)
+                var affiliate_cbdc_balance ={}
+                affiliate_cbdc_balance["common_cbdc_balance"] = firebaseInstance.firestore.FieldValue.increment(val)
+                await dbService
+                    .doc(`UserInfo/${affiliateInfo.uid}`)
+                    .update(affiliate_cbdc_balance)
             
     
-            TokenCosmosTransfer(val, ADDRESS_USER_1, ADDRESS_AFILIATE)
+                TokenCosmosTransfer(val, ADDRESS_USER_1, ADDRESS_AFILIATE)
                   
-            history.push('/personal/CBDC')
-            window.location.reload();
+                history.push('/personal/CBDC')
+                window.location.reload();
+            }
+        } catch(error) {
+            console.log(error)
         }
+        
     }
     const onChangeAmount = (e) =>{
 
