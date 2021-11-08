@@ -78,6 +78,11 @@ const OverseasAmountPage = ({userInfo}) => {
                     sender_country: 'Korea',
                     sender_bank: 'Hana Bank'       
             })
+
+            history.push({
+                pathname: '/personal/overseastransfer',
+                state: {txId: location.state.txId}
+                })
         } catch (error) {
             console.log(error)
         }
@@ -171,12 +176,7 @@ const OverseasAmountPage = ({userInfo}) => {
             <div style={{width:'100%', height:'10vh', backgroundColor:'white', fontSize:'3.5vw', display:'flex', alignItems:'center', justifyContent:'center', textAlign:'center', fontWeight:'600'}}>
                 입력 정보를 확인해주세요.
             </div>
-            <ExRunButton onClick={() => {
-                onClickUpdateInfo()
-                setTimeout(history.push({
-                    pathname: '/personal/overseastransfer',
-                    state: {txId: location.state.txId}
-                    }),2500)}}>다음</ExRunButton>
+            <ExRunButton onClick={onClickUpdateInfo}>다음</ExRunButton>
         </div>
     )
 }
