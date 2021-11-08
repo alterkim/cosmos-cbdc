@@ -32,14 +32,21 @@ CBDC demo project made by cosmos-sdk
 - go: 1.16.5
 - python2: 2.7.18
 - starport: 0.14.0
+- jq : 1.6
 
 # 파일 설명
 
 CBDC_server :  코스모스 블록체인에 쿼리를 보낼 서버
 
+CBDC_blockserver : Dashboard와 블록체인의 blockNumber를 동기화하기 위한 서버
+
 CBDC_admin : 은행 관리 시나리오 데모
 
 CBDC_user : 유저 서비스 데모, 현재 크롬창 최적화 사이즈: `516 * 992`(viewport)
+
+CBDC_receiver: 해외송금 수취은행 데모
+
+CBDC_dashboard: 해외송금 Blockchain의 transaction 상황을 보기 위한 대시보드
 
 dpnmd : CBDC 코스모스 블록체인
 
@@ -49,10 +56,11 @@ dpnmd : CBDC 코스모스 블록체인
 
 Admin port : 3001 
 
-User port : 3002
+User port : 3000
+
+Receiver port: 3002
 
 Server port : 3030
-
 
 
 ## shell 2 Cosmos 블록체인 실행
