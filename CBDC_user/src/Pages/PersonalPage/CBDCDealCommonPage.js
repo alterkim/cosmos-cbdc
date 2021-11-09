@@ -165,7 +165,7 @@ const CBDCDealCommonPage = ({userInfo}) => {
                                     )
                                     :
                                     (
-                                        <>{(tx.krw_amount)}</>
+                                        <>{'-'}{(tx.krw_amount)}</>
                                     )))
                                 }
                                 <br/>
