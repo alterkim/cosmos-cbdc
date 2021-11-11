@@ -6,7 +6,7 @@ import { history } from '../../_helpers';
 import { dbService, firebaseInstance } from "../../fbase";
 import GetDatetime from "../../_helpers/GetDatetime";
 import TokenCosmosTransfer from "../../_helpers/TokenCosmosTransfer";
-import { ADDRESS_USER_1, ADDRESS_USER_2 } from "../../constants/Accounts";
+import { ADDRESS_HANA_BANK, ADDRESS_USER_1, ADDRESS_USER_2 } from "../../constants/Accounts";
 
 const AccountComponent = ({userInfo,state}) =>{
     return(
@@ -117,7 +117,7 @@ const Exchange = ({userInfo,returnPage}) => {
                             cbdc_type : "common"
                         })
 
-            // TokenCosmosTransfer(val,)
+            TokenCosmosTransfer(val, ADDRESS_HANA_BANK, ADDRESS_USER_1)
 
             history.push(returnPage)
             window.location.reload();
