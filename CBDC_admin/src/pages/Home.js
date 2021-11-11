@@ -541,7 +541,7 @@ const TabTwo = () =>{
 
 const TabThree=()=>{
     const [data, setData] = useState([]);
-    const TableColumnHeader = ["은행", "계좌번호", "잔액"]
+    const TableColumnHeader = ["은행", "계좌번호", "잔액", "비고"]
 
     useEffect(()=> {
         getCommercialBankAccountData();
@@ -551,7 +551,8 @@ const TabThree=()=>{
         try {
             const accountQuerySnapshot = await dbService
                 .collection(`CommercialBankAccountInfo`)
-                .orderBy('bank','asc')
+                .orderBy('state', 'asc')
+                .orderBy('date','desc')
                 .get()
 
             const dataArray = accountQuerySnapshot.docs.map((doc)=> ({
@@ -601,6 +602,7 @@ const TabThree=()=>{
                                 <td> {el.bank} </td>
                                 <td> {el.account_number} </td>
                                 <td> {el.amount&&el.amount.toLocaleString()} </td>
+                                <td> {el.change&&el.change.toLocaleString()} </td>
                             </Item>
                         ))
                     }
@@ -641,7 +643,7 @@ const TabFour=()=>{
         try {
             const bankQuerySnapshot = await dbService
                 .collection(`CommercialBankAccountInfo`)
-                .orderBy('bank','asc')
+                .where('state', '==', 'new')
                 .get()
             
             const dataArray = bankQuerySnapshot.docs.map((doc)=>({
@@ -690,17 +692,25 @@ const TabFour=()=>{
             
             const bankSnapshot = await dbService
                 .collection(`CommercialBankAccountInfo`)
-                .where('bank', '==', bank)
+                .where('state', '==', 'new')
                 .get()
             
             await dbService.collection(`IssueRequestInfo`)
                 .doc(approveSnapshot.docs[0].id)
                 .update({issue_request_progress : "승인"});
-
+            
             await dbService.collection(`CommercialBankAccountInfo`)
                 .doc(bankSnapshot.docs[0].id)
-                .update({amount : bank_amount - amount})
-                
+                .update({state: "old"})
+            await dbService.collection(`CommercialBankAccountInfo`)
+                .add({
+                    ["account_number"]: "123-456-789",
+                    ["amount"]: bank_amount - amount,
+                    ["bank"]: "하나은행",
+                    ["change"] : -amount,
+                    ["date"] : date,
+                    ["state"]: "new"
+                })                
             
             await dbService.collection(`IssueInfo`)
                 .add({
@@ -835,7 +845,7 @@ const TabFive=()=>{
         try {
             const bankQuerySnapshot = await dbService
                 .collection(`CommercialBankAccountInfo`)
-                .orderBy('bank','asc')
+                .where('state', '==', 'new')
                 .get()
             
             const dataArray = bankQuerySnapshot.docs.map((doc)=>({
@@ -912,9 +922,10 @@ const TabFive=()=>{
             bank_amount = el.amount
         })
 
-        var amount;
+        var amount, date;
         data2.map((el,i) => {
             amount = el.redemption_request_amount
+            date = el.redemption_request_day
         })
 
         try {
@@ -924,7 +935,7 @@ const TabFive=()=>{
                 .get()
             const bankSnapshot = await dbService
                 .collection(`CommercialBankAccountInfo`)
-                .where('bank', '==', bank)
+                .where('state', '==', 'new')
                 .get()
             
             await dbService.collection(`RedemptionRequestInfo`)
@@ -933,7 +944,17 @@ const TabFive=()=>{
             
             await dbService.collection(`CommercialBankAccountInfo`)
                 .doc(bankSnapshot.docs[0].id)
-                .update({amount: bank_amount + amount})
+                .update({state: "old"})
+
+            await dbService.collection(`CommercialBankAccountInfo`)
+                .add({
+                    ["account_number"]: "123-456-789",
+                    ["amount"]: bank_amount + amount,
+                    ["bank"]: "하나은행",
+                    ["change"] : amount,
+                    ["date"] : date,
+                    ["state"]: "new"
+                })
         } catch(error) {
             console.log(error)
         }
