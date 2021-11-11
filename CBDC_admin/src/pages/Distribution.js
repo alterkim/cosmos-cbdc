@@ -574,7 +574,7 @@ const TabThree=()=>{
         try {
             const issueQuerySnapshot = await dbService
                 .collection(`IssueRequestInfo`)
-                .orderBy('issue_request_day', 'asc')
+                .orderBy('issue_request_day', 'desc')
                 .get()
             const dataArray = issueQuerySnapshot.docs.map((doc)=>({
                 ...doc.data(),
@@ -777,7 +777,7 @@ const TabFour=()=>{
         try {
             const redemptionQuerySnapshot = await dbService
                 .collection(`RedemptionRequestInfo`)
-                .orderBy('redemption_request_day', 'asc')
+                .orderBy('redemption_request_day', 'desc')
                 .get()
             const dataArray = redemptionQuerySnapshot.docs.map((doc)=>({
                 ...doc.data(),
